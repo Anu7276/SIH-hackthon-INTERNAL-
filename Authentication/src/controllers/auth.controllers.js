@@ -31,13 +31,29 @@ import config from "../config/config.js";
     })
      
     //we Create a token 
-    const token = jwt.sign({
+    const accessToken = jwt.sign({
         id: user._id
     }, config.JWT_SECRET,
     {
-        expiresIn: "1d"
+        expiresIn: "15m"
     }
 )
+
+    const refreshToken = jwt.sign({
+        id: user._id
+    }, config.JWT_SECRET,
+    {
+        expiresIn: "3d"
+    }
+)
+
+    //refreshToken checking
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 3 * 24 * 60 * 60 * 1000 // 3 days
+    })
 
     res.status(201).json({
         message: "User registered successfully",
@@ -45,7 +61,7 @@ import config from "../config/config.js";
             username: user.username,
             email: user.email
         },
-        token
+        accessToken,
     })
 }
 
