@@ -1,1 +1,1 @@
-﻿# SIH-hackthon-INTERNAL
+﻿# SIH-Hackthon-Internal
