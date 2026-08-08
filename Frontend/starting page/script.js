@@ -162,6 +162,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 inWhiteFade = true;
                 whiteFadeElapsed = 0;
                 if (vignetteEl) vignetteEl.style.opacity = '0'; // vignette reads oddly on white
+                // Signal that the white fade is starting — used by index.html
+                // to begin revealing the home page in sync (no white gap).
+                document.dispatchEvent(new CustomEvent('ayush:whitefade-start', { detail: { duration: WHITE_FADE_DURATION_SEC } }));
                 requestAnimationFrame(animate);
                 return;
             }
@@ -182,6 +185,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (t >= 1) {
             isPlaying = false;
             hasFinished = true;
+            document.dispatchEvent(new CustomEvent('ayush:animation-done'));
             return;
         }
 
