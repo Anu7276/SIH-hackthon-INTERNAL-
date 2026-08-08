@@ -30,7 +30,7 @@ import config from "../config/config.js";
         password: hashedPassword
     })
      
-    //we Create a token 
+    //we Create a accesstoken 
     const accessToken = jwt.sign({
         id: user._id
     }, config.JWT_SECRET,
@@ -87,4 +87,49 @@ export async function getMe(req, res){
             email: user.email,
         }
     })
+}
+
+export async function refreshToken(req, res){
+
+    const refreshToken = req.cookies.refreshToken;
+
+    if(!refreshToken){
+        return res.status(401).json({
+            message: "Refresh token not found"
+        })
+    }
+
+    const decoded = jwt.verify(refreshToken, config.JWT_SECRET);
+
+    //creating a accesstoken
+    const accessToken = jwt.sign({
+        id: decoded.id
+    }, config.JWT_SECRET,
+    {
+        expiresIn: "15m"
+    }
+)
+
+    const newRefreshToken = jwt.sign({
+        id: decoded.id
+    }, config.JWT_SECRET,
+    {
+        expiresIn: "3d"
+    }
+)
+
+    res.cookie("refreshToken", newRefreshToken,{
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 3 * 24 * 60 * 60 * 1000 // 3 days
+    })
+
+//Sending accesstoken to response 
+res.status(200).json({
+    message: "Access token refreshed successfully",
+    accessToken 
+})
+
+
 }
