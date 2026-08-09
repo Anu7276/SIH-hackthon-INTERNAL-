@@ -11,7 +11,6 @@
     <!-- Font Awesome (for home page icons) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="/public/css/style.css">
 
     <style>
         /* ─── Intro overlay that sits ON TOP of home page ─── */
@@ -88,7 +87,7 @@
         #home-page .menu a.active::after { position: absolute; right: 0; bottom: -26px; left: 0; height: 2px; content: ""; background: #317343; }
         #home-page .menu .fa-chevron-down { margin-left: 4px; font-size: 8px; }
         #home-page .search { padding: 7px 0 7px 2px; cursor: pointer; font-size: 15px; }
-        #home-page .hero { position: relative; background: url("../Home_Page/dash_main.png") center right / cover no-repeat; padding: 70px 0 0; }
+        #home-page .hero { position: relative; background: url("dash_main.png") center right / cover no-repeat; padding: 70px 0 0; }
         #home-page .hero_inner { width: min(1225px, calc(100% - 40px)); margin: 0 auto; padding-bottom: 90px; max-width: 560px; }
         #home-page .hero h1 { margin: 0 0 18px; color: #1f4d2c; font-size: 34px; font-weight: 800; line-height: 1.25; }
         #home-page .hero p { margin: 0 0 26px; color: #4a4a4a; font-size: 14.5px; line-height: 1.7; max-width: 480px; }
@@ -165,6 +164,10 @@
 
     <!-- INTRO LAYER — fixed on top, removed when animation finishes -->
     <div id="intro-layer">
+        <button id="skip-intro-btn" onclick="skipIntro()" style="position: fixed; top: 24px; right: 28px; z-index: 600; padding: 10px 20px; background: rgba(0,0,0,0.7); color: #fff; border: 1px solid rgba(255,255,255,0.4); border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; backdrop-filter: blur(6px); transition: all 0.2s ease;">
+            Skip Intro <i class="fa-solid fa-forward" style="margin-left: 6px;"></i>
+        </button>
+
         <div id="loader" class="loader-overlay">
             <div class="loader-content">
                 <div class="mandala-spinner"></div>
@@ -215,7 +218,7 @@
                         <span class="action-divider" aria-hidden="true"></span>
                         <div class="login">
                             <div class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></div>
-                            <a href="/profile/dist/index.html?mode=register" id="nav-login-link">Login / Register</a>
+                            <a href="/auth" id="nav-login-link">Login / Register</a>
                         </div>
                     </div>
                 </div>
@@ -234,15 +237,15 @@
                         </div>
                         <span class="logo_line" aria-hidden="true"></span>
                         <div class="startup_logo">
-                            <img src="../Home_Page/STARTUPAYSH.png" alt="Startup AYUSH Portal">
+                            <img src="STARTUPAYSH.png" alt="Startup AYUSH Portal">
                         </div>
                     </div>
                     <nav class="menu" aria-label="Main navigation">
                         <a class="active" href="#home">Home</a>
-                        <a href="../Startups/dist/index.html">Startups <i class="fa-solid fa-chevron-down"></i></a>
+                        <a href="/startups">Startups <i class="fa-solid fa-chevron-down"></i></a>
                         <a href="#investors">Investors</a>
                         <a href="#incubators">Incubators &amp; Accelerators</a>
-                        <a href="../schemes/dist/index.html">Government Schemes</a>
+                        <a href="/schemes">Government Schemes</a>
                         <a href="#resources">Resources <i class="fa-solid fa-chevron-down"></i></a>
                         <a href="#events">Events</a>
                         <button class="search" type="button" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -257,7 +260,7 @@
                     <h1>Empowering AYUSH Startups.<br>Building a Healthy Future.</h1>
                     <p>Welcome to the Startup AYUSH Portal – a one-stop platform connecting Startups, Investors, Incubators, Government Agencies and Public Users to collaborate, innovate and grow together.</p>
                     <div class="hero_buttons">
-                        <a href="../Startups/dist/index.html" class="btn btn-primary">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="/startups" class="btn btn-primary">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
                         <a href="#join" class="btn btn-secondary">Join the Ecosystem</a>
                     </div>
                 </div>
@@ -273,11 +276,11 @@
                 <h2>A Collaborative Platform for All Stakeholders</h2>
                 <span class="section_underline" aria-hidden="true"></span>
                 <div class="stakeholder_cards">
-                    <div class="stakeholder_card" onclick="window.location.href='../Startups/dist/index.html'" style="cursor: pointer;">
+                    <div class="stakeholder_card" onclick="window.location.href='/startups'" style="cursor: pointer;">
                         <div class="card_icon icon-startups"><i class="fa-solid fa-rocket"></i></div>
                         <h3>Startups</h3>
                         <p>Showcase your innovations, connect with mentors &amp; investors, and grow globally.</p>
-                        <a href="../Startups/dist/index.html" class="card_link link-green" onclick="event.stopPropagation();">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="/startups" class="card_link link-green" onclick="event.stopPropagation();">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div class="stakeholder_card">
                         <div class="card_icon icon-investors"><i class="fa-solid fa-hand-holding-dollar"></i></div>
@@ -291,11 +294,11 @@
                         <p>Support and nurture startups in the AYUSH sector with resources and guidance.</p>
                         <a href="#incubators" class="card_link link-purple">Collaborate With Us <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <div class="stakeholder_card" onclick="window.location.href='../schemes/dist/index.html'" style="cursor: pointer;">
+                    <div class="stakeholder_card" onclick="window.location.href='/schemes'" style="cursor: pointer;">
                         <div class="card_icon icon-govt"><i class="fa-solid fa-landmark"></i></div>
                         <h3>Government Schemes</h3>
                         <p>Discover government funding, subsidies, grants, and support schemes for AYUSH startups.</p>
-                        <a href="../schemes/dist/index.html" class="card_link link-orange" onclick="event.stopPropagation();">Explore Schemes <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="/schemes" class="card_link link-orange" onclick="event.stopPropagation();">Explore Schemes <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div class="stakeholder_card">
                         <div class="card_icon icon-public"><i class="fa-solid fa-users"></i></div>
@@ -353,6 +356,7 @@
                 const homePage   = document.getElementById('home-page');
 
                 // Check saved login profile
+                // Saved user profile check
                 try {
                     const savedProfile = localStorage.getItem('ayush_user_profile');
                     if (savedProfile) {
@@ -360,39 +364,10 @@
                         const loginLink = document.getElementById('nav-login-link');
                         if (loginLink && parsed && parsed.isLoggedIn) {
                             loginLink.textContent = (parsed.user && parsed.user.fullName) ? parsed.user.fullName : 'My Profile';
-                            loginLink.href = '../profile/dist/index.html?mode=profile';
+                            loginLink.href = '/profile';
                         }
                     }
                 } catch(e) {}
-
-                // Auth Guard: Intercept clicks for unauthenticated users
-                document.addEventListener('click', function(e) {
-                    if (!homePage || !homePage.classList.contains('revealed')) return;
-
-                    const target = e.target.closest('a, button, .stakeholder_card');
-                    if (!target) return;
-
-                    const href = target.getAttribute('href') || '';
-                    if (href.includes('profile') || href === '#home' || target.id === 'nav-login-link' || target.classList.contains('search')) {
-                        return;
-                    }
-
-                    let isLoggedIn = false;
-                    try {
-                        const saved = localStorage.getItem('ayush_user_profile');
-                        if (saved) {
-                            const parsed = JSON.parse(saved);
-                            isLoggedIn = Boolean(parsed && parsed.isLoggedIn);
-                        }
-                    } catch(err) {}
-
-                    if (!isLoggedIn) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        alert("Please sign in or register your account to access AYUSH ecosystem features!");
-                        window.location.href = '../profile/dist/index.html?mode=register';
-                    }
-                }, true);
 
                 // Skip intro ONLY when navigating via explicit skipIntro URL parameter
                 const urlParams = new URLSearchParams(window.location.search);
@@ -445,149 +420,5 @@
         })();
     </script>
 
-    <!-- AUTHENTICATION MODAL OVERLAY -->
-    <div id="auth-modal-overlay" class="auth-modal-overlay">
-        <!-- Notification Toast Container -->
-        <div id="toast-container" class="toast-container"></div>
-
-        <div class="main-container" style="position: relative;">
-            <button type="button" class="modal-close-btn" onclick="closeAuthModal()" title="Close Modal">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <!-- Auth Container (Shown when logged out) -->
-            <div id="auth-card" class="auth-card glass-panel">
-                <div class="brand-header">
-                    <div class="logo-badge">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <h2>SIH Hackathon Portal</h2>
-                    <p>Secure Authentication & Profile Portal</p>
-                </div>
-
-                <!-- Tab Switching Buttons -->
-                <div id="auth-tabs" class="tabs-header">
-                    <button type="button" class="tab-btn active" id="tab-login" onclick="switchTab('login')">
-                        <i class="fa-solid fa-right-to-bracket"></i> Sign In
-                    </button>
-                    <button type="button" class="tab-btn" id="tab-register" onclick="switchTab('register')">
-                        <i class="fa-solid fa-user-plus"></i> Register
-                    </button>
-                </div>
-
-                <!-- LOGIN FORM -->
-                <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label for="login-email"><i class="fa-solid fa-envelope"></i> Email Address</label>
-                        <input type="email" id="login-email" placeholder="name@example.com" required autocomplete="email">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="login-password"><i class="fa-solid fa-lock"></i> Password</label>
-                        <div class="password-wrapper">
-                            <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
-                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('login-password', this)">
-                                <i class="fa-solid fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <button type="submit" id="login-btn" class="btn btn-primary">
-                        <span>Sign In</span> <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </form>
-
-                <!-- REGISTER FORM -->
-                <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
-                    <div class="form-group">
-                        <label for="reg-username"><i class="fa-solid fa-user"></i> Username</label>
-                        <input type="text" id="reg-username" placeholder="johndoe" required autocomplete="username">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reg-email"><i class="fa-solid fa-envelope"></i> Email Address</label>
-                        <input type="email" id="reg-email" placeholder="name@example.com" required autocomplete="email">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reg-password"><i class="fa-solid fa-lock"></i> Password</label>
-                        <div class="password-wrapper">
-                            <input type="password" id="reg-password" placeholder="Min 6 characters" required autocomplete="new-password">
-                            <button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-password', this)">
-                                <i class="fa-solid fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <button type="submit" id="register-btn" class="btn btn-primary">
-                        <span>Create Account</span> <i class="fa-solid fa-user-check"></i>
-                    </button>
-                </form>
-
-                <!-- OTP VERIFICATION FORM (Initially Hidden) -->
-                <form id="otp-form" class="auth-form" onsubmit="handleVerifyOtp(event)">
-                    <div class="otp-info">
-                        <i class="fa-solid fa-envelope-circle-check otp-icon"></i>
-                        <h3>Verify Email Address</h3>
-                        <p>Enter the 6-digit OTP sent to <strong id="target-otp-email">user@example.com</strong></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="otp-code"><i class="fa-solid fa-key"></i> 6-Digit OTP Code</label>
-                        <input type="text" id="otp-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required class="otp-input" autocomplete="one-time-code">
-                    </div>
-
-                    <button type="submit" id="otp-btn" class="btn btn-primary">
-                        <span>Verify Email</span> <i class="fa-solid fa-check-double"></i>
-                    </button>
-
-                    <button type="button" class="btn btn-secondary mt-2" onclick="switchTab('login')">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Sign In
-                    </button>
-                </form>
-            </div>
-
-            <!-- LOGGED-IN DASHBOARD VIEW (Initially Hidden) -->
-            <div id="dashboard-card" class="dashboard-card glass-panel hidden">
-                <div class="dashboard-header">
-                    <div class="user-avatar">
-                        <i class="fa-solid fa-circle-user"></i>
-                    </div>
-                    <div class="user-welcome">
-                        <h2 id="dash-username">Welcome User</h2>
-                        <span class="badge badge-success"><i class="fa-solid fa-shield-check"></i> Verified Account</span>
-                    </div>
-                </div>
-
-                <div class="profile-details-grid">
-                    <div class="detail-card">
-                        <span class="detail-label">Username</span>
-                        <strong id="dash-user-val" class="detail-value">-</strong>
-                    </div>
-                    <div class="detail-card">
-                        <span class="detail-label">Email Address</span>
-                        <strong id="dash-email-val" class="detail-value">-</strong>
-                    </div>
-                    <div class="detail-card full-width">
-                        <span class="detail-label">Active Access Token</span>
-                        <div class="token-box">
-                            <code id="dash-token-val">No token loaded</code>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dashboard-actions">
-                    <button type="button" class="btn btn-danger" onclick="handleLogout()">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout Current Session
-                    </button>
-                    <button type="button" class="btn btn-outline-danger" onclick="handleLogoutAll()">
-                        <i class="fa-solid fa-power-off"></i> Logout All Devices
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="/public/js/auth.js"></script>
 </body>
 </html>

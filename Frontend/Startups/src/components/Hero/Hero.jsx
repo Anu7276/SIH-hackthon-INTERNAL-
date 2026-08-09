@@ -12,7 +12,15 @@ export default function Hero({
   categories,
 }) {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-b from-[#E2EFE3]/60 via-[#FBF7EC] to-[#FBF7EC] pt-12 pb-16 px-4 sm:px-8 border-b border-[#C4DEC6]/60">
+    <section 
+      className="relative overflow-hidden pt-12 pb-16 px-4 sm:px-8 border-b border-[#C4DEC6]/60"
+      style={{
+        backgroundImage: 'linear-gradient(to bottom, rgba(240, 245, 241, 0.82), rgba(228, 236, 230, 0.76)), url("/dash_main.png")',
+        backgroundSize: 'cover',
+        backgroundPosition: 'center right',
+        backgroundRepeat: 'no-repeat'
+      }}
+    >
       {/* Background Animated Leaf SVG Watermarks */}
       <div className="absolute top-0 right-0 -mr-20 -mt-20 w-96 h-96 opacity-10 pointer-events-none animate-pulse-slow">
         <svg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg">

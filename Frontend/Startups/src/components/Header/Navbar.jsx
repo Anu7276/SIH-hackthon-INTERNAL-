@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Rocket, Users, Handshake, Menu, X, ShieldCheck, Globe, Search, ArrowLeft } from "lucide-react";
+import { Rocket, Users, Handshake, Menu, X, ShieldCheck, Globe, Search, ArrowLeft, Presentation } from "lucide-react";
 
 export default function Navbar() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
@@ -10,7 +10,7 @@ export default function Navbar() {
       <div className="bg-[#112313] text-[11px] py-1.5 px-4 sm:px-8 border-b border-white/10 text-gray-300">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3 font-medium">
-            <a href="../../starting page/index.html?skipIntro=true" className="inline-flex items-center gap-1 text-white font-bold hover:text-[#9AC59E] bg-white/10 px-2.5 py-0.5 rounded transition-colors mr-1">
+            <a href="/?skipIntro=true" className="inline-flex items-center gap-1 text-white font-bold hover:text-[#9AC59E] bg-white/10 px-2.5 py-0.5 rounded transition-colors mr-1">
               <ArrowLeft className="w-3.5 h-3.5 text-[#9AC59E]" />
               Home
             </a>
@@ -78,10 +78,10 @@ export default function Navbar() {
             <span>Find Investors</span>
           </button>
 
-          {/* Button 3: Join Ecosystem */}
+          {/* Button 4: Virtual Startup Pitcher */}
           <button className="px-5 py-2.5 bg-[#C1652E] hover:bg-amber-700 text-white text-xs font-extrabold rounded-2xl shadow-md transition-all flex items-center gap-2 border border-amber-500/30">
-            <Handshake className="w-4 h-4 text-white" />
-            <span>Join Ecosystem</span>
+            <Presentation className="w-4 h-4 text-white" />
+            <span>Virtual Startup Pitcher</span>
           </button>
         </div>
 
@@ -106,8 +106,8 @@ export default function Navbar() {
             <span>Find Investors</span>
           </button>
           <button className="w-full py-2.5 bg-[#C1652E] text-white text-xs font-extrabold rounded-xl flex items-center justify-center gap-2">
-            <Handshake className="w-4 h-4" />
-            <span>Join Ecosystem</span>
+            <Presentation className="w-4 h-4" />
+            <span>Virtual Startup Pitcher</span>
           </button>
         </div>
       )}

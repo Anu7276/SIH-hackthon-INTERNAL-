@@ -871,7 +871,7 @@ export default function SchemeFeedDemo() {
     if (window.history.length > 1) {
       window.history.back();
     } else {
-      window.location.href = "../../starting page/index.html?skipIntro=true";
+      window.location.href = "/?skipIntro=true";
     }
   };
 

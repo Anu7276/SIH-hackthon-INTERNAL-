@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "concurrently \"npm run dev:startups\" \"npm run dev:landing\"",
     "dev:startups": "cd Startups && npm run dev",
-    "dev:landing": "npx serve -l 3000 \"starting page\""
+    "dev:landing": "npx serve -l 5000 \"starting page\""
   },
   "devDependencies": {
     "concurrently": "^8.2.2",
