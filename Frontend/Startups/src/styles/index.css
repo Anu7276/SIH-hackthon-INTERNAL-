@@ -1,0 +1,48 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --primary-color: #1E3B22;
+  --secondary-color: #2E7D32;
+  --bg-color: #FBF7EC;
+  --accent-color: #C1652E;
+}
+
+body {
+  background-color: var(--bg-color);
+  color: #1A2E1E;
+  font-family: 'Outfit', sans-serif;
+}
+
+h1, h2, h3, .font-cinzel {
+  font-family: 'Cinzel', serif;
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #F3EFE3;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #9AC59E;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #2E7D32;
+}
+
+@keyframes pulseSlow {
+  0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.08; }
+  50% { transform: scale(1.05) rotate(3deg); opacity: 0.15; }
+}
+
+.animate-pulse-slow {
+  animation: pulseSlow 8s ease-in-out infinite;
+}

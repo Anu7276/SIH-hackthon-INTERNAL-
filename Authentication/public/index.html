@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIH Hackathon - Authentication</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="bg-decoration">
+        <div class="blob blob-1"></div>
+        <div class="blob blob-2"></div>
+        <div class="blob blob-3"></div>
+    </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <div class="main-container">
+        <!-- Auth Container (Shown when logged out) -->
+        <div id="auth-card" class="auth-card glass-panel">
+            <div class="brand-header">
+                <div class="logo-badge">
+                    <i class="fa-solid fa-shield-halved"></i>
+                </div>
+                <h2>SIH Hackathon Portal</h2>
+                <p>Secure Authentication & Profile Portal</p>
+            </div>
+
+            <!-- Tab Switching Buttons -->
+            <div id="auth-tabs" class="tabs-header">
+                <button type="button" class="tab-btn active" id="tab-login" onclick="switchTab('login')">
+                    <i class="fa-solid fa-right-to-bracket"></i> Sign In
+                </button>
+                <button type="button" class="tab-btn" id="tab-register" onclick="switchTab('register')">
+                    <i class="fa-solid fa-user-plus"></i> Register
+                </button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+                <div class="form-group">
+                    <label for="login-email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                    <input type="email" id="login-email" placeholder="name@example.com" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="login-password"><i class="fa-solid fa-lock"></i> Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('login-password', this)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="login-btn" class="btn btn-primary">
+                    <span>Sign In</span> <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
+                <div class="form-group">
+                    <label for="reg-username"><i class="fa-solid fa-user"></i> Username</label>
+                    <input type="text" id="reg-username" placeholder="johndoe" required autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                    <input type="email" id="reg-email" placeholder="name@example.com" required autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label for="reg-password"><i class="fa-solid fa-lock"></i> Password</label>
+                    <div class="password-wrapper">
+                        <input type="password" id="reg-password" placeholder="Min 6 characters" required autocomplete="new-password">
+                        <button type="button" class="toggle-password" onclick="togglePasswordVisibility('reg-password', this)">
+                            <i class="fa-solid fa-eye"></i>
+                        </button>
+                    </div>
+                </div>
+
+                <button type="submit" id="register-btn" class="btn btn-primary">
+                    <span>Create Account</span> <i class="fa-solid fa-user-check"></i>
+                </button>
+            </form>
+
+            <!-- OTP VERIFICATION FORM (Initially Hidden) -->
+            <form id="otp-form" class="auth-form" onsubmit="handleVerifyOtp(event)">
+                <div class="otp-info">
+                    <i class="fa-solid fa-envelope-circle-check otp-icon"></i>
+                    <h3>Verify Email Address</h3>
+                    <p>Enter the 6-digit OTP sent to <strong id="target-otp-email">user@example.com</strong></p>
+                </div>
+
+                <div class="form-group">
+                    <label for="otp-code"><i class="fa-solid fa-key"></i> 6-Digit OTP Code</label>
+                    <input type="text" id="otp-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required class="otp-input" autocomplete="one-time-code">
+                </div>
+
+                <button type="submit" id="otp-btn" class="btn btn-primary">
+                    <span>Verify Email</span> <i class="fa-solid fa-check-double"></i>
+                </button>
+
+                <button type="button" class="btn btn-secondary mt-2" onclick="switchTab('login')">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Sign In
+                </button>
+            </form>
+        </div>
+
+        <!-- LOGGED-IN DASHBOARD VIEW (Initially Hidden) -->
+        <div id="dashboard-card" class="dashboard-card glass-panel hidden">
+            <div class="dashboard-header">
+                <div class="user-avatar">
+                    <i class="fa-solid fa-circle-user"></i>
+                </div>
+                <div class="user-welcome">
+                    <h2 id="dash-username">Welcome User</h2>
+                    <span class="badge badge-success"><i class="fa-solid fa-shield-check"></i> Verified Account</span>
+                </div>
+            </div>
+
+            <div class="profile-details-grid">
+                <div class="detail-card">
+                    <span class="detail-label">Username</span>
+                    <strong id="dash-user-val" class="detail-value">-</strong>
+                </div>
+                <div class="detail-card">
+                    <span class="detail-label">Email Address</span>
+                    <strong id="dash-email-val" class="detail-value">-</strong>
+                </div>
+                <div class="detail-card full-width">
+                    <span class="detail-label">Active Access Token</span>
+                    <div class="token-box">
+                        <code id="dash-token-val">No token loaded</code>
+                    </div>
+                </div>
+            </div>
+
+            <div class="dashboard-actions">
+                <button type="button" class="btn btn-danger" onclick="handleLogout()">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout Current Session
+                </button>
+                <button type="button" class="btn btn-outline-danger" onclick="handleLogoutAll()">
+                    <i class="fa-solid fa-power-off"></i> Logout All Devices
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/auth.js"></script>
+</body>
+</html>
