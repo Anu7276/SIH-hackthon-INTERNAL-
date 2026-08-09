@@ -1,0 +1,22 @@
+# Startup-AYUSH Portal — Merged Pipeline Dependencies
+# Install with: pip install -r requirements.txt --break-system-packages
+
+# --- Idea Intake Agent ---
+google-genai>=0.8.0
+faiss-cpu>=1.7.4
+numpy>=1.24.0
+
+# --- Pitch / Profile / Scoring-Feedback Agents ---
+# NOTE: google-generativeai is end-of-life upstream (deprecation warning on
+# import) but still functions and coexists fine alongside google-genai.
+# Recommended future cleanup: migrate these 3 agents to google-genai.
+google-generativeai>=0.8.0
+
+# --- Shared ---
+requests>=2.31.0
+python-dotenv>=1.0.0
+
+# --- Optional: only needed if you run api.py (FastAPI wrapper) ---
+fastapi>=0.110.0
+uvicorn[standard]>=0.29.0
+python-multipart>=0.0.9
