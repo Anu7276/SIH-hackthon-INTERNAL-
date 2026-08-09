@@ -36,10 +36,17 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
+        html.home-revealed, body.home-revealed {
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            height: auto !important;
+            min-height: 100% !important;
+        }
+
         #home-page.revealed {
             opacity: 1;
             transform: translateY(0);
-            overflow: auto;
+            overflow: visible;
             height: auto;
         }
 
@@ -60,7 +67,7 @@
         #home-page .text-size { font-size: 13px !important; line-height: 1; }
         #home-page .text-size--increase, #home-page .text-size--decrease { font-size: 11px !important; }
         #home-page .text-controls { gap: 14px; }
-        #home-page .login { gap: 8px; }
+        #home-page .login { gap: 8px; display: flex; align-items: center; }
         #home-page .icon .fa-user { font-size: 15px; color: #555; }
         #home-page .main_navbar { height: 80px; background: #fff; border-bottom: 1px solid #e9e9e9; box-shadow: 0 2px 5px rgba(0,0,0,.04); }
         #home-page .main_nav_inner { width: min(1225px, calc(100% - 40px)); height: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 35px; }
@@ -80,7 +87,7 @@
         #home-page .menu a.active::after { position: absolute; right: 0; bottom: -26px; left: 0; height: 2px; content: ""; background: #317343; }
         #home-page .menu .fa-chevron-down { margin-left: 4px; font-size: 8px; }
         #home-page .search { padding: 7px 0 7px 2px; cursor: pointer; font-size: 15px; }
-        #home-page .hero { position: relative; background: url("../Home_Page/Gemini_Generated_Image_3o0ooy3o0ooy3o0o (1).png") left center / cover no-repeat; padding: 70px 0 0; }
+        #home-page .hero { position: relative; background: url("../Home_Page/dash_main.png") center right / cover no-repeat; padding: 70px 0 0; }
         #home-page .hero_inner { width: min(1225px, calc(100% - 40px)); margin: 0 auto; padding-bottom: 90px; max-width: 560px; }
         #home-page .hero h1 { margin: 0 0 18px; color: #1f4d2c; font-size: 34px; font-weight: 800; line-height: 1.25; }
         #home-page .hero p { margin: 0 0 26px; color: #4a4a4a; font-size: 14.5px; line-height: 1.7; max-width: 480px; }
@@ -207,7 +214,7 @@
                         <span class="action-divider" aria-hidden="true"></span>
                         <div class="login">
                             <div class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></div>
-                            <a href="#">Login / Register</a>
+                            <a href="../profile/dist/index.html?mode=login" id="nav-login-link">Login / Register</a>
                         </div>
                     </div>
                 </div>
@@ -234,10 +241,9 @@
                         <a href="#startups">Startups <i class="fa-solid fa-chevron-down"></i></a>
                         <a href="#investors">Investors</a>
                         <a href="#incubators">Incubators &amp; Accelerators</a>
+                        <a href="../schemes/dist/index.html">Government Schemes</a>
                         <a href="#resources">Resources <i class="fa-solid fa-chevron-down"></i></a>
-                        <a href="#ecosystem">AYUSH Ecosystem <i class="fa-solid fa-chevron-down"></i></a>
                         <a href="#events">Events</a>
-                        <a href="#more">More <i class="fa-solid fa-chevron-down"></i></a>
                         <button class="search" type="button" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
                     </nav>
                 </div>
@@ -284,11 +290,11 @@
                         <p>Support and nurture startups in the AYUSH sector with resources and guidance.</p>
                         <a href="#incubators" class="card_link link-purple">Collaborate With Us <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <div class="stakeholder_card">
+                    <div class="stakeholder_card" onclick="window.location.href='../schemes/dist/index.html'" style="cursor: pointer;">
                         <div class="card_icon icon-govt"><i class="fa-solid fa-landmark"></i></div>
-                        <h3>Government Agencies</h3>
-                        <p>Access insights, monitor initiatives, and support the AYUSH startup ecosystem.</p>
-                        <a href="#govt" class="card_link link-orange">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                        <h3>Government Schemes</h3>
+                        <p>Discover government funding, subsidies, grants, and support schemes for AYUSH startups.</p>
+                        <a href="../schemes/dist/index.html" class="card_link link-orange" onclick="event.stopPropagation();">Explore Schemes <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div class="stakeholder_card">
                         <div class="card_icon icon-public"><i class="fa-solid fa-users"></i></div>
@@ -345,37 +351,75 @@
                 const introLayer = document.getElementById('intro-layer');
                 const homePage   = document.getElementById('home-page');
 
+                // Check saved login profile
+                try {
+                    const savedProfile = localStorage.getItem('ayush_user_profile');
+                    if (savedProfile) {
+                        const parsed = JSON.parse(savedProfile);
+                        const loginLink = document.getElementById('nav-login-link');
+                        if (loginLink && parsed && parsed.isLoggedIn) {
+                            loginLink.textContent = (parsed.user && parsed.user.fullName) ? parsed.user.fullName : 'My Profile';
+                            loginLink.href = '../profile/dist/index.html?mode=profile';
+                        }
+                    }
+                } catch(e) {}
+
+                // Auth Guard: Intercept clicks for unauthenticated users
+                document.addEventListener('click', function(e) {
+                    const target = e.target.closest('a, button, .stakeholder_card');
+                    if (!target) return;
+
+                    const href = target.getAttribute('href') || '';
+                    if (href.includes('profile') || href === '#home' || target.id === 'nav-login-link' || target.classList.contains('search')) {
+                        return;
+                    }
+
+                    let isLoggedIn = false;
+                    try {
+                        const saved = localStorage.getItem('ayush_user_profile');
+                        if (saved) {
+                            const parsed = JSON.parse(saved);
+                            isLoggedIn = Boolean(parsed && parsed.isLoggedIn);
+                        }
+                    } catch(err) {}
+
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        alert("Please sign in or register your account to access AYUSH ecosystem features!");
+                        window.location.href = '../profile/dist/index.html?mode=register';
+                    }
+                }, true);
+
                 let alreadyRevealed = false;
 
                 function reveal(fadeDurationSec) {
                     if (alreadyRevealed) return;
                     alreadyRevealed = true;
 
+                    sessionStorage.setItem('ayush_intro_seen', 'true');
                     const ms = Math.round((fadeDurationSec || 1.3) * 1000);
 
-                    // Fade intro out over the SAME duration as the white fade
+                    document.documentElement.classList.add('home-revealed');
+                    document.body.classList.add('home-revealed');
+
+                    introLayer.style.pointerEvents = 'none';
                     introLayer.style.transition = `opacity ${ms}ms cubic-bezier(0.22, 1, 0.36, 1)`;
                     introLayer.style.opacity = '0';
 
-                    // Show home page immediately (it fades/slides in via CSS transition)
                     homePage.classList.add('revealed');
 
-                    // Clean up the intro layer once fully gone
                     setTimeout(() => { introLayer.style.display = 'none'; }, ms + 100);
                 }
 
-                // Primary: sync with the exact moment the white fade starts
                 document.addEventListener('ayush:whitefade-start', (e) => {
                     reveal(e.detail && e.detail.duration);
                 }, { once: true });
 
-                // Fallback A: animation finishes without the event (shouldn't happen)
                 document.addEventListener('ayush:animation-done', () => {
                     reveal(0.4);
                 }, { once: true });
 
-                // Fallback B: tainted canvas / very old browser — fixed timeout
-                // 202 frames @ 24fps ≈ 8.4s + 0.3s loader + small buffer
                 setTimeout(() => reveal(1.3), 10000);
             }
 

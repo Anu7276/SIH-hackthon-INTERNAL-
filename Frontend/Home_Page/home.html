@@ -40,8 +40,7 @@
                     <span class="action-divider" aria-hidden="true"></span>
                     <div class="login">
                         <div class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></div>
-                        <!-- add login signup page for user  -->
-                        <a href="#">Login / Register</a>
+                        <a href="../profile/dist/index.html?mode=login" id="nav-login-link">Login / Register</a>
                     </div>
                 </div>
             </div>
@@ -87,10 +86,9 @@
                     <a href="#startups">Startups <i class="fa-solid fa-chevron-down"></i></a>
                     <a href="#investors">Investors</a>
                     <a href="#incubators">Incubators &amp; Accelerators</a>
+                    <a href="../schemes/dist/index.html">Government Schemes</a>
                     <a href="#resources">Resources <i class="fa-solid fa-chevron-down"></i></a>
-                    <a href="#ecosystem">AYUSH Ecosystem <i class="fa-solid fa-chevron-down"></i></a>
                     <a href="#events">Events</a>
-                    <a href="#more">More <i class="fa-solid fa-chevron-down"></i></a>
                     <button class="search" type="button" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
                 </nav>
             </div>
@@ -152,11 +150,11 @@
                     <p>Support and nurture startups in the AYUSH sector with resources and guidance.</p>
                     <a href="#incubators" class="card_link link-purple">Collaborate With Us <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
-                <div class="stakeholder_card">
+                <div class="stakeholder_card" onclick="window.location.href='../schemes/dist/index.html'" style="cursor: pointer;">
                     <div class="card_icon icon-govt"><i class="fa-solid fa-landmark"></i></div>
-                    <h3>Government Agencies</h3>
-                    <p>Access insights, monitor initiatives, and support the AYUSH startup ecosystem.</p>
-                    <a href="#govt" class="card_link link-orange">Learn More <i class="fa-solid fa-arrow-right"></i></a>
+                    <h3>Government Schemes</h3>
+                    <p>Discover government funding, subsidies, grants, and support schemes for AYUSH startups.</p>
+                    <a href="../schemes/dist/index.html" class="card_link link-orange" onclick="event.stopPropagation();">Explore Schemes <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
                 <div class="stakeholder_card">
                     <div class="card_icon icon-public"><i class="fa-solid fa-users"></i></div>
@@ -222,5 +220,46 @@
             <a href="#join" class="btn btn-primary">Be a Part of the Movement <i class="fa-solid fa-arrow-right"></i></a>
         </section>
     </main>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            try {
+                const savedProfile = localStorage.getItem('ayush_user_profile');
+                if (savedProfile) {
+                    const parsed = JSON.parse(savedProfile);
+                    const loginLink = document.getElementById('nav-login-link');
+                    if (loginLink && parsed && parsed.isLoggedIn) {
+                        loginLink.textContent = (parsed.user && parsed.user.fullName) ? parsed.user.fullName : 'My Profile';
+                        loginLink.href = '../profile/dist/index.html?mode=profile';
+                    }
+                }
+            } catch(e) {}
+
+            document.addEventListener('click', function(e) {
+                const target = e.target.closest('a, button, .stakeholder_card');
+                if (!target) return;
+
+                const href = target.getAttribute('href') || '';
+                if (href.includes('profile') || href === '#home' || target.id === 'nav-login-link' || target.classList.contains('search')) {
+                    return;
+                }
+
+                let isLoggedIn = false;
+                try {
+                    const saved = localStorage.getItem('ayush_user_profile');
+                    if (saved) {
+                        const parsed = JSON.parse(saved);
+                        isLoggedIn = Boolean(parsed && parsed.isLoggedIn);
+                    }
+                } catch(err) {}
+
+                if (!isLoggedIn) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    alert("Please sign in or register your account to access AYUSH ecosystem features!");
+                    window.location.href = '../profile/dist/index.html?mode=register';
+                }
+            }, true);
+        });
+    </script>
 </body>
 </html>

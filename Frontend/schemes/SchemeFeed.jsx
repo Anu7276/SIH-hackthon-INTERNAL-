@@ -15,18 +15,15 @@ import {
   Flower2,
   Building2,
   ChevronRight,
+  X,
+  ExternalLink,
+  CheckCircle2,
 } from "lucide-react";
 
 /**
  * Startup AYUSH Portal — Government Schemes Feed
  * -------------------------------------------------
- * A Twitter/X-style scrollable feed for the "Government Schemes" section.
- * Users pick the AYUSH streams / interests they care about, and the feed
- * filters + reorders scheme "posts" accordingly.
- *
- * Color tokens are pulled from the Startup AYUSH Portal screenshot:
- * deep government green, warm cream backgrounds, and the portal's
- * signature terracotta/orange accent.
+ * Mobile-First, Highly Responsive Twitter/X-style feed for Government Schemes.
  */
 
 const theme = {
@@ -82,6 +79,11 @@ const SCHEMES = [
     funding: "Up to ₹25L",
     interested: 812,
     tags: ["ayurveda", "funding"],
+    details: {
+      eligibility: "DPIIT Recognized Startups working in Ayurveda stream with prototype.",
+      benefits: "₹25 Lakh equity-free grant + 6 months access to AYUSH research labs.",
+      application: "Submit pitch deck, prototype demo video, and DPIIT registration certificate."
+    }
   },
   {
     id: 2,
@@ -97,6 +99,11 @@ const SCHEMES = [
     funding: "Non-monetary",
     interested: 431,
     tags: ["yoga", "incubation"],
+    details: {
+      eligibility: "Early-stage Yoga, Meditation & Naturopathy app/hardware startups.",
+      benefits: "Dedicated mentor, legal compliance aid, and direct pitch to top VC investors.",
+      application: "Fill online questionnaire and submit 2-min video pitch."
+    }
   },
   {
     id: 3,
@@ -112,6 +119,11 @@ const SCHEMES = [
     funding: "Up to ₹40L",
     interested: 268,
     tags: ["unani", "rnd"],
+    details: {
+      eligibility: "R&D startups partnered with CSIR/AYUSH accredited research lab.",
+      benefits: "Up to ₹40 Lakh research subsidy for clinical trials and standardisation.",
+      application: "Joint proposal submission with research institute endorsement."
+    }
   },
   {
     id: 4,
@@ -127,6 +139,11 @@ const SCHEMES = [
     funding: "Advisory support",
     interested: 154,
     tags: ["siddha", "incubation"],
+    details: {
+      eligibility: "Siddha medicine & herbal product exporters and manufacturing startups.",
+      benefits: "Subsidised US-FDA/EU compliance certification and export trade show stall.",
+      application: "Submit IEC code, product testing report, and firm registration."
+    }
   },
   {
     id: 5,
@@ -142,6 +159,11 @@ const SCHEMES = [
     funding: "Up to ₹15L",
     interested: 297,
     tags: ["homeopathy", "funding"],
+    details: {
+      eligibility: "HealthTech & Tele-medicine platforms supporting Homeopathy doctors.",
+      benefits: "₹15 Lakh technology grant + integration with National Digital Health Mission.",
+      application: "Live MVP demo submission and architecture document."
+    }
   },
   {
     id: 6,
@@ -157,6 +179,11 @@ const SCHEMES = [
     funding: "Non-monetary",
     interested: 903,
     tags: ["ayurveda", "yoga", "unani", "siddha", "homeopathy", "incubation"],
+    details: {
+      eligibility: "All AYUSH sector startups registered in India.",
+      benefits: "Pan-India incubator matching, free IP filing assistance, state tax rebates.",
+      application: "Single-window online registration on Startup AYUSH Portal."
+    }
   },
 ];
 
@@ -168,53 +195,56 @@ function Chip({ active, icon: Icon, label, hue, onClick }) {
       style={{
         display: "inline-flex",
         alignItems: "center",
-        gap: 6,
-        padding: "8px 14px",
+        gap: 5,
+        padding: "6px 12px",
         borderRadius: 999,
         border: `1px solid ${active ? c.text : theme.line}`,
         background: active ? c.tint : theme.creamCard,
         color: active ? c.text : theme.ink600,
-        fontSize: 13,
+        fontSize: 12,
         fontWeight: 600,
         whiteSpace: "nowrap",
         cursor: "pointer",
+        flexShrink: 0,
         transition: "all 0.15s ease",
       }}
     >
-      <Icon size={14} strokeWidth={2.25} />
+      <Icon size={13} strokeWidth={2.25} />
       {label}
     </button>
   );
 }
 
-function SchemeCard({ scheme, saved, onToggleSave }) {
-  const c = HUES[INTERESTS.find((i) => i.id === scheme.category).hue];
-  const CategoryIcon = INTERESTS.find((i) => i.id === scheme.category).icon;
+function SchemeCard({ scheme, saved, onToggleSave, onViewDetails }) {
+  const categoryItem = INTERESTS.find((i) => i.id === scheme.category) || INTERESTS[0];
+  const c = HUES[categoryItem.hue];
+  const CategoryIcon = categoryItem.icon;
 
   return (
     <article
       style={{
         background: theme.creamCard,
         border: `1px solid ${theme.line}`,
-        borderRadius: 14,
-        padding: "16px 18px",
+        borderRadius: 12,
+        padding: "14px",
         display: "flex",
         flexDirection: "column",
         gap: 10,
+        boxShadow: "0 2px 6px rgba(0,0,0,0.02)",
       }}
     >
-      <div style={{ display: "flex", gap: 12 }}>
+      <div style={{ display: "flex", gap: 10 }}>
         <div
           style={{
-            width: 40,
-            height: 40,
+            width: 36,
+            height: 36,
             borderRadius: "50%",
             background: theme.green900,
             color: "#fff",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",
-            fontSize: 12,
+            fontSize: 11,
             fontWeight: 700,
             flexShrink: 0,
           }}
@@ -223,52 +253,77 @@ function SchemeCard({ scheme, saved, onToggleSave }) {
         </div>
 
         <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: "flex", alignItems: "center", gap: 6, flexWrap: "wrap" }}>
-            <span style={{ fontWeight: 700, fontSize: 14, color: theme.ink900 }}>
-              {scheme.agency}
-            </span>
-            {scheme.verified && (
+          {/* Header row */}
+          <div
+            style={{
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 4,
+              flexWrap: "wrap",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: 5, minWidth: 0 }}>
               <span
-                title="Government verified"
                 style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  width: 16,
-                  height: 16,
-                  borderRadius: "50%",
-                  border: `1.5px dashed ${theme.green700}`,
+                  fontWeight: 700,
+                  fontSize: 13.5,
+                  color: theme.ink900,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
-                <BadgeCheck size={11} color={theme.green700} strokeWidth={2.5} />
+                {scheme.agency}
               </span>
-            )}
-            <span style={{ color: theme.ink400, fontSize: 13 }}>· {scheme.timeAgo}</span>
+              {scheme.verified && (
+                <span
+                  title="Government verified"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    width: 15,
+                    height: 15,
+                    borderRadius: "50%",
+                    border: `1.5px dashed ${theme.green700}`,
+                    flexShrink: 0,
+                  }}
+                >
+                  <BadgeCheck size={10} color={theme.green700} strokeWidth={2.5} />
+                </span>
+              )}
+              <span style={{ color: theme.ink400, fontSize: 11.5, flexShrink: 0 }}>
+                · {scheme.timeAgo}
+              </span>
+            </div>
+
             <span
               style={{
-                marginLeft: "auto",
                 display: "inline-flex",
                 alignItems: "center",
-                gap: 5,
+                gap: 4,
                 background: c.tint,
                 color: c.text,
-                fontSize: 11,
+                fontSize: 10,
                 fontWeight: 700,
-                padding: "4px 9px",
+                padding: "2px 7px",
                 borderRadius: 999,
                 textTransform: "uppercase",
                 letterSpacing: 0.3,
+                whiteSpace: "nowrap",
+                flexShrink: 0,
               }}
             >
-              <CategoryIcon size={11} strokeWidth={2.5} />
-              {INTERESTS.find((i) => i.id === scheme.category).label}
+              <CategoryIcon size={10} strokeWidth={2.5} />
+              {categoryItem.label}
             </span>
           </div>
 
           <h3
             style={{
-              margin: "6px 0 4px",
-              fontSize: 16,
+              margin: "5px 0 4px",
+              fontSize: 14.5,
               fontWeight: 700,
               color: theme.ink900,
               lineHeight: 1.35,
@@ -277,112 +332,138 @@ function SchemeCard({ scheme, saved, onToggleSave }) {
             {scheme.title}
           </h3>
 
-          <p style={{ margin: 0, fontSize: 13.5, color: theme.ink600, lineHeight: 1.55 }}>
+          <p
+            style={{
+              margin: 0,
+              fontSize: 12.5,
+              color: theme.ink600,
+              lineHeight: 1.5,
+            }}
+          >
             {scheme.body}
           </p>
 
-          <div style={{ display: "flex", gap: 8, marginTop: 10, flexWrap: "wrap" }}>
+          <div style={{ display: "flex", gap: 6, marginTop: 8, flexWrap: "wrap" }}>
             <span
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: 5,
-                fontSize: 12,
+                gap: 4,
+                fontSize: 11,
                 fontWeight: 600,
                 color: theme.green700,
                 background: theme.greenTint,
-                padding: "5px 10px",
-                borderRadius: 8,
+                padding: "3px 8px",
+                borderRadius: 6,
+                whiteSpace: "nowrap",
               }}
             >
-              <Clock3 size={12} /> Deadline: {scheme.deadline}
+              <Clock3 size={11} /> Deadline: {scheme.deadline}
             </span>
             <span
               style={{
                 display: "inline-flex",
                 alignItems: "center",
-                gap: 5,
-                fontSize: 12,
+                gap: 4,
+                fontSize: 11,
                 fontWeight: 600,
                 color: theme.terracotta600,
                 background: theme.terracottaTint,
-                padding: "5px 10px",
-                borderRadius: 8,
+                padding: "3px 8px",
+                borderRadius: 6,
+                whiteSpace: "nowrap",
               }}
             >
-              <Wallet size={12} /> {scheme.funding}
+              <Wallet size={11} /> {scheme.funding}
             </span>
           </div>
         </div>
       </div>
 
+      {/* Footer Row */}
       <div
         style={{
           display: "flex",
           alignItems: "center",
           justifyContent: "space-between",
           borderTop: `1px solid ${theme.line}`,
-          paddingTop: 10,
-          marginTop: 2,
+          paddingTop: 8,
+          marginTop: 4,
+          gap: 6,
+          flexWrap: "wrap",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
           <button
             onClick={() => onToggleSave(scheme.id)}
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 6,
+              gap: 4,
               background: "none",
               border: "none",
               cursor: "pointer",
               color: saved ? theme.terracotta600 : theme.ink400,
-              fontSize: 12.5,
+              fontSize: 12,
               fontWeight: 600,
+              padding: 0,
             }}
           >
-            <Bookmark size={16} fill={saved ? theme.terracotta600 : "none"} strokeWidth={2} />
+            <Bookmark size={14} fill={saved ? theme.terracotta600 : "none"} strokeWidth={2} />
             {saved ? "Saved" : "Save"}
           </button>
           <button
+            onClick={() => {
+              if (navigator.share) {
+                navigator.share({ title: scheme.title, text: scheme.body, url: window.location.href });
+              } else {
+                alert('Scheme link copied to clipboard!');
+              }
+            }}
             style={{
               display: "flex",
               alignItems: "center",
-              gap: 6,
+              gap: 4,
               background: "none",
               border: "none",
               cursor: "pointer",
               color: theme.ink400,
-              fontSize: 12.5,
+              fontSize: 12,
               fontWeight: 600,
+              padding: 0,
             }}
           >
-            <Share2 size={15} strokeWidth={2} />
+            <Share2 size={14} strokeWidth={2} />
             Share
           </button>
-          <span style={{ fontSize: 12.5, color: theme.ink400 }}>
-            {scheme.interested.toLocaleString()} interested
-          </span>
         </div>
 
-        <button
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 4,
-            background: theme.green700,
-            color: "#fff",
-            border: "none",
-            borderRadius: 8,
-            padding: "7px 14px",
-            fontSize: 12.5,
-            fontWeight: 700,
-            cursor: "pointer",
-          }}
-        >
-          View scheme
-          <ChevronRight size={14} />
-        </button>
+        <div style={{ display: "flex", alignItems: "center", gap: 8, marginLeft: "auto" }}>
+          <span style={{ fontSize: 11, color: theme.ink400, whiteSpace: "nowrap" }}>
+            {scheme.interested.toLocaleString()} interested
+          </span>
+          <button
+            onClick={() => onViewDetails(scheme)}
+            style={{
+              display: "inline-flex",
+              alignItems: "center",
+              gap: 3,
+              background: theme.green700,
+              color: "#fff",
+              border: "none",
+              borderRadius: 6,
+              padding: "5px 11px",
+              fontSize: 11.5,
+              fontWeight: 700,
+              cursor: "pointer",
+              whiteSpace: "nowrap",
+              flexShrink: 0,
+            }}
+          >
+            View scheme
+            <ChevronRight size={12} />
+          </button>
+        </div>
       </div>
     </article>
   );
@@ -391,7 +472,10 @@ function SchemeCard({ scheme, saved, onToggleSave }) {
 function FeedView({ onBack }) {
   const [activeInterests, setActiveInterests] = useState([]);
   const [tab, setTab] = useState("forYou");
-  const [saved, setSaved] = useState(new Set());
+  const [saved, setSaved] = useState(new Set([1]));
+  const [searchOpen, setSearchOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const [selectedScheme, setSelectedScheme] = useState(null);
 
   const toggleInterest = (id) =>
     setActiveInterests((prev) =>
@@ -411,6 +495,15 @@ function FeedView({ onBack }) {
     if (activeInterests.length > 0) {
       list = list.filter((s) => s.tags.some((t) => activeInterests.includes(t)));
     }
+    if (searchQuery.trim()) {
+      const q = searchQuery.toLowerCase();
+      list = list.filter(
+        (s) =>
+          s.title.toLowerCase().includes(q) ||
+          s.body.toLowerCase().includes(q) ||
+          s.agency.toLowerCase().includes(q)
+      );
+    }
     if (tab === "forYou" && activeInterests.length > 0) {
       list.sort(
         (a, b) =>
@@ -419,210 +512,368 @@ function FeedView({ onBack }) {
       );
     }
     return list;
-  }, [tab, activeInterests, saved]);
+  }, [tab, activeInterests, saved, searchQuery]);
 
   return (
-    <div style={{ background: theme.creamBg, minHeight: "100%" }}>
-      {/* header */}
-      <div
-        style={{
-          position: "sticky",
-          top: 0,
-          zIndex: 10,
-          background: theme.creamBg,
-          borderBottom: `1px solid ${theme.line}`,
-          padding: "14px 20px 0",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: 12, marginBottom: 12 }}>
-          <button
-            onClick={onBack}
-            aria-label="Back"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 34,
-              height: 34,
-              borderRadius: "50%",
-              border: `1px solid ${theme.line}`,
-              background: theme.creamCard,
-              cursor: "pointer",
-              color: theme.green900,
-              flexShrink: 0,
-            }}
-          >
-            <ArrowLeft size={17} />
-          </button>
-          <div style={{ flex: 1, minWidth: 0 }}>
-            <h1 style={{ margin: 0, fontSize: 17, fontWeight: 800, color: theme.green900 }}>
-              Government Schemes
-            </h1>
-            <p style={{ margin: 0, fontSize: 12.5, color: theme.ink600 }}>
-              Scroll for new schemes, curated to your interests
-            </p>
-          </div>
-          <button
-            aria-label="Search schemes"
-            style={{
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              width: 34,
-              height: 34,
-              borderRadius: "50%",
-              border: `1px solid ${theme.line}`,
-              background: theme.creamCard,
-              cursor: "pointer",
-              color: theme.green900,
-              flexShrink: 0,
-            }}
-          >
-            <Search size={16} />
-          </button>
-        </div>
-
-        {/* tabs */}
-        <div style={{ display: "flex", gap: 22 }}>
-          {[
-            { id: "forYou", label: "For you", icon: Sparkles },
-            { id: "latest", label: "Latest", icon: Clock3 },
-            { id: "saved", label: "Saved", icon: Bookmark },
-          ].map((t) => {
-            const Icon = t.icon;
-            const isActive = tab === t.id;
-            return (
-              <button
-                key={t.id}
-                onClick={() => setTab(t.id)}
+    <div style={{ background: theme.creamBg, minHeight: "100vh" }}>
+      {/* Container wrapper for mobile responsiveness */}
+      <div style={{ maxWidth: 640, margin: "0 auto", minHeight: "100vh" }}>
+        {/* Sticky Header */}
+        <div
+          style={{
+            position: "sticky",
+            top: 0,
+            zIndex: 20,
+            background: theme.creamBg,
+            borderBottom: `1px solid ${theme.line}`,
+            padding: "12px 14px 0",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+            <button
+              onClick={onBack}
+              aria-label="Back"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 32,
+                height: 32,
+                borderRadius: "50%",
+                border: `1px solid ${theme.line}`,
+                background: theme.creamCard,
+                cursor: "pointer",
+                color: theme.green900,
+                flexShrink: 0,
+              }}
+            >
+              <ArrowLeft size={16} />
+            </button>
+            <div style={{ flex: 1, minWidth: 0 }}>
+              <h1
                 style={{
-                  background: "none",
-                  border: "none",
-                  cursor: "pointer",
-                  padding: "0 2px 10px",
-                  fontSize: 13.5,
-                  fontWeight: 700,
-                  display: "flex",
-                  alignItems: "center",
-                  gap: 6,
-                  color: isActive ? theme.green900 : theme.ink400,
-                  borderBottom: `2px solid ${isActive ? theme.green700 : "transparent"}`,
+                  margin: 0,
+                  fontSize: 16,
+                  fontWeight: 800,
+                  color: theme.green900,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
                 }}
               >
-                <Icon size={14} />
-                {t.label}
-              </button>
-            );
-          })}
+                Government Schemes
+              </h1>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: 11.5,
+                  color: theme.ink600,
+                  whiteSpace: "nowrap",
+                  overflow: "hidden",
+                  textOverflow: "ellipsis",
+                }}
+              >
+                Scroll for new schemes, curated to your interests
+              </p>
+            </div>
+            <button
+              onClick={() => setSearchOpen(!searchOpen)}
+              aria-label="Search schemes"
+              style={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: 32,
+                height: 32,
+                borderRadius: "50%",
+                border: `1px solid ${theme.line}`,
+                background: searchOpen ? theme.green700 : theme.creamCard,
+                cursor: "pointer",
+                color: searchOpen ? "#fff" : theme.green900,
+                flexShrink: 0,
+              }}
+            >
+              <Search size={15} />
+            </button>
+          </div>
+
+          {/* Search bar input drawer */}
+          {searchOpen && (
+            <div style={{ marginBottom: 10 }}>
+              <input
+                type="text"
+                placeholder="Search by keyword, scheme name, or agency..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                autoFocus
+                style={{
+                  width: "100%",
+                  padding: "8px 12px",
+                  borderRadius: 8,
+                  border: `1px solid ${theme.green700}`,
+                  outline: "none",
+                  fontSize: 13,
+                  boxSizing: "border-box",
+                }}
+              />
+            </div>
+          )}
+
+          {/* Tabs */}
+          <div style={{ display: "flex", gap: 18 }}>
+            {[
+              { id: "forYou", label: "For you", icon: Sparkles },
+              { id: "latest", label: "Latest", icon: Clock3 },
+              { id: "saved", label: `Saved (${saved.size})`, icon: Bookmark },
+            ].map((t) => {
+              const Icon = t.icon;
+              const isActive = tab === t.id;
+              return (
+                <button
+                  key={t.id}
+                  onClick={() => setTab(t.id)}
+                  style={{
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    padding: "0 2px 8px",
+                    fontSize: 13,
+                    fontWeight: 700,
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 5,
+                    color: isActive ? theme.green900 : theme.ink400,
+                    borderBottom: `2.5px solid ${isActive ? theme.green700 : "transparent"}`,
+                  }}
+                >
+                  <Icon size={13} />
+                  {t.label}
+                </button>
+              );
+            })}
+          </div>
+        </div>
+
+        {/* Scrollable Interest Chips */}
+        <div
+          style={{
+            display: "flex",
+            gap: 6,
+            padding: "10px 14px",
+            overflowX: "auto",
+            WebkitOverflowScrolling: "touch",
+            msOverflowStyle: "none",
+            scrollbarWidth: "none",
+          }}
+        >
+          {INTERESTS.map((i) => (
+            <Chip
+              key={i.id}
+              icon={i.icon}
+              label={i.label}
+              hue={i.hue}
+              active={activeInterests.includes(i.id)}
+              onClick={() => toggleInterest(i.id)}
+            />
+          ))}
+        </div>
+
+        {/* Schemes Feed List */}
+        <div style={{ padding: "0 14px 28px", display: "flex", flexDirection: "column", gap: 10 }}>
+          {filtered.length === 0 ? (
+            <div
+              style={{
+                textAlign: "center",
+                padding: "40px 16px",
+                color: theme.ink400,
+                fontSize: 13,
+                background: theme.creamCard,
+                borderRadius: 12,
+                border: `1px dashed ${theme.line}`,
+              }}
+            >
+              {tab === "saved"
+                ? "You haven't saved any schemes yet. Click the 'Save' button on any scheme to bookmark it!"
+                : "No schemes match your criteria. Try adjusting your search or filters."}
+            </div>
+          ) : (
+            filtered.map((s) => (
+              <SchemeCard
+                key={s.id}
+                scheme={s}
+                saved={saved.has(s.id)}
+                onToggleSave={toggleSave}
+                onViewDetails={setSelectedScheme}
+              />
+            ))
+          )}
         </div>
       </div>
 
-      {/* interest chips */}
-      <div
-        style={{
-          display: "flex",
-          gap: 8,
-          padding: "14px 20px",
-          overflowX: "auto",
-        }}
-      >
-        {INTERESTS.map((i) => (
-          <Chip
-            key={i.id}
-            icon={i.icon}
-            label={i.label}
-            hue={i.hue}
-            active={activeInterests.includes(i.id)}
-            onClick={() => toggleInterest(i.id)}
-          />
-        ))}
-      </div>
-
-      {/* feed */}
-      <div style={{ padding: "0 20px 28px", display: "flex", flexDirection: "column", gap: 12 }}>
-        {filtered.length === 0 ? (
+      {/* Scheme Detail Modal */}
+      {selectedScheme && (
+        <div
+          style={{
+            position: "fixed",
+            inset: 0,
+            zIndex: 100,
+            background: "rgba(0, 0, 0, 0.5)",
+            display: "flex",
+            alignItems: "flex-end",
+            justifyContent: "center",
+            backdropFilter: "blur(2px)",
+          }}
+          onClick={() => setSelectedScheme(null)}
+        >
           <div
+            onClick={(e) => e.stopPropagation()}
             style={{
-              textAlign: "center",
-              padding: "48px 16px",
-              color: theme.ink400,
-              fontSize: 13.5,
+              width: "100%",
+              maxWidth: 600,
+              maxHeight: "85vh",
+              background: theme.creamCard,
+              borderTopLeftRadius: 18,
+              borderTopRightRadius: 18,
+              padding: "20px",
+              overflowY: "auto",
+              boxSizing: "border-box",
+              boxShadow: "0 -8px 30px rgba(0,0,0,0.2)",
             }}
           >
-            {tab === "saved"
-              ? "You haven't saved any schemes yet."
-              : "No schemes match these interests yet — try selecting fewer tags."}
-          </div>
-        ) : (
-          filtered.map((s) => (
-            <SchemeCard key={s.id} scheme={s} saved={saved.has(s.id)} onToggleSave={toggleSave} />
-          ))
-        )}
-      </div>
-    </div>
-  );
-}
+            <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: 12 }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                <span
+                  style={{
+                    background: theme.green900,
+                    color: "#fff",
+                    borderRadius: "50%",
+                    width: 28,
+                    height: 28,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 10,
+                    fontWeight: 700,
+                  }}
+                >
+                  {selectedScheme.initials}
+                </span>
+                <span style={{ fontWeight: 700, fontSize: 13, color: theme.ink900 }}>
+                  {selectedScheme.agency}
+                </span>
+              </div>
+              <button
+                onClick={() => setSelectedScheme(null)}
+                style={{
+                  background: theme.creamBg,
+                  border: `1px solid ${theme.line}`,
+                  borderRadius: "50%",
+                  width: 30,
+                  height: 30,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  cursor: "pointer",
+                }}
+              >
+                <X size={16} />
+              </button>
+            </div>
 
-function LandingTile({ onOpen }) {
-  return (
-    <div
-      style={{
-        maxWidth: 380,
-        margin: "60px auto",
-        background: theme.creamCard,
-        border: `1px solid ${theme.line}`,
-        borderRadius: 14,
-        padding: 24,
-        textAlign: "center",
-        fontFamily:
-          "system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif",
-      }}
-    >
-      <div
-        style={{
-          width: 52,
-          height: 52,
-          margin: "0 auto 14px",
-          borderRadius: "50%",
-          background: theme.terracottaTint,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Building2 size={24} color={theme.terracotta600} />
-      </div>
-      <h2 style={{ margin: "0 0 6px", fontSize: 17, fontWeight: 800, color: theme.ink900 }}>
-        Government Agencies
-      </h2>
-      <p style={{ margin: "0 0 18px", fontSize: 13.5, color: theme.ink600, lineHeight: 1.5 }}>
-        Access insights, monitor initiatives, and support the AYUSH startup ecosystem.
-      </p>
-      <button
-        onClick={onOpen}
-        style={{
-          display: "inline-flex",
-          alignItems: "center",
-          gap: 6,
-          background: theme.terracotta600,
-          color: "#fff",
-          border: "none",
-          borderRadius: 8,
-          padding: "10px 18px",
-          fontSize: 13.5,
-          fontWeight: 700,
-          cursor: "pointer",
-        }}
-      >
-        Explore Schemes
-        <ChevronRight size={15} />
-      </button>
+            <h2 style={{ margin: "0 0 10px", fontSize: 17, fontWeight: 800, color: theme.ink900 }}>
+              {selectedScheme.title}
+            </h2>
+
+            <p style={{ margin: "0 0 14px", fontSize: 13.5, color: theme.ink600, lineHeight: 1.5 }}>
+              {selectedScheme.body}
+            </p>
+
+            <div style={{ background: theme.creamBg, padding: 12, borderRadius: 10, border: `1px solid ${theme.line}`, marginBottom: 16 }}>
+              <h4 style={{ margin: "0 0 8px", fontSize: 13, fontWeight: 700, color: theme.green900 }}>
+                Scheme Highlights
+              </h4>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 10, fontSize: 12 }}>
+                <div>
+                  <strong style={{ color: theme.ink900, display: "block" }}>Funding:</strong>
+                  <span style={{ color: theme.terracotta600, fontWeight: 600 }}>{selectedScheme.funding}</span>
+                </div>
+                <div>
+                  <strong style={{ color: theme.ink900, display: "block" }}>Application Deadline:</strong>
+                  <span style={{ color: theme.green700, fontWeight: 600 }}>{selectedScheme.deadline}</span>
+                </div>
+              </div>
+            </div>
+
+            {selectedScheme.details && (
+              <div style={{ display: "flex", flexDirection: "column", gap: 12, marginBottom: 20 }}>
+                <div>
+                  <h4 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: theme.ink900, display: "flex", alignItems: "center", gap: 5 }}>
+                    <CheckCircle2 size={14} color={theme.green700} /> Eligibility Criteria
+                  </h4>
+                  <p style={{ margin: 0, fontSize: 12.5, color: theme.ink600, lineHeight: 1.4 }}>
+                    {selectedScheme.details.eligibility}
+                  </p>
+                </div>
+                <div>
+                  <h4 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: theme.ink900, display: "flex", alignItems: "center", gap: 5 }}>
+                    <CheckCircle2 size={14} color={theme.green700} /> Key Benefits
+                  </h4>
+                  <p style={{ margin: 0, fontSize: 12.5, color: theme.ink600, lineHeight: 1.4 }}>
+                    {selectedScheme.details.benefits}
+                  </p>
+                </div>
+                <div>
+                  <h4 style={{ margin: "0 0 4px", fontSize: 13, fontWeight: 700, color: theme.ink900, display: "flex", alignItems: "center", gap: 5 }}>
+                    <CheckCircle2 size={14} color={theme.green700} /> Application Process
+                  </h4>
+                  <p style={{ margin: 0, fontSize: 12.5, color: theme.ink600, lineHeight: 1.4 }}>
+                    {selectedScheme.details.application}
+                  </p>
+                </div>
+              </div>
+            )}
+
+            <div style={{ display: "flex", gap: 10 }}>
+              <button
+                onClick={() => {
+                  alert("Redirecting to National AYUSH Portal for official scheme submission...");
+                }}
+                style={{
+                  flex: 1,
+                  background: theme.green700,
+                  color: "#fff",
+                  border: "none",
+                  borderRadius: 8,
+                  padding: "10px 14px",
+                  fontSize: 13,
+                  fontWeight: 700,
+                  cursor: "pointer",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: 6,
+                }}
+              >
+                Apply on Official Portal <ExternalLink size={14} />
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
 
 export default function SchemeFeedDemo() {
-  const [view, setView] = useState("landing");
+  const [view, setView] = useState("feed");
+
+  const handleBack = () => {
+    if (window.history.length > 1) {
+      window.history.back();
+    } else {
+      window.location.href = "../../starting page/index.html";
+    }
+  };
 
   return (
     <div
@@ -634,11 +885,7 @@ export default function SchemeFeedDemo() {
         color: theme.ink900,
       }}
     >
-      {view === "landing" ? (
-        <LandingTile onOpen={() => setView("feed")} />
-      ) : (
-        <FeedView onBack={() => setView("landing")} />
-      )}
+      <FeedView onBack={handleBack} />
     </div>
   );
 }
