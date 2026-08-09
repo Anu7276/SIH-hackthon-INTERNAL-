@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Full 202-frame sequence at native 24fps (8.417s) -- the complete
     // mandala animation, including its own build and fade, exactly as shot.
     const TOTAL_FRAMES = 202;
-    const TARGET_DURATION_SEC = TOTAL_FRAMES / 24;
+    const TARGET_DURATION_SEC = 5.5;
     const FRAME_DIRECTORY = 'landing_frames';
     const FRAME_EXT = 'webp';
 
@@ -12,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // as white-themed, so the intro should hand off into that rather than
     // sit on black. This is procedural (an animated overlay), not a raster
     // asset, so it's pixel-perfect and adds no extra file weight.
-    const WHITE_FADE_DURATION_SEC = 1.3;
+    const WHITE_FADE_DURATION_SEC = 1.0;
     const HANDOFF_COLOR = '#F7F4EE'; // warm off-white, not stark #fff
 
     // State Variables
