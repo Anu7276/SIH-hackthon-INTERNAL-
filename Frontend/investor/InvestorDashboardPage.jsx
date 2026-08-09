@@ -6,6 +6,8 @@ const heroBg = "data:image/jpeg;base64,/9j/4AAQSkZJRgABAQAAAQABAAD/4gHYSUNDX1BST
 /* Theme — matches the Startup AYUSH Portal reference (cream + green)  */
 /* ------------------------------------------------------------------ */
 
+
+
 const Theme = () => (
   <style>{`
     :root {
