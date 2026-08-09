@@ -1,0 +1,8 @@
+# Dependencies and generated builds
+node_modules/
+dist/
+
+# Local secrets and Python cache
+.env
+__pycache__/
+*.py[cod]
