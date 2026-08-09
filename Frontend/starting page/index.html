@@ -238,7 +238,7 @@
                     </div>
                     <nav class="menu" aria-label="Main navigation">
                         <a class="active" href="#home">Home</a>
-                        <a href="http://localhost:5173">Startups <i class="fa-solid fa-chevron-down"></i></a>
+                        <a href="../Startups/dist/index.html">Startups <i class="fa-solid fa-chevron-down"></i></a>
                         <a href="#investors">Investors</a>
                         <a href="#incubators">Incubators &amp; Accelerators</a>
                         <a href="../schemes/dist/index.html">Government Schemes</a>
@@ -256,7 +256,7 @@
                     <h1>Empowering AYUSH Startups.<br>Building a Healthy Future.</h1>
                     <p>Welcome to the Startup AYUSH Portal – a one-stop platform connecting Startups, Investors, Incubators, Government Agencies and Public Users to collaborate, innovate and grow together.</p>
                     <div class="hero_buttons">
-                        <a href="http://localhost:5173" class="btn btn-primary">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="../Startups/dist/index.html" class="btn btn-primary">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
                         <a href="#join" class="btn btn-secondary">Join the Ecosystem</a>
                     </div>
                 </div>
@@ -272,11 +272,11 @@
                 <h2>A Collaborative Platform for All Stakeholders</h2>
                 <span class="section_underline" aria-hidden="true"></span>
                 <div class="stakeholder_cards">
-                    <div class="stakeholder_card">
+                    <div class="stakeholder_card" onclick="window.location.href='../Startups/dist/index.html'" style="cursor: pointer;">
                         <div class="card_icon icon-startups"><i class="fa-solid fa-rocket"></i></div>
                         <h3>Startups</h3>
                         <p>Showcase your innovations, connect with mentors &amp; investors, and grow globally.</p>
-                        <a href="http://localhost:5173" class="card_link link-green">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="../Startups/dist/index.html" class="card_link link-green" onclick="event.stopPropagation();">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div class="stakeholder_card">
                         <div class="card_icon icon-investors"><i class="fa-solid fa-hand-holding-dollar"></i></div>
@@ -366,6 +366,8 @@
 
                 // Auth Guard: Intercept clicks for unauthenticated users
                 document.addEventListener('click', function(e) {
+                    if (!homePage || !homePage.classList.contains('revealed')) return;
+
                     const target = e.target.closest('a, button, .stakeholder_card');
                     if (!target) return;
 
@@ -391,14 +393,25 @@
                     }
                 }, true);
 
+                // Skip intro ONLY when navigating via explicit skipIntro URL parameter
+                const urlParams = new URLSearchParams(window.location.search);
+                const skipIntro = urlParams.get('skipIntro') === 'true';
+
+                if (skipIntro && introLayer) {
+                    introLayer.style.display = 'none';
+                    document.documentElement.classList.add('home-revealed');
+                    document.body.classList.add('home-revealed');
+                    homePage.classList.add('revealed');
+                    return;
+                }
+
                 let alreadyRevealed = false;
 
                 function reveal(fadeDurationSec) {
                     if (alreadyRevealed) return;
                     alreadyRevealed = true;
 
-                    sessionStorage.setItem('ayush_intro_seen', 'true');
-                    const ms = Math.round((fadeDurationSec || 1.3) * 1000);
+                    const ms = Math.round((fadeDurationSec || 1.0) * 1000);
 
                     document.documentElement.classList.add('home-revealed');
                     document.body.classList.add('home-revealed');
@@ -420,7 +433,7 @@
                     reveal(0.4);
                 }, { once: true });
 
-                setTimeout(() => reveal(1.3), 10000);
+                setTimeout(() => reveal(1.0), 6800);
             }
 
             if (document.readyState === 'loading') {

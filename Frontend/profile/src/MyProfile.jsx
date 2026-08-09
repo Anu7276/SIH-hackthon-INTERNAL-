@@ -361,7 +361,7 @@ export default function MyProfile() {
           {/* Header Action Nav */}
           <div className="flex items-center gap-2 sm:gap-3">
             <a
-              href="../../starting page/index.html"
+              href="../../starting page/index.html?skipIntro=true"
               className="text-xs sm:text-sm font-semibold text-gray-700 hover:text-[#1F5C36] px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition flex items-center gap-1"
             >
               <ArrowLeft className="w-3.5 h-3.5 text-[#1F5C36]" />
@@ -878,71 +878,15 @@ export default function MyProfile() {
                 </button>
               </div>
 
-              {/* Grid 2 Columns: Personal Details & Role Selection */}
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-5">
-                {/* Personal Information */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                  <SectionHeading icon={User}>Personal Information</SectionHeading>
-                  <div className="space-y-1">
-                    <InfoRow icon={User} label="Full Name" value={user.fullName} />
-                    <InfoRow icon={Mail} label="Email Address" value={user.email} />
-                    <InfoRow icon={Phone} label="Phone Number" value={user.phone} />
-                    <InfoRow icon={MapPin} label="Location" value={user.location} isLast />
-                  </div>
-                </div>
-
-                {/* Account Role / Stakeholder Type */}
-                <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5">
-                  <div className="flex items-center justify-between mb-3">
-                    <SectionHeading icon={Users}>Account Category / Role</SectionHeading>
-                    <span className="text-[11px] font-bold text-[#1F5C36] bg-[#E8F0E9] px-2.5 py-1 rounded-full border border-[#1F5C36]/20">
-                      Saved to {user.email}
-                    </span>
-                  </div>
-                  <p className="text-xs text-gray-500 mb-3 -mt-3">
-                    Your account is registered as a <strong className="text-green-800 font-bold">{selectedRole}</strong>.
-                  </p>
-                  <div className="space-y-3">
-                    <RoleCard
-                      icon={Rocket}
-                      title="Startup / Founder"
-                      description="Registered as AYUSH sector startup venture."
-                      accent={COLORS.accentGreen}
-                      bg="#F1F8EB"
-                      selected={selectedRole === "Startup"}
-                      onClick={() => {
-                        setSelectedRole("Startup");
-                        saveToStorage(user, "Startup", photoUrl, true);
-                        showToast("Role updated to Startup / Founder for " + user.email);
-                      }}
-                    />
-                    <RoleCard
-                      icon={Briefcase}
-                      title="Investor"
-                      description="Registered as investor funding AYUSH startups."
-                      accent={COLORS.orange}
-                      bg="#FBF0E4"
-                      selected={selectedRole === "Investor"}
-                      onClick={() => {
-                        setSelectedRole("Investor");
-                        saveToStorage(user, "Investor", photoUrl, true);
-                        showToast("Role updated to Investor for " + user.email);
-                      }}
-                    />
-                    <RoleCard
-                      icon={Users}
-                      title="Public User"
-                      description="Registered as public user interested in AYUSH."
-                      accent={COLORS.primaryGreen}
-                      bg="#EBF5ED"
-                      selected={selectedRole === "Public"}
-                      onClick={() => {
-                        setSelectedRole("Public");
-                        saveToStorage(user, "Public", photoUrl, true);
-                        showToast("Role updated to Public User for " + user.email);
-                      }}
-                    />
-                  </div>
+              {/* Clean User Profile Dashboard */}
+              <div className="bg-white rounded-xl shadow-sm border border-gray-100 p-5 sm:p-6">
+                <SectionHeading icon={User}>Personal Information</SectionHeading>
+                <div className="space-y-1">
+                  <InfoRow icon={User} label="Full Name" value={user.fullName} />
+                  <InfoRow icon={Mail} label="Email Address" value={user.email} />
+                  <InfoRow icon={Phone} label="Phone Number" value={user.phone} />
+                  <InfoRow icon={MapPin} label="Location" value={user.location} />
+                  <InfoRow icon={Users} label="Registered Role" value={selectedRole} isLast />
                 </div>
               </div>
             </div>
