@@ -69,8 +69,129 @@ body {
 .text-size { font-size: 13px !important; line-height: 1; }
 .text-size--increase, .text-size--decrease { font-size: 11px !important; }
 .text-controls { gap: 14px; }
-.login { gap: 8px; }
+.login { gap: 8px; cursor: pointer; }
 .icon .fa-user { font-size: 15px; color: #555; }
+
+/* ─── Profile Hover Dropdown Menu ─── */
+.login-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+}
+
+.profile-caret {
+    font-size: 9px;
+    margin-left: 5px;
+    color: #666;
+    transition: transform 0.2s ease;
+}
+
+.login-wrapper:hover .profile-caret {
+    transform: rotate(180deg);
+    color: #1F5C36;
+}
+
+.profile-dropdown {
+    position: absolute;
+    top: calc(100% + 4px);
+    right: 0;
+    width: 210px;
+    background: #ffffff;
+    border: 1px solid #e2ded3;
+    border-radius: 12px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12);
+    padding: 6px 0;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(8px);
+    transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    z-index: 1000;
+}
+
+.login-wrapper:hover .profile-dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.dropdown-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 10px 14px;
+}
+
+.user-avatar {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    background: #E8F0E9;
+    color: #1F5C36;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 14px;
+    flex-shrink: 0;
+}
+
+.user-info {
+    display: flex;
+    flex-direction: column;
+    line-height: 1.25;
+}
+
+.user-info strong {
+    font-size: 12.5px;
+    color: #1E3B22;
+}
+
+.user-info small {
+    font-size: 10px;
+    color: #777;
+}
+
+.dropdown-divider {
+    height: 1px;
+    background: #eae5d9;
+    margin: 4px 0;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    padding: 8px 14px;
+    font-size: 12px;
+    font-weight: 600;
+    color: #333 !important;
+    text-decoration: none;
+    transition: background 0.15s ease, color 0.15s ease;
+}
+
+.dropdown-item i {
+    font-size: 12px;
+    color: #1F5C36;
+    width: 14px;
+    text-align: center;
+}
+
+.dropdown-item:hover {
+    background: #F4FAF5;
+    color: #1F5C36 !important;
+}
+
+.dropdown-item.text-danger {
+    color: #c93b2b !important;
+}
+
+.dropdown-item.text-danger i {
+    color: #c93b2b;
+}
+
+.dropdown-item.text-danger:hover {
+    background: #fdf2f0;
+}
 
 .main_navbar { height: 80px; background: #fff; border-bottom: 1px solid #e9e9e9; box-shadow: 0 2px 5px rgba(0, 0, 0, .04); }
 .main_nav_inner { width: min(1225px, calc(100% - 40px)); height: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 35px; }
@@ -108,7 +229,7 @@ body {
 ========================================= */
 .hero {
     position: relative;
-    background: url("Gemini_Generated_Image_3o0ooy3o0ooy3o0o (1).png") left center / cover no-repeat;
+    background: url("dash_main.png") center right / cover no-repeat;
     padding: 70px 0 0;
 }
 

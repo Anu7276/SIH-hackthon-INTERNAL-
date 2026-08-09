@@ -27,6 +27,13 @@ body, html {
     overflow: hidden;
 }
 
+html.home-revealed, body.home-revealed {
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    height: auto !important;
+    min-height: 100% !important;
+}
+
 /* Loader Styles */
 .loader-overlay {
     position: fixed;
