@@ -477,7 +477,7 @@ export default function MyProfile() {
           {/* Header Action Nav */}
           <div className="flex items-center gap-2 sm:gap-3">
             <a
-              href="../../starting page/index.html?skipIntro=true"
+              href="/?skipIntro=true"
               className="text-xs sm:text-sm font-semibold text-gray-700 hover:text-[#1F5C36] px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition flex items-center gap-1"
             >
               <ArrowLeft className="w-3.5 h-3.5 text-[#1F5C36]" />

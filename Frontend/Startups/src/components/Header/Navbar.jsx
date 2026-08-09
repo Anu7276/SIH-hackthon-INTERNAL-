@@ -10,7 +10,7 @@ export default function Navbar() {
       <div className="bg-[#112313] text-[11px] py-1.5 px-4 sm:px-8 border-b border-white/10 text-gray-300">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3 font-medium">
-            <a href="../../starting page/index.html?skipIntro=true" className="inline-flex items-center gap-1 text-white font-bold hover:text-[#9AC59E] bg-white/10 px-2.5 py-0.5 rounded transition-colors mr-1">
+            <a href="/?skipIntro=true" className="inline-flex items-center gap-1 text-white font-bold hover:text-[#9AC59E] bg-white/10 px-2.5 py-0.5 rounded transition-colors mr-1">
               <ArrowLeft className="w-3.5 h-3.5 text-[#9AC59E]" />
               Home
             </a>
