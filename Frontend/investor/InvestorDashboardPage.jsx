@@ -578,7 +578,7 @@ export default function InvestorDashboardPage({ investorName }) {
       <Theme />
       <div className="px-6 pt-6 sm:px-10">
         <a
-          href="/"
+          href="http://localhost:5000?skipIntro=true"
           className="ayush-btn-solid inline-flex items-center gap-2 rounded-full px-4 py-2 text-sm font-semibold shadow-sm"
         >
           <ArrowRight className="h-4 w-4 rotate-180" /> Back to Home
