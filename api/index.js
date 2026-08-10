@@ -1,6 +1,10 @@
 import app from '../Authentication/src/app.js';
+import connectDB from '../Authentication/src/config/database.js';
 
-export default function handler(req, res) {
+const databaseReady = connectDB();
+
+export default async function handler(req, res) {
+  await databaseReady;
   const requestUrl = new URL(req.url, 'http://localhost');
   const requestedPath = requestUrl.searchParams.get('path');
 
