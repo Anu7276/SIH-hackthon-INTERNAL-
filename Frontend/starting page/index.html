@@ -334,7 +334,7 @@
 
         #home-page .hero {
             position: relative;
-            background: url("../Home_Page/dash_main.png") center right / cover no-repeat;
+            background: url("dash_main.png") center right / cover no-repeat;
             padding: 70px 0 0;
         }
 
@@ -797,6 +797,201 @@
                         <div class="lang-select">
                             <i class="fa-solid fa-globe" aria-hidden="true"></i>
                             <select aria-label="Select language">
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        #home-page .cta_banner p {
+            margin: 0;
+            color: #f2efe6;
+            font-size: 15px;
+            font-style: italic;
+        }
+
+        #home-page .cta_banner .btn-primary {
+            background: #2e6b3e;
+        }
+
+        #home-page .lang-select {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #4b4b4b;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        #home-page .lang-select i.fa-globe {
+            font-size: 12px;
+        }
+
+        #home-page .lang-select select {
+            appearance: none;
+            border: 0;
+            background: transparent;
+            font: inherit;
+            color: inherit;
+            padding-right: 12px;
+            cursor: pointer;
+        }
+
+        #home-page .lang-select .lang-caret {
+            font-size: 8px;
+            margin-left: -8px;
+            pointer-events: none;
+        }
+
+        #home-page .landmark_watermark {
+            position: absolute;
+            left: -20px;
+            bottom: -10px;
+            width: 340px;
+            color: #e2dccb;
+            opacity: .8;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        @media (max-width: 1050px) {
+            #home-page .stakeholder_cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            #home-page .succeed_items {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            #home-page .menu {
+                gap: 16px;
+            }
+
+            #home-page .menu a {
+                font-size: 11px;
+            }
+        }
+
+        @media (max-width: 760px) {
+            #home-page .upper_nav {
+                width: calc(100% - 24px);
+            }
+
+            #home-page .right {
+                gap: 9px;
+            }
+
+            #home-page .skip,
+            #home-page .text-controls,
+            #home-page .action-divider {
+                display: none;
+            }
+
+            #home-page .main_navbar {
+                height: auto;
+            }
+
+            #home-page .main_nav_inner {
+                width: calc(100% - 24px);
+                min-height: 76px;
+            }
+
+            #home-page .menu a {
+                display: none;
+            }
+
+            #home-page .menu {
+                margin-left: auto;
+            }
+
+            #home-page .hero {
+                padding-top: 40px;
+            }
+
+            #home-page .hero h1 {
+                font-size: 26px;
+            }
+
+            #home-page .stats_bar {
+                flex-wrap: wrap;
+                gap: 20px;
+                transform: translateY(30px);
+            }
+
+            #home-page .stakeholders {
+                padding-top: 70px;
+            }
+
+            #home-page .stakeholder_cards {
+                grid-template-columns: 1fr;
+            }
+
+            #home-page .succeed_items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            #home-page .cta_banner {
+                flex-direction: column;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- INTRO LAYER — fixed on top, removed when animation finishes -->
+    <div id="intro-layer">
+        <div id="loader" class="loader-overlay">
+            <div class="loader-content">
+                <div class="mandala-spinner"></div>
+                <h2 class="loader-title">MINISTRY OF AYUSH</h2>
+                <div class="progress-bar-container">
+                    <div id="loader-progress" class="progress-bar-fill"></div>
+                </div>
+                <span id="loader-percent" class="loader-percent">0%</span>
+            </div>
+        </div>
+
+        <div class="video-hero-container" id="hero-container">
+            <canvas id="video-canvas"></canvas>
+            <div class="vignette-overlay"></div>
+        </div>
+    </div>
+
+    <!-- HOME PAGE — revealed after intro finishes -->
+    <div id="home-page">
+        <header>
+            <div class="navbar">
+                <div class="upper_nav">
+                    <div class="left">
+                        <div class="flag">
+                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/india-flag-icon.png"
+                                alt="Indian flag">
+                        </div>
+                        <div class="hindi_bharat">
+                            <p lang="hi">भारत सरकार</p>
+                        </div>
+                        <span class="brand-divider" aria-hidden="true"></span>
+                        <div class="gov">
+                            <p>Government of India</p>
+                        </div>
+                    </div>
+                    <div class="right">
+                        <div class="skip"><a href="#main-content">Skip to Main Content</a></div>
+                        <span class="action-divider" aria-hidden="true"></span>
+                        <div class="text-controls" aria-label="Text size controls">
+                            <button class="text-size text-size--increase" type="button"
+                                aria-label="Increase text size">A+</button>
+                            <button class="text-size" type="button" aria-label="Default text size">A</button>
+                            <button class="text-size text-size--decrease" type="button"
+                                aria-label="Decrease text size">A-</button>
+                        </div>
+                        <span class="action-divider" aria-hidden="true"></span>
+                        <div class="lang-select">
+                            <i class="fa-solid fa-globe" aria-hidden="true"></i>
+                            <select aria-label="Select language">
                                 <option>English</option>
                                 <option>हिंदी</option>
                             </select>
@@ -805,7 +1000,7 @@
                         <span class="action-divider" aria-hidden="true"></span>
                         <div class="login">
                             <div class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></div>
-                            <a href="/profile/?mode=register" id="nav-login-link">Login / Register</a>
+                            <a href="http://localhost:3000" id="nav-login-link" onclick="openAuthModal(event)">Login / Register</a>
                         </div>
                     </div>
                 </div>
@@ -826,20 +1021,16 @@
                         </div>
                         <span class="logo_line" aria-hidden="true"></span>
                         <div class="startup_logo">
-                            <img src="../Home_Page/STARTUPAYSH.png" alt="Startup AYUSH Portal">
+                            <img src="STARTUPAYSH.png" alt="Startup AYUSH Portal">
                         </div>
                     </div>
                     <nav class="menu" aria-label="Main navigation">
-                        <a class="active" href="#home">Home</a>
-                        <a href="/startups/">Startups <i class="fa-solid fa-chevron-down"></i></a>
-                        <a href="/investor/">Investors</a>
-                        <a href="#incubators">Incubators &amp; Accelerators</a>
-                        <a href="/schemes/">Government Schemes</a>
+                        <a class="active" href="http://localhost:5000?skipIntro=true">Home</a>
+                        <a href="http://localhost:5173">Startups <i class="fa-solid fa-chevron-down"></i></a>
+                        <a href="javascript:void(0)">Investors</a>
+                        <a href="javascript:void(0)">Incubators &amp; Accelerators</a>
+                        <a href="http://localhost:5175">Government Schemes</a>
                         <a href="http://localhost:5500/interview_dashboard.html">Virtual Pitcher</a>
-                        <a href="#resources">Resources <i class="fa-solid fa-chevron-down"></i></a>
-                        <a href="#events">Events</a>
-                        <button class="search" type="button" aria-label="Search"><i
-                                class="fa-solid fa-magnifying-glass"></i></button>
                     </nav>
                 </div>
             </div>
@@ -852,7 +1043,7 @@
                     <p>Welcome to the Startup AYUSH Portal – a one-stop platform connecting Startups, Investors,
                         Incubators, Government Agencies and Public Users to collaborate, innovate and grow together.</p>
                     <div class="hero_buttons">
-                        <a href="/startups/" class="btn btn-primary">Explore Startups <i
+                        <a href="http://localhost:5173" class="btn btn-primary">Explore Startups <i
                                 class="fa-solid fa-arrow-right"></i></a>
                         <a href="http://localhost:5500/interview_dashboard.html" class="btn btn-secondary">Virtual Pitcher</a>
                     </div>
@@ -877,40 +1068,34 @@
                 <h2>A Collaborative Platform for All Stakeholders</h2>
                 <span class="section_underline" aria-hidden="true"></span>
                 <div class="stakeholder_cards">
-                    <div class="stakeholder_card" onclick="window.location.href='/startups/'" style="cursor: pointer;">
+                    <div class="stakeholder_card" onclick="window.location.href='http://localhost:5173'" style="cursor: pointer;">
                         <div class="card_icon icon-startups"><i class="fa-solid fa-rocket"></i></div>
                         <h3>Startups</h3>
                         <p>Showcase your innovations, connect with mentors &amp; investors, and grow globally.</p>
-                        <a href="/startups/" class="card_link link-green" onclick="event.stopPropagation();">Explore
+                        <a href="http://localhost:5173" class="card_link link-green" onclick="event.stopPropagation();">Explore
                             Startups <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <div class="stakeholder_card" onclick="window.location.href='/investor/'" style="cursor: pointer;">
+                    <div class="stakeholder_card">
                         <div class="card_icon icon-investors"><i class="fa-solid fa-hand-holding-dollar"></i></div>
                         <h3>Investors</h3>
                         <p>Discover promising AYUSH startups and invest in the future of holistic health.</p>
-                        <a href="/investor/" class="card_link link-blue" onclick="event.stopPropagation();">Explore
+                        <a href="javascript:void(0)" class="card_link link-blue">Explore
                             Opportunities <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div class="stakeholder_card">
                         <div class="card_icon icon-incubators"><i class="fa-solid fa-people-group"></i></div>
                         <h3>Incubators &amp; Accelerators</h3>
                         <p>Support and nurture startups in the AYUSH sector with resources and guidance.</p>
-                        <a href="#incubators" class="card_link link-purple">Collaborate With Us <i
+                        <a href="javascript:void(0)" class="card_link link-purple">Collaborate With Us <i
                                 class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <div class="stakeholder_card" onclick="window.location.href='/schemes/'" style="cursor: pointer;">
+                    <div class="stakeholder_card" onclick="window.location.href='http://localhost:5175'" style="cursor: pointer;">
                         <div class="card_icon icon-govt"><i class="fa-solid fa-landmark"></i></div>
                         <h3>Government Schemes</h3>
                         <p>Discover government funding, subsidies, grants, and support schemes for AYUSH startups.</p>
-                        <a href="/schemes/" class="card_link link-orange" onclick="event.stopPropagation();">Explore
+                        <a href="http://localhost:5175" class="card_link link-orange" onclick="event.stopPropagation();">Explore
                             Schemes <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <div class="stakeholder_card">
-                        <div class="card_icon icon-public"><i class="fa-solid fa-users"></i></div>
-                        <h3>Public Users</h3>
-                        <p>Find AYUSH solutions, resources, events and expert guidance.</p>
-                        <a href="#resources" class="card_link link-green">Explore Resources <i
-                                class="fa-solid fa-arrow-right"></i></a>
                     <div class="stakeholder_card" onclick="window.location.href='http://localhost:5500/interview_dashboard.html'" style="cursor: pointer;">
                         <div class="card_icon icon-public"><i class="fa-solid fa-microphone"></i></div>
                         <h3>Virtual Startup Pitcher</h3>
@@ -1048,22 +1233,61 @@
                     <label for="otp-code" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-key" style="color:#287345;"></i> 6-Digit OTP Code</label>
                     <input type="text" id="otp-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required style="padding:10px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:18px;font-weight:800;letter-spacing:6px;text-align:center;outline:none;">
                 </div>
+                <div class="landmark_watermark" aria-hidden="true">
+                    <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M200 10c14 10 22 26 22 42h-44c0-16 8-32 22-42z" fill="currentColor" />
+                        <rect x="150" y="52" width="100" height="18" fill="currentColor" />
+                        <path d="M150 70c0-40 22-64 50-64s50 24 50 64" fill="currentColor" />
+                        <rect x="120" y="70" width="20" height="120" fill="currentColor" />
+                        <rect x="260" y="70" width="20" height="120" fill="currentColor" />
+                        <circle cx="130" cy="60" r="10" fill="currentColor" />
+                        <circle cx="270" cy="60" r="10" fill="currentColor" />
+                        <rect x="60" y="150" width="16" height="90" fill="currentColor" />
+                        <rect x="324" y="150" width="16" height="90" fill="currentColor" />
+                        <rect x="20" y="230" width="360" height="14" fill="currentColor" />
+                        <rect x="140" y="130" width="120" height="110" fill="currentColor" />
+                    </svg>
+                </div>
+                <h2>Everything You Need to Succeed</h2>
+                <span class="section_underline" aria-hidden="true"></span>
+                <div class="succeed_items">
+                    <div class="succeed_item"><i class="fa-solid fa-user-tie"></i>
+                        <h4>Mentorship</h4>
+                        <p>Connect with industry experts and leaders.</p>
+                    </div>
+                    <div class="succeed_item"><i class="fa-solid fa-share-nodes"></i>
+                        <h4>Networking</h4>
+                        <p>Build meaningful connections worldwide.</p>
+                    </div>
+                    <div class="succeed_item"><i class="fa-solid fa-book-open"></i>
+                        <h4>Resources</h4>
+                        <p>Guides, tools and insights for your journey.</p>
+                    </div>
+                    <div class="succeed_item"><i class="fa-regular fa-calendar"></i>
+                        <h4>Events</h4>
+                        <p>Workshops, webinars and global events.</p>
+                    </div>
+                    <div class="succeed_item"><i class="fa-solid fa-bullhorn"></i>
+                        <h4>Showcase</h4>
+                        <p>Showcase your innovations to the world.</p>
+                    </div>
+                </div>
+            </section>
 
-                <button type="submit" id="otp-btn" style="background:#287345;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;">
-                    <span>Verify Email</span> <i class="fa-solid fa-check-double"></i>
-                </button>
-            </form>
-        </div>
+            <section class="cta_banner">
+                <p>&ldquo;Promoting Innovation. Building Partnerships. Strengthening the AYUSH Ecosystem.&rdquo;</p>
+                <a href="#join" class="btn btn-primary">Be a Part of the Movement <i
+                        class="fa-solid fa-arrow-right"></i></a>
+            </section>
+        </main>
     </div>
+
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
 
     <script src="script.js"></script>
     <script src="auth.js"></script>
     <script>
-        // Reveal home page in sync with the white fade — no white gap.
-        // script.js fires 'ayush:whitefade-start' at the exact frame the
-        // white fade begins (WHITE_FADE_DURATION_SEC = 1.3s). We fade the
-        // intro layer out over the same 1.3s so both transitions overlap
-        // perfectly and the home page appears as the white dissolves.
         (function () {
             function init() {
                 const introLayer = document.getElementById('intro-layer');
@@ -1076,49 +1300,18 @@
                         const parsed = JSON.parse(savedProfile);
                         const loginLink = document.getElementById('nav-login-link');
                         if (loginLink && parsed && parsed.isLoggedIn) {
-                            loginLink.textContent = (parsed.user && parsed.user.fullName) ? parsed.user.fullName : 'My Profile';
-                            loginLink.href = '/profile/?mode=profile';
+                            loginLink.textContent = (parsed.user && parsed.user.username) ? parsed.user.username : 'My Profile';
+                            loginLink.href = 'http://localhost:5176';
                         }
                     }
                 } catch (e) { }
 
-                // Auth Guard: Intercept clicks for unauthenticated users
-                document.addEventListener('click', function (e) {
-                    if (!homePage || !homePage.classList.contains('revealed')) return;
-
-                    const target = e.target.closest('a, button, .stakeholder_card');
-                    if (!target) return;
-
-                    const href = target.getAttribute('href') || '';
-                    if (href.includes('profile') || href === '#home' || target.id === 'nav-login-link' || target.classList.contains('search')) {
-                        return;
-                    }
-
-                    let isLoggedIn = false;
-                    try {
-                        const saved = localStorage.getItem('ayush_user_profile');
-                        if (saved) {
-                            const parsed = JSON.parse(saved);
-                            isLoggedIn = Boolean(parsed && parsed.isLoggedIn);
-                        }
-                    } catch (err) { }
-
-                    if (!isLoggedIn) {
-                        e.preventDefault();
-                        e.stopPropagation();
-                        alert("Please sign in or register your account to access AYUSH ecosystem features!");
-                        window.location.href = '/profile/?mode=register';
-                    }
-                }, true);
-
-                // Skip intro ONLY when navigating via explicit skipIntro URL parameter or if already seen in this app session
                 const urlParams = new URLSearchParams(window.location.search);
                 const skipIntro = urlParams.get('skipIntro') === 'true';
                 const hasSeenIntro = sessionStorage.getItem('introCompletedForCurrentAppLoad') === 'true';
 
                 if ((skipIntro || hasSeenIntro) && introLayer) {
                     if (skipIntro) {
-                    // Instantly clean URL history so subsequent page refreshes (F5) replay the intro animation
                         window.history.replaceState({}, document.title, window.location.pathname);
                     }
                     introLayer.style.display = 'none';
@@ -1136,7 +1329,7 @@
 
                     try {
                         sessionStorage.setItem('introCompletedForCurrentAppLoad', 'true');
-                        localStorage.removeItem('introVideoSeen'); // Clean up old incorrect flag
+                        localStorage.removeItem('introVideoSeen');
                     } catch(e) {}
 
                     const ms = Math.round((fadeDurationSec || 1.0) * 1000);
@@ -1171,158 +1364,5 @@
             }
         })();
     </script>
-
-    <!-- AUTHENTICATION MODAL OVERLAY -->
-    <div id="auth-modal-overlay" class="auth-modal-overlay">
-        <!-- Notification Toast Container -->
-        <div id="toast-container" class="toast-container"></div>
-
-        <div class="main-container" style="position: relative;">
-            <button type="button" class="modal-close-btn" onclick="closeAuthModal()" title="Close Modal">
-                <i class="fa-solid fa-xmark"></i>
-            </button>
-
-            <!-- Auth Container (Shown when logged out) -->
-            <div id="auth-card" class="auth-card glass-panel">
-                <div class="brand-header">
-                    <div class="logo-badge">
-                        <i class="fa-solid fa-shield-halved"></i>
-                    </div>
-                    <h2>SIH Hackathon Portal</h2>
-                    <p>Secure Authentication & Profile Portal</p>
-                </div>
-
-                <!-- Tab Switching Buttons -->
-                <div id="auth-tabs" class="tabs-header">
-                    <button type="button" class="tab-btn active" id="tab-login" onclick="switchTab('login')">
-                        <i class="fa-solid fa-right-to-bracket"></i> Sign In
-                    </button>
-                    <button type="button" class="tab-btn" id="tab-register" onclick="switchTab('register')">
-                        <i class="fa-solid fa-user-plus"></i> Register
-                    </button>
-                </div>
-
-                <!-- LOGIN FORM -->
-                <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
-                    <div class="form-group">
-                        <label for="login-email"><i class="fa-solid fa-envelope"></i> Email Address</label>
-                        <input type="email" id="login-email" placeholder="name@example.com" required
-                            autocomplete="email">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="login-password"><i class="fa-solid fa-lock"></i> Password</label>
-                        <div class="password-wrapper">
-                            <input type="password" id="login-password" placeholder="••••••••" required
-                                autocomplete="current-password">
-                            <button type="button" class="toggle-password"
-                                onclick="togglePasswordVisibility('login-password', this)">
-                                <i class="fa-solid fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <button type="submit" id="login-btn" class="btn btn-primary">
-                        <span>Sign In</span> <i class="fa-solid fa-arrow-right"></i>
-                    </button>
-                </form>
-
-                <!-- REGISTER FORM -->
-                <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
-                    <div class="form-group">
-                        <label for="reg-username"><i class="fa-solid fa-user"></i> Username</label>
-                        <input type="text" id="reg-username" placeholder="johndoe" required autocomplete="username">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reg-email"><i class="fa-solid fa-envelope"></i> Email Address</label>
-                        <input type="email" id="reg-email" placeholder="name@example.com" required autocomplete="email">
-                    </div>
-
-                    <div class="form-group">
-                        <label for="reg-password"><i class="fa-solid fa-lock"></i> Password</label>
-                        <div class="password-wrapper">
-                            <input type="password" id="reg-password" placeholder="Min 6 characters" required
-                                autocomplete="new-password">
-                            <button type="button" class="toggle-password"
-                                onclick="togglePasswordVisibility('reg-password', this)">
-                                <i class="fa-solid fa-eye"></i>
-                            </button>
-                        </div>
-                    </div>
-
-                    <button type="submit" id="register-btn" class="btn btn-primary">
-                        <span>Create Account</span> <i class="fa-solid fa-user-check"></i>
-                    </button>
-                </form>
-
-                <!-- OTP VERIFICATION FORM (Initially Hidden) -->
-                <form id="otp-form" class="auth-form" onsubmit="handleVerifyOtp(event)">
-                    <div class="otp-info">
-                        <i class="fa-solid fa-envelope-circle-check otp-icon"></i>
-                        <h3>Verify Email Address</h3>
-                        <p>Enter the 6-digit OTP sent to <strong id="target-otp-email">user@example.com</strong></p>
-                    </div>
-
-                    <div class="form-group">
-                        <label for="otp-code"><i class="fa-solid fa-key"></i> 6-Digit OTP Code</label>
-                        <input type="text" id="otp-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required
-                            class="otp-input" autocomplete="one-time-code">
-                    </div>
-
-                    <button type="submit" id="otp-btn" class="btn btn-primary">
-                        <span>Verify Email</span> <i class="fa-solid fa-check-double"></i>
-                    </button>
-
-                    <button type="button" class="btn btn-secondary mt-2" onclick="switchTab('login')">
-                        <i class="fa-solid fa-arrow-left"></i> Back to Sign In
-                    </button>
-                </form>
-            </div>
-
-            <!-- LOGGED-IN DASHBOARD VIEW (Initially Hidden) -->
-            <div id="dashboard-card" class="dashboard-card glass-panel hidden">
-                <div class="dashboard-header">
-                    <div class="user-avatar">
-                        <i class="fa-solid fa-circle-user"></i>
-                    </div>
-                    <div class="user-welcome">
-                        <h2 id="dash-username">Welcome User</h2>
-                        <span class="badge badge-success"><i class="fa-solid fa-shield-check"></i> Verified
-                            Account</span>
-                    </div>
-                </div>
-
-                <div class="profile-details-grid">
-                    <div class="detail-card">
-                        <span class="detail-label">Username</span>
-                        <strong id="dash-user-val" class="detail-value">-</strong>
-                    </div>
-                    <div class="detail-card">
-                        <span class="detail-label">Email Address</span>
-                        <strong id="dash-email-val" class="detail-value">-</strong>
-                    </div>
-                    <div class="detail-card full-width">
-                        <span class="detail-label">Active Access Token</span>
-                        <div class="token-box">
-                            <code id="dash-token-val">No token loaded</code>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="dashboard-actions">
-                    <button type="button" class="btn btn-danger" onclick="handleLogout()">
-                        <i class="fa-solid fa-right-from-bracket"></i> Logout Current Session
-                    </button>
-                    <button type="button" class="btn btn-outline-danger" onclick="handleLogoutAll()">
-                        <i class="fa-solid fa-power-off"></i> Logout All Devices
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <script src="/public/js/auth.js"></script>
 </body>
-
 </html>
