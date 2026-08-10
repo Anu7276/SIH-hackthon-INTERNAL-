@@ -158,10 +158,18 @@ async function handleVerifyOtp(e) {
         const data = await response.json();
 
         if (response.ok) {
-            showToast('Email verified successfully! You can now log in.', 'success');
-            const loginEmailEl = document.getElementById('login-email');
-            if (loginEmailEl) loginEmailEl.value = email;
-            switchTab('login');
+            showToast('Account verified! Redirecting to your profile...', 'success');
+            if (data.accessToken) {
+                localStorage.setItem('accessToken', data.accessToken);
+            }
+            localStorage.setItem('ayush_user_profile', JSON.stringify({
+                isLoggedIn: true,
+                user: data.user || { email, username: email.split('@')[0] },
+                token: data.accessToken || ''
+            }));
+            setTimeout(() => {
+                window.location.href = 'http://localhost:5176';
+            }, 700);
         } else {
             showToast(data.message || 'Invalid or expired OTP', 'error');
         }
@@ -276,6 +284,7 @@ async function handleLogout() {
         console.error(err);
     } finally {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('ayush_user_profile');
         showToast('Logged out successfully', 'info');
         showLoggedOutUI();
     }
@@ -289,6 +298,7 @@ async function handleLogoutAll() {
         console.error(err);
     } finally {
         localStorage.removeItem('accessToken');
+        localStorage.removeItem('ayush_user_profile');
         showToast('Logged out from all devices', 'info');
         showLoggedOutUI();
     }
@@ -297,6 +307,24 @@ async function handleLogoutAll() {
 // Modal Controls
 function openAuthModal(e) {
     if (e) e.preventDefault();
+
+    const token = localStorage.getItem('accessToken');
+    const savedProfile = localStorage.getItem('ayush_user_profile');
+    let isLoggedIn = false;
+
+    if (token) isLoggedIn = true;
+    if (savedProfile) {
+        try {
+            const parsed = JSON.parse(savedProfile);
+            if (parsed && parsed.isLoggedIn) isLoggedIn = true;
+        } catch (err) {}
+    }
+
+    if (isLoggedIn) {
+        window.location.href = 'http://localhost:5176';
+        return;
+    }
+
     const modal = document.getElementById('auth-modal-overlay');
     if (modal) {
         modal.style.display = 'flex';

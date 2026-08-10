@@ -1233,22 +1233,17 @@
                     <label for="otp-code" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-key" style="color:#287345;"></i> 6-Digit OTP Code</label>
                     <input type="text" id="otp-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required style="padding:10px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:18px;font-weight:800;letter-spacing:6px;text-align:center;outline:none;">
                 </div>
-                <div class="landmark_watermark" aria-hidden="true">
-                    <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M200 10c14 10 22 26 22 42h-44c0-16 8-32 22-42z" fill="currentColor" />
-                        <rect x="150" y="52" width="100" height="18" fill="currentColor" />
-                        <path d="M150 70c0-40 22-64 50-64s50 24 50 64" fill="currentColor" />
-                        <rect x="120" y="70" width="20" height="120" fill="currentColor" />
-                        <rect x="260" y="70" width="20" height="120" fill="currentColor" />
-                        <circle cx="130" cy="60" r="10" fill="currentColor" />
-                        <circle cx="270" cy="60" r="10" fill="currentColor" />
-                        <rect x="60" y="150" width="16" height="90" fill="currentColor" />
-                        <rect x="324" y="150" width="16" height="90" fill="currentColor" />
-                        <rect x="20" y="230" width="360" height="14" fill="currentColor" />
-                        <rect x="140" y="130" width="120" height="110" fill="currentColor" />
-                    </svg>
-                </div>
-                <h2>Everything You Need to Succeed</h2>
+
+                <button type="submit" id="otp-btn" style="background:#287345;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;">
+                    <span>Verify Email</span> <i class="fa-solid fa-check-double"></i>
+                </button>
+
+                <button type="button" onclick="switchTab('register')" style="background:transparent;color:#555;border:1px solid #ccc;padding:8px;border-radius:8px;font-size:12px;font-weight:600;cursor:pointer;margin-top:2px;">
+                    <i class="fa-solid fa-arrow-left"></i> Back to Register
+                </button>
+            </form>
+        </div>
+    </div>
                 <span class="section_underline" aria-hidden="true"></span>
                 <div class="succeed_items">
                     <div class="succeed_item"><i class="fa-solid fa-user-tie"></i>
