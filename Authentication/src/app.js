@@ -5,6 +5,8 @@ import cookieParser from 'cookie-parser';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import authRouter from './routes/auth.routes.js';
+import pitchRouter from './routes/pitch.routes.js';
+import evaluationRouter from './routes/evaluation.routes.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -28,11 +30,23 @@ app.get('/dash_main.png', (req, res) => {
     res.sendFile(path.join(__dirname, '../public/dash_main.png'));
 });
 
+// Serve interview dashboard and its background image
+app.get('/interview_dashboard.html', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../Agent/interview_dashboard.html'));
+});
+app.get('/bg_img.png', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../Agent/bg_img.png'));
+});
+app.get('/bg%20img.png', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../Agent/bg_img.png'));
+});
+
 // Serve starting page (Mandala intro + AYUSH Home page) FIRST at root /
 app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, '../../Frontend/starting page/index.html'));
 });
 
+// Serve static frontend files (Starting Page as primary)
 app.use(express.static(path.join(__dirname, '../../Frontend/starting page')));
 app.use('/Home_Page', express.static(path.join(__dirname, '../../Frontend/Home_Page')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
@@ -69,7 +83,13 @@ app.get('/schemes', (req, res) => {
 // Authentication API routes
 app.use("/api/auth", authRouter);
 
-// Primary Fallback to starting page index.html
+// Pitch API routes
+app.use("/api/pitches", pitchRouter);
+
+// AI Evaluation API routes
+app.use("/api/ai/evaluations", evaluationRouter);
+
+// Fallback to starting page index.html for main web routes
 app.get(/.*/, (req, res, next) => {
     if (req.path.startsWith('/api/')) return next();
     res.sendFile(path.join(__dirname, '../../Frontend/starting page/index.html'));
