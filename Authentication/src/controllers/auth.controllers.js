@@ -240,13 +240,33 @@ export async function verifyEmail(req, res) {
             const user = await userModel.findByIdAndUpdate(otpDoc.user, { verified: true }, { new: true });
             await otpModel.deleteMany({ user: otpDoc.user });
 
+            const refreshToken = jwt.sign({ id: user._id }, config.JWT_SECRET, { expiresIn: "3d" });
+            const refreshTokenHash = crypto.createHash("sha256").update(refreshToken).digest("hex");
+
+            const session = await sessionModel.create({
+                user: user._id,
+                refreshTokenHash,
+                ip: req.ip,
+                userAgent: req.headers["user-agent"]
+            });
+
+            const accessToken = jwt.sign({ id: user._id, sessionId: session._id }, config.JWT_SECRET, { expiresIn: "15m" });
+
+            res.cookie("refreshToken", refreshToken, {
+                httpOnly: true,
+                secure: true,
+                sameSite: "strict",
+                maxAge: 3 * 24 * 60 * 60 * 1000
+            });
+
             return res.status(200).json({
                 message: "Email verified successfully",
                 user: {
                     username: user.username,
                     email: user.email,
                     verified: user.verified
-                }
+                },
+                accessToken
             });
         } catch (err) {
             console.error("DB Error in verifyEmail, falling back to memory:", err.message);
@@ -267,13 +287,34 @@ export async function verifyEmail(req, res) {
         user.verified = true;
     }
 
+    const sessionId = "mem_sess_" + Date.now();
+    const refreshToken = jwt.sign({ id: user._id }, config.JWT_SECRET, { expiresIn: "3d" });
+    const refreshTokenHash = crypto.createHash("sha256").update(refreshToken).digest("hex");
+
+    inMemSessions.set(refreshTokenHash, {
+        _id: sessionId,
+        user: user._id,
+        refreshTokenHash,
+        revoked: false
+    });
+
+    const accessToken = jwt.sign({ id: user._id, sessionId }, config.JWT_SECRET, { expiresIn: "15m" });
+
+    res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "strict",
+        maxAge: 3 * 24 * 60 * 60 * 1000
+    });
+
     return res.status(200).json({
         message: "Email verified successfully",
         user: {
-            username: user ? user.username : email.split("@")[0],
-            email: email,
+            username: user ? user.username : 'User',
+            email: user ? user.email : email,
             verified: true
-        }
+        },
+        accessToken
     });
 }
 
