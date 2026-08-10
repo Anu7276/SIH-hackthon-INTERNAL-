@@ -835,6 +835,7 @@
                         <a href="/investor/">Investors</a>
                         <a href="#incubators">Incubators &amp; Accelerators</a>
                         <a href="/schemes/">Government Schemes</a>
+                        <a href="http://localhost:5500/interview_dashboard.html">Virtual Pitcher</a>
                         <a href="#resources">Resources <i class="fa-solid fa-chevron-down"></i></a>
                         <a href="#events">Events</a>
                         <button class="search" type="button" aria-label="Search"><i
@@ -853,7 +854,7 @@
                     <div class="hero_buttons">
                         <a href="/startups/" class="btn btn-primary">Explore Startups <i
                                 class="fa-solid fa-arrow-right"></i></a>
-                        <a href="#join" class="btn btn-secondary">Join the Ecosystem</a>
+                        <a href="http://localhost:5500/interview_dashboard.html" class="btn btn-secondary">Virtual Pitcher</a>
                     </div>
                 </div>
                 <div class="stats_bar">
@@ -910,6 +911,11 @@
                         <p>Find AYUSH solutions, resources, events and expert guidance.</p>
                         <a href="#resources" class="card_link link-green">Explore Resources <i
                                 class="fa-solid fa-arrow-right"></i></a>
+                    <div class="stakeholder_card" onclick="window.location.href='http://localhost:5500/interview_dashboard.html'" style="cursor: pointer;">
+                        <div class="card_icon icon-public"><i class="fa-solid fa-microphone"></i></div>
+                        <h3>Virtual Startup Pitcher</h3>
+                        <p>Practice and showcase your pitch with our AI Virtual Pitch Interviewer.</p>
+                        <a href="http://localhost:5500/interview_dashboard.html" class="card_link link-green" onclick="event.stopPropagation();">Try Pitcher <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </section>
@@ -964,7 +970,94 @@
         </main>
     </div>
 
+    <!-- Notification Toast Container -->
+    <div id="toast-container" class="toast-container"></div>
+
+    <!-- Embedded Auth Modal Overlay -->
+    <div id="auth-modal-overlay" class="auth-modal-overlay" style="position:fixed;inset:0;background:rgba(0,0,0,0.65);backdrop-filter:blur(6px);z-index:9999;display:none;align-items:center;justify-content:center;padding:20px;">
+        <div style="background:#fff;border-radius:16px;box-shadow:0 16px 40px rgba(0,0,0,0.2);padding:32px 28px;width:100%;max-width:440px;position:relative;">
+            <button type="button" onclick="closeAuthModal()" style="position:absolute;top:14px;right:18px;background:none;border:none;font-size:22px;color:#666;cursor:pointer;">&times;</button>
+            
+            <div style="text-align:center;margin-bottom:20px;">
+                <h3 style="font-size:20px;font-weight:800;color:#1f4d2c;margin-bottom:4px;">Startup AYUSH Portal</h3>
+                <p style="font-size:12.5px;color:#666;">Secure Sign In &amp; Registration</p>
+            </div>
+
+            <!-- Tab Switching Buttons -->
+            <div id="auth-tabs" style="display:flex;background:#f0ede6;border-radius:10px;padding:4px;margin-bottom:20px;gap:4px;">
+                <button type="button" class="tab-btn active" id="tab-login" onclick="switchTab('login')" style="flex:1;padding:8px;border:0;background:#287345;color:#fff;font-size:13px;font-weight:700;border-radius:8px;cursor:pointer;">
+                    <i class="fa-solid fa-right-to-bracket"></i> Sign In
+                </button>
+                <button type="button" class="tab-btn" id="tab-register" onclick="switchTab('register')" style="flex:1;padding:8px;border:0;background:transparent;color:#555;font-size:13px;font-weight:700;border-radius:8px;cursor:pointer;">
+                    <i class="fa-solid fa-user-plus"></i> Register
+                </button>
+            </div>
+
+            <!-- LOGIN FORM -->
+            <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)" style="display:flex;flex-direction:column;gap:14px;">
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                    <label for="login-email" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-envelope" style="color:#287345;"></i> Email Address</label>
+                    <input type="email" id="login-email" placeholder="name@example.com" required style="padding:10px 12px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:13.5px;outline:none;">
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                    <label for="login-password" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-lock" style="color:#287345;"></i> Password</label>
+                    <div style="position:relative;display:flex;align-items:center;">
+                        <input type="password" id="login-password" placeholder="••••••••" required style="width:100%;padding:10px 38px 10px 12px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:13.5px;outline:none;">
+                        <button type="button" onclick="togglePasswordVisibility('login-password', this)" style="position:absolute;right:10px;background:none;border:none;color:#888;cursor:pointer;"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                </div>
+
+                <button type="submit" id="login-btn" style="background:#287345;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;">
+                    <span>Sign In</span> <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+
+            <!-- REGISTER FORM -->
+            <form id="register-form" class="auth-form" onsubmit="handleRegister(event)" style="display:none;flex-direction:column;gap:14px;">
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                    <label for="reg-username" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-user" style="color:#287345;"></i> Username</label>
+                    <input type="text" id="reg-username" placeholder="johndoe" required style="padding:10px 12px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:13.5px;outline:none;">
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                    <label for="reg-email" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-envelope" style="color:#287345;"></i> Email Address</label>
+                    <input type="email" id="reg-email" placeholder="name@example.com" required style="padding:10px 12px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:13.5px;outline:none;">
+                </div>
+
+                <div style="display:flex;flex-direction:column;gap:4px;">
+                    <label for="reg-password" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-lock" style="color:#287345;"></i> Password</label>
+                    <div style="position:relative;display:flex;align-items:center;">
+                        <input type="password" id="reg-password" placeholder="Min 6 characters" required style="width:100%;padding:10px 38px 10px 12px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:13.5px;outline:none;">
+                        <button type="button" onclick="togglePasswordVisibility('reg-password', this)" style="position:absolute;right:10px;background:none;border:none;color:#888;cursor:pointer;"><i class="fa-solid fa-eye"></i></button>
+                    </div>
+                </div>
+
+                <button type="submit" id="register-btn" style="background:#287345;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;margin-top:6px;">
+                    <span>Create Account &amp; Send OTP</span> <i class="fa-solid fa-user-check"></i>
+                </button>
+            </form>
+
+            <!-- OTP VERIFICATION FORM -->
+            <form id="otp-form" class="auth-form" onsubmit="handleVerifyOtp(event)" style="display:none;flex-direction:column;gap:14px;text-align:center;">
+                <div style="font-size:32px;color:#287345;"><i class="fa-solid fa-envelope-circle-check"></i></div>
+                <h4 style="margin:0;font-size:16px;color:#1f4d2c;font-weight:700;">Verify Email Address</h4>
+                <p style="font-size:12px;color:#666;margin:0;">Enter the 6-digit OTP sent to <strong id="target-otp-email">user@example.com</strong></p>
+
+                <div style="display:flex;flex-direction:column;gap:4px;text-align:left;">
+                    <label for="otp-code" style="font-size:12px;font-weight:700;color:#333;"><i class="fa-solid fa-key" style="color:#287345;"></i> 6-Digit OTP Code</label>
+                    <input type="text" id="otp-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required style="padding:10px;border:1.5px solid #dcd7ce;border-radius:8px;font-size:18px;font-weight:800;letter-spacing:6px;text-align:center;outline:none;">
+                </div>
+
+                <button type="submit" id="otp-btn" style="background:#287345;color:#fff;border:none;padding:12px;border-radius:8px;font-weight:700;font-size:14px;cursor:pointer;">
+                    <span>Verify Email</span> <i class="fa-solid fa-check-double"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
     <script src="script.js"></script>
+    <script src="auth.js"></script>
     <script>
         // Reveal home page in sync with the white fade — no white gap.
         // script.js fires 'ayush:whitefade-start' at the exact frame the
@@ -1024,6 +1117,10 @@
                 const hasSeenIntro = sessionStorage.getItem('introCompletedForCurrentAppLoad') === 'true';
 
                 if ((skipIntro || hasSeenIntro) && introLayer) {
+                    if (skipIntro) {
+                    // Instantly clean URL history so subsequent page refreshes (F5) replay the intro animation
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    }
                     introLayer.style.display = 'none';
                     document.documentElement.classList.add('home-revealed');
                     document.body.classList.add('home-revealed');

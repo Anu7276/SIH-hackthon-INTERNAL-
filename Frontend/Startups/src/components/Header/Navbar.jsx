@@ -10,7 +10,7 @@ export default function Navbar() {
       <div className="bg-[#112313] text-[11px] py-1.5 px-4 sm:px-8 border-b border-white/10 text-gray-300">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-3 font-medium">
-            <a href="/?skipIntro=true" className="inline-flex items-center gap-1 text-white font-bold hover:text-[#9AC59E] bg-white/10 px-2.5 py-0.5 rounded transition-colors mr-1">
+            <a href="http://localhost:5000?skipIntro=true" className="inline-flex items-center gap-1 text-white font-bold hover:text-[#9AC59E] bg-white/10 px-2.5 py-0.5 rounded transition-colors mr-1 cursor-pointer">
               <ArrowLeft className="w-3.5 h-3.5 text-[#9AC59E]" />
               Home
             </a>
@@ -44,7 +44,7 @@ export default function Navbar() {
       <div className="max-w-7xl mx-auto px-4 sm:px-8 py-3.5 flex items-center justify-between gap-4">
         {/* Left Logos & Branding */}
         <div className="flex items-center gap-4">
-          <a href="#" className="flex items-center gap-3 group">
+          <a href="http://localhost:5000?skipIntro=true" className="flex items-center gap-3 group">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg"
               alt="Emblem of India"
@@ -67,22 +67,33 @@ export default function Navbar() {
         {/* Right Side Buttons - Matching User Screenshot */}
         <div className="hidden md:flex items-center gap-3">
           {/* Button 1: Register Startup */}
-          <button className="px-5 py-2.5 bg-[#2E7D32] hover:bg-emerald-700 text-white text-xs font-extrabold rounded-2xl shadow-md transition-all flex items-center gap-2 border border-emerald-500/30">
+          <a
+            href="http://localhost:3000"
+            className="px-5 py-2.5 bg-[#2E7D32] hover:bg-emerald-700 text-white text-xs font-extrabold rounded-2xl shadow-md transition-all flex items-center gap-2 border border-emerald-500/30 cursor-pointer"
+          >
             <Rocket className="w-4 h-4 text-white" />
             <span>Register Startup</span>
-          </button>
+          </a>
 
-          {/* Button 2: Find Investors */}
-          <button className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-2xl border border-white/20 transition-all flex items-center gap-2 backdrop-blur-sm">
-            <Users className="w-4 h-4 text-[#C1652E]" />
-            <span>Find Investors</span>
-          </button>
+          {/* Button 2: Government Schemes */}
+          <a
+            href="http://localhost:5175"
+            className="px-5 py-2.5 bg-white/10 hover:bg-white/20 text-white text-xs font-bold rounded-2xl border border-white/20 transition-all flex items-center gap-2 backdrop-blur-sm cursor-pointer"
+          >
+            <ShieldCheck className="w-4 h-4 text-[#9AC59E]" />
+            <span>Government Schemes</span>
+          </a>
 
-          {/* Button 4: Virtual Startup Pitcher */}
-          <button className="px-5 py-2.5 bg-[#C1652E] hover:bg-amber-700 text-white text-xs font-extrabold rounded-2xl shadow-md transition-all flex items-center gap-2 border border-amber-500/30">
+          {/* Button 3: Virtual Startup Pitcher */}
+          <a
+            href="http://localhost:5500/interview_dashboard.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="px-5 py-2.5 bg-[#C1652E] hover:bg-amber-700 text-white text-xs font-extrabold rounded-2xl shadow-md transition-all flex items-center gap-2 border border-amber-500/30 cursor-pointer"
+          >
             <Presentation className="w-4 h-4 text-white" />
             <span>Virtual Startup Pitcher</span>
-          </button>
+          </a>
         </div>
 
         {/* Mobile Hamburger Button */}
@@ -97,18 +108,23 @@ export default function Navbar() {
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
         <div className="md:hidden bg-[#112313] border-t border-white/10 px-6 py-5 space-y-2.5">
-          <button className="w-full py-2.5 bg-[#2E7D32] text-white text-xs font-extrabold rounded-xl flex items-center justify-center gap-2">
+          <a href="http://localhost:3000" className="w-full py-2.5 bg-[#2E7D32] text-white text-xs font-extrabold rounded-xl flex items-center justify-center gap-2">
             <Rocket className="w-4 h-4" />
             <span>Register Startup</span>
-          </button>
-          <button className="w-full py-2.5 bg-white/10 text-white text-xs font-bold rounded-xl border border-white/20 flex items-center justify-center gap-2">
-            <Users className="w-4 h-4 text-[#C1652E]" />
-            <span>Find Investors</span>
-          </button>
-          <button className="w-full py-2.5 bg-[#C1652E] text-white text-xs font-extrabold rounded-xl flex items-center justify-center gap-2">
+          </a>
+          <a href="http://localhost:5175" className="w-full py-2.5 bg-white/10 text-white text-xs font-bold rounded-xl border border-white/20 flex items-center justify-center gap-2">
+            <ShieldCheck className="w-4 h-4 text-[#9AC59E]" />
+            <span>Government Schemes</span>
+          </a>
+          <a
+            href="http://localhost:5500/interview_dashboard.html"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="w-full py-2.5 bg-[#C1652E] text-white text-xs font-extrabold rounded-xl flex items-center justify-center gap-2 cursor-pointer"
+          >
             <Presentation className="w-4 h-4" />
             <span>Virtual Startup Pitcher</span>
-          </button>
+          </a>
         </div>
       )}
     </header>

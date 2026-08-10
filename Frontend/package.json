@@ -3,9 +3,11 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently \"npm run dev:startups\" \"npm run dev:landing\"",
+    "dev": "concurrently --names \"MAIN_STARTING_PAGE,STARTUPS_APP,SCHEMES_APP,PROFILE_APP\" -c \"cyan,green,magenta,yellow\" \"npm run dev:landing\" \"npm run dev:startups\" \"npm run dev:schemes\" \"npm run dev:profile\"",
+    "dev:landing": "npx serve -l 5000 \"starting page\"",
     "dev:startups": "cd Startups && npm run dev",
-    "dev:landing": "npx serve -l 5000 \"starting page\""
+    "dev:schemes": "cd schemes && npm run dev",
+    "dev:profile": "cd profile && npm run dev"
   },
   "devDependencies": {
     "concurrently": "^8.2.2",

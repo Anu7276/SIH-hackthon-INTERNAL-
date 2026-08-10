@@ -3,10 +3,12 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "dev": "concurrently --names \"AUTH,FRONTEND\" -c \"cyan,magenta\" \"npm run dev:auth\" \"npm run dev:frontend\"",
+    "dev": "concurrently --names \"MAIN_STARTING_PAGE,AUTH,AGENT_API,AGENT_DASHBOARD\" -c \"cyan,magenta,yellow,blue\" \"npm run dev:frontend\" \"npm run dev:auth\" \"npm run dev:agent-api\" \"npm run dev:agent-dashboard\"",
     "dev:auth": "cd Authentication && npm run dev",
     "dev:frontend": "cd Frontend && npm run dev",
-    "start": "concurrently --names \"AUTH,FRONTEND\" -c \"cyan,magenta\" \"npm run start:auth\" \"npm run dev:frontend\"",
+    "dev:agent-api": "cd Agent && python -m uvicorn interview_api:app --host 0.0.0.0 --port 8000",
+    "dev:agent-dashboard": "cd Agent && python -m http.server 5500",
+    "start": "concurrently --names \"MAIN_STARTING_PAGE,AUTH,AGENT_API,AGENT_DASHBOARD\" -c \"cyan,magenta,yellow,blue\" \"npm run start:auth\" \"npm run dev:frontend\" \"npm run dev:agent-api\" \"npm run dev:agent-dashboard\"",
     "start:auth": "cd Authentication && npm start"
   },
   "devDependencies": {
