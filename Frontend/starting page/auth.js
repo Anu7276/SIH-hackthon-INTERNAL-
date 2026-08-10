@@ -1,6 +1,4 @@
-const API_BASE = (window.location.origin.includes('3000') || window.location.protocol === 'file:')
-    ? '/api/auth'
-    : 'http://localhost:3000/api/auth';
+const API_BASE = '/api/auth';
 let activeEmailForOtp = '';
 
 // Check logged in status on page load
@@ -168,7 +166,7 @@ async function handleVerifyOtp(e) {
                 token: data.accessToken || ''
             }));
             setTimeout(() => {
-                window.location.href = 'http://localhost:5176';
+                window.location.href = '/profile/';
             }, 700);
         } else {
             showToast(data.message || 'Invalid or expired OTP', 'error');
@@ -211,7 +209,7 @@ async function handleLogin(e) {
             }));
             renderDashboard(data.user, data.accessToken);
             setTimeout(() => {
-                window.location.href = 'http://localhost:5176';
+                window.location.href = '/profile/';
             }, 700);
         } else {
             showToast(data.message || 'Invalid credentials', 'error');
@@ -321,7 +319,7 @@ function openAuthModal(e) {
     }
 
     if (isLoggedIn) {
-        window.location.href = 'http://localhost:5176';
+        window.location.href = '/profile/';
         return;
     }
 
@@ -329,7 +327,7 @@ function openAuthModal(e) {
     if (modal) {
         modal.style.display = 'flex';
     } else {
-        window.location.href = 'http://localhost:3000';
+        window.location.href = '/';
     }
 }
 
@@ -344,7 +342,7 @@ function closeAuthModal() {
 function renderDashboard(user, token) {
     const navLink = document.getElementById('nav-login-link');
     if (navLink) {
-        navLink.innerHTML = `<a href="http://localhost:5176" style="color:#2e6b3e;font-weight:700;text-decoration:none;"><i class="fa-solid fa-circle-user" style="margin-right:4px;"></i> ${user.username} (Profile)</a>`;
+        navLink.innerHTML = `<a href="/profile/" style="color:#2e6b3e;font-weight:700;text-decoration:none;"><i class="fa-solid fa-circle-user" style="margin-right:4px;"></i> ${user.username} (Profile)</a>`;
     }
 
     const authCard = document.getElementById('auth-card');

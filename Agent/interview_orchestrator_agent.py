@@ -188,7 +188,13 @@ class InterviewSession:
         self.idea_context = idea_context or {}
         self.model = model
         self.allow_followups = allow_followups
-        self.client = _get_groq_client(api_key)
+        try:
+            self.client = _get_groq_client(api_key)
+        except EnvironmentError:
+            # The core interview remains usable in hosted demos without a Groq key.
+            # In that mode it asks the curated question set and skips AI follow-ups.
+            self.client = None
+            self.allow_followups = False
 
         self.transcript_lines: List[str] = []
         self.qa_pairs: List[Dict] = []
@@ -328,6 +334,8 @@ class InterviewSession:
         self._current = {"question": nxt["question"], "category": nxt["category"], "is_followup": False}
 
     def _maybe_generate_followup(self, question: str, answer: str, category: str) -> Optional[str]:
+        if self.client is None:
+            return None
         system_prompt = (
             "You are an interview orchestrator for a startup pitch evaluation. "
             "Given a question and the founder's answer, decide if a SHORT, sharp "
@@ -360,6 +368,12 @@ class InterviewSession:
             return None
 
     def _handle_founder_question(self, founder_question: str) -> str:
+        if self.client is None:
+            answer = "Thanks for asking. We will cover that during the interview or follow up with you after the session."
+            self.transcript_lines.append(f"Founder (question): {founder_question}")
+            self.transcript_lines.append(f"Interviewer: {answer}")
+            self.founder_questions.append({"question": founder_question, "answer": answer})
+            return answer
         system_prompt = (
             "You are a helpful interview host for a startup pitch evaluation platform "
             "(Startup-AYUSH Portal). The founder just asked you a question mid-interview. "
