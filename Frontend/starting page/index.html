@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,12 +8,55 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700;800;900&family=Outfit:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
     <!-- Font Awesome (for home page icons) -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css" crossorigin="anonymous" referrerpolicy="no-referrer">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
+        crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="/public/css/style.css">
 
+    <!-- Synchronous check to prevent visual flash on return visits -->
+    <script>
+        (function() {
+            try {
+                // If the user refreshed the browser, we MUST show the intro again.
+                // We detect refresh via the Performance API and clear the session flag.
+                var navEntries = performance.getEntriesByType("navigation");
+                if (navEntries.length > 0 && navEntries[0].type === "reload") {
+                    sessionStorage.removeItem("introCompletedForCurrentAppLoad");
+                } else if (window.performance && window.performance.navigation && window.performance.navigation.type === 1) {
+                    // Fallback for older browsers
+                    sessionStorage.removeItem("introCompletedForCurrentAppLoad");
+                }
+            } catch(e) {}
+
+            var urlParams = new URLSearchParams(window.location.search);
+            if (sessionStorage.getItem('introCompletedForCurrentAppLoad') === 'true' || urlParams.get('skipIntro') === 'true') {
+                document.documentElement.classList.add('skip-intro');
+            }
+        })();
+    </script>
     <style>
+        html.skip-intro #intro-layer {
+            display: none !important;
+        }
+        html.skip-intro #home-page {
+            opacity: 1 !important;
+            transform: none !important;
+            transition: none !important;
+            height: auto !important;
+            overflow: visible !important;
+        }
+        html.skip-intro,
+        html.skip-intro body {
+            overflow-x: hidden !important;
+            overflow-y: auto !important;
+            height: auto !important;
+            min-height: 100% !important;
+        }
+
         /* ─── Intro overlay that sits ON TOP of home page ─── */
         #intro-layer {
             position: fixed;
@@ -28,7 +72,7 @@
             opacity: 0;
             transform: translateY(28px);
             transition: opacity 0.85s cubic-bezier(0.22, 1, 0.36, 1),
-                        transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
+                transform 0.85s cubic-bezier(0.22, 1, 0.36, 1);
             overflow: hidden;
             height: 100vh;
             color: #4a4a4a;
@@ -36,7 +80,8 @@
             font-family: Arial, Helvetica, sans-serif;
         }
 
-        html.home-revealed, body.home-revealed {
+        html.home-revealed,
+        body.home-revealed {
             overflow-x: hidden !important;
             overflow-y: auto !important;
             height: auto !important;
@@ -51,123 +96,658 @@
         }
 
         /* ─── HOME PAGE STYLES (scoped) ─── */
-        #home-page * { box-sizing: border-box; }
+        #home-page * {
+            box-sizing: border-box;
+        }
 
-        #home-page .navbar { min-height: 40px; background: #f5f5f5; border-bottom: 1px solid #ebebeb; }
-        #home-page .upper_nav { width: min(1225px, calc(100% - 40px)); min-height: 40px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 28px; font-size: 12px; font-weight: 500; }
-        #home-page .left, #home-page .right, #home-page .login, #home-page .text-controls { display: flex; align-items: center; }
-        #home-page .left { gap: 10px; color: #555; font-size: 12px; font-weight: 600; text-decoration: none; white-space: nowrap; }
-        #home-page .flag img { display: block; width: 22px; height: 15px; object-fit: cover; }
-        #home-page .hindi_bharat p, #home-page .gov p { margin: 0; }
-        #home-page .brand-divider, #home-page .action-divider { width: 1px; height: 17px; background: #dedede; }
-        #home-page .right { height: 40px; gap: 14px; white-space: nowrap; }
-        #home-page .right a, #home-page .right button { color: #4b4b4b; font: inherit; text-decoration: none; }
-        #home-page .right a:hover, #home-page .right button:hover { color: #0c5c8d; }
-        #home-page .right button { padding: 0; border: 0; background: transparent; cursor: pointer; }
-        #home-page .text-size { font-size: 13px !important; line-height: 1; }
-        #home-page .text-size--increase, #home-page .text-size--decrease { font-size: 11px !important; }
-        #home-page .text-controls { gap: 14px; }
-        #home-page .login { gap: 8px; display: flex; align-items: center; }
-        #home-page .icon .fa-user { font-size: 15px; color: #555; }
-        #home-page .main_navbar { height: 80px; background: #fff; border-bottom: 1px solid #e9e9e9; box-shadow: 0 2px 5px rgba(0,0,0,.04); }
-        #home-page .main_nav_inner { width: min(1225px, calc(100% - 40px)); height: 100%; margin: 0 auto; display: flex; align-items: center; justify-content: space-between; gap: 35px; }
-        #home-page .logos, #home-page .ministry_logo, #home-page .startup_logo, #home-page .menu { display: flex; align-items: center; }
-        #home-page .logos { flex-shrink: 0; gap: 13px; }
-        #home-page .ministry_logo { gap: 10px; color: #202020; line-height: 1; }
-        #home-page .state_emblem { width: auto; height: 62px; }
-        #home-page .ministry_text { display: flex; flex-direction: column; justify-content: center; font-size: 12px; font-weight: 600; letter-spacing: .7px; text-transform: uppercase; }
-        #home-page .ministry_text strong { display: block; margin: 2px 0; color: #000; font-size: 25px; font-weight: 800; letter-spacing: 1px; }
-        #home-page .ministry_text small { display: block; color: #555; font-size: 9px; font-weight: 500; letter-spacing: 0; text-transform: none; }
-        #home-page .logo_line { width: 1px; height: 49px; background: #d6d6d6; }
-        #home-page .startup_logo img { display: block; width: auto; height: 63px; object-fit: contain; }
-        #home-page .menu { height: 100%; justify-content: flex-end; gap: clamp(18px, 2vw, 34px); }
-        #home-page .menu a, #home-page .search { position: relative; color: #414141; background: transparent; border: 0; font: 500 12px Arial, Helvetica, sans-serif; text-decoration: none; white-space: nowrap; }
-        #home-page .menu a:hover { color: #287345; }
-        #home-page .menu a.active { color: #266a39; }
-        #home-page .menu a.active::after { position: absolute; right: 0; bottom: -26px; left: 0; height: 2px; content: ""; background: #317343; }
-        #home-page .menu .fa-chevron-down { margin-left: 4px; font-size: 8px; }
-        #home-page .search { padding: 7px 0 7px 2px; cursor: pointer; font-size: 15px; }
-        #home-page .hero { position: relative; background: url("dash_main.png") center right / cover no-repeat; padding: 70px 0 0; }
-        #home-page .hero_inner { width: min(1225px, calc(100% - 40px)); margin: 0 auto; padding-bottom: 90px; max-width: 560px; }
-        #home-page .hero h1 { margin: 0 0 18px; color: #1f4d2c; font-size: 34px; font-weight: 800; line-height: 1.25; }
-        #home-page .hero p { margin: 0 0 26px; color: #4a4a4a; font-size: 14.5px; line-height: 1.7; max-width: 480px; }
-        #home-page .hero_buttons { display: flex; align-items: center; gap: 16px; }
-        #home-page .btn { display: inline-flex; align-items: center; gap: 10px; padding: 13px 24px; border-radius: 6px; font-size: 14px; font-weight: 700; text-decoration: none; white-space: nowrap; border: 1.5px solid transparent; transition: opacity .15s ease; }
-        #home-page .btn:hover { opacity: .88; }
-        #home-page .btn-primary { background: #2e6b3e; color: #fff; }
-        #home-page .btn-primary i { font-size: 12px; }
-        #home-page .btn-secondary { background: #fff; color: #2e6b3e; border-color: #2e6b3e; }
-        #home-page .stats_bar { width: min(1100px, calc(100% - 40px)); margin: 0 auto; transform: translateY(50%); background: #fff; border-radius: 10px; box-shadow: 0 10px 30px rgba(0,0,0,.12); display: flex; align-items: center; justify-content: space-around; padding: 26px 10px; }
-        #home-page .stat { display: flex; align-items: center; gap: 12px; }
-        #home-page .stat i { font-size: 22px; color: #2e6b3e; }
-        #home-page .stat_text { display: flex; flex-direction: column; line-height: 1.3; }
-        #home-page .stat_text strong { font-size: 19px; color: #1f2a24; font-weight: 800; }
-        #home-page .stat_text span { font-size: 12.5px; color: #757575; }
-        #home-page .section_underline { display: block; width: 34px; height: 3px; margin: 14px auto 0; background: #2e6b3e; border-radius: 2px; }
-        #home-page .stakeholders h2, #home-page .succeed h2 { text-align: center; margin: 0; font-size: 26px; font-weight: 700; color: #1f2a24; }
-        #home-page .stakeholders { width: min(1225px, calc(100% - 40px)); margin: 0 auto; padding: 110px 0 60px; }
-        #home-page .stakeholder_cards { margin-top: 46px; display: grid; grid-template-columns: repeat(5, 1fr); gap: 20px; }
-        #home-page .stakeholder_card { background: #fbfaf8; border: 1px solid #eee7db; border-radius: 10px; padding: 26px 20px; text-align: left; }
-        #home-page .card_icon { width: 46px; height: 46px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 18px; margin-bottom: 16px; }
-        #home-page .icon-startups { background: #fdead9; color: #d97b29; }
-        #home-page .icon-investors { background: #dbe9fb; color: #2e6fc7; }
-        #home-page .icon-incubators { background: #e6e1fb; color: #6c4fd0; }
-        #home-page .icon-govt { background: #fdead9; color: #d97b29; }
-        #home-page .icon-public { background: #e0f2e5; color: #2e6b3e; }
-        #home-page .stakeholder_card h3 { margin: 0 0 10px; font-size: 15.5px; font-weight: 700; color: #1f2a24; }
-        #home-page .stakeholder_card p { margin: 0 0 18px; font-size: 12.5px; line-height: 1.6; color: #767676; min-height: 58px; }
-        #home-page .card_link { font-size: 12.5px; font-weight: 700; text-decoration: none; display: inline-flex; align-items: center; gap: 6px; }
-        #home-page .card_link i { font-size: 10px; }
-        #home-page .link-green { color: #2e6b3e; }
-        #home-page .link-blue { color: #2e6fc7; }
-        #home-page .link-purple { color: #6c4fd0; }
-        #home-page .link-orange { color: #d97b29; }
-        #home-page .succeed { position: relative; background: #f3efe6; padding: 60px 0 70px; text-align: center; overflow: hidden; }
-        #home-page .succeed_items { position: relative; z-index: 1; width: min(1100px, calc(100% - 40px)); margin: 46px auto 0; display: grid; grid-template-columns: repeat(5, 1fr); gap: 24px; }
-        #home-page .succeed_item i { font-size: 22px; color: #2e6b3e; margin-bottom: 14px; }
-        #home-page .succeed_item h4 { margin: 0 0 8px; font-size: 14.5px; font-weight: 700; color: #1f2a24; }
-        #home-page .succeed_item p { margin: 0; font-size: 12px; line-height: 1.6; color: #7a7a7a; }
-        #home-page .cta_banner { background: #17331f; padding: 34px 20px; display: flex; align-items: center; justify-content: center; gap: 30px; flex-wrap: wrap; text-align: center; }
-        #home-page .cta_banner p { margin: 0; color: #f2efe6; font-size: 15px; font-style: italic; }
-        #home-page .cta_banner .btn-primary { background: #2e6b3e; }
-        #home-page .lang-select { position: relative; display: flex; align-items: center; gap: 6px; color: #4b4b4b; font-size: 12px; font-weight: 600; }
-        #home-page .lang-select i.fa-globe { font-size: 12px; }
-        #home-page .lang-select select { appearance: none; border: 0; background: transparent; font: inherit; color: inherit; padding-right: 12px; cursor: pointer; }
-        #home-page .lang-select .lang-caret { font-size: 8px; margin-left: -8px; pointer-events: none; }
-        #home-page .landmark_watermark { position: absolute; left: -20px; bottom: -10px; width: 340px; color: #e2dccb; opacity: .8; pointer-events: none; z-index: 0; }
+        #home-page .navbar {
+            min-height: 40px;
+            background: #f5f5f5;
+            border-bottom: 1px solid #ebebeb;
+        }
+
+        #home-page .upper_nav {
+            width: min(1225px, calc(100% - 40px));
+            min-height: 40px;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 28px;
+            font-size: 12px;
+            font-weight: 500;
+        }
+
+        #home-page .left,
+        #home-page .right,
+        #home-page .login,
+        #home-page .text-controls {
+            display: flex;
+            align-items: center;
+        }
+
+        #home-page .left {
+            gap: 10px;
+            color: #555;
+            font-size: 12px;
+            font-weight: 600;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        #home-page .flag img {
+            display: block;
+            width: 22px;
+            height: 15px;
+            object-fit: cover;
+        }
+
+        #home-page .hindi_bharat p,
+        #home-page .gov p {
+            margin: 0;
+        }
+
+        #home-page .brand-divider,
+        #home-page .action-divider {
+            width: 1px;
+            height: 17px;
+            background: #dedede;
+        }
+
+        #home-page .right {
+            height: 40px;
+            gap: 14px;
+            white-space: nowrap;
+        }
+
+        #home-page .right a,
+        #home-page .right button {
+            color: #4b4b4b;
+            font: inherit;
+            text-decoration: none;
+        }
+
+        #home-page .right a:hover,
+        #home-page .right button:hover {
+            color: #0c5c8d;
+        }
+
+        #home-page .right button {
+            padding: 0;
+            border: 0;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        #home-page .text-size {
+            font-size: 13px !important;
+            line-height: 1;
+        }
+
+        #home-page .text-size--increase,
+        #home-page .text-size--decrease {
+            font-size: 11px !important;
+        }
+
+        #home-page .text-controls {
+            gap: 14px;
+        }
+
+        #home-page .login {
+            gap: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        #home-page .icon .fa-user {
+            font-size: 15px;
+            color: #555;
+        }
+
+        #home-page .main_navbar {
+            height: 80px;
+            background: #fff;
+            border-bottom: 1px solid #e9e9e9;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, .04);
+        }
+
+        #home-page .main_nav_inner {
+            width: min(1225px, calc(100% - 40px));
+            height: 100%;
+            margin: 0 auto;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 35px;
+        }
+
+        #home-page .logos,
+        #home-page .ministry_logo,
+        #home-page .startup_logo,
+        #home-page .menu {
+            display: flex;
+            align-items: center;
+        }
+
+        #home-page .logos {
+            flex-shrink: 0;
+            gap: 13px;
+        }
+
+        #home-page .ministry_logo {
+            gap: 10px;
+            color: #202020;
+            line-height: 1;
+        }
+
+        #home-page .state_emblem {
+            width: auto;
+            height: 62px;
+        }
+
+        #home-page .ministry_text {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: .7px;
+            text-transform: uppercase;
+        }
+
+        #home-page .ministry_text strong {
+            display: block;
+            margin: 2px 0;
+            color: #000;
+            font-size: 25px;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        #home-page .ministry_text small {
+            display: block;
+            color: #555;
+            font-size: 9px;
+            font-weight: 500;
+            letter-spacing: 0;
+            text-transform: none;
+        }
+
+        #home-page .logo_line {
+            width: 1px;
+            height: 49px;
+            background: #d6d6d6;
+        }
+
+        #home-page .startup_logo img {
+            display: block;
+            width: auto;
+            height: 63px;
+            object-fit: contain;
+        }
+
+        #home-page .menu {
+            height: 100%;
+            justify-content: flex-end;
+            gap: clamp(18px, 2vw, 34px);
+        }
+
+        #home-page .menu a,
+        #home-page .search {
+            position: relative;
+            color: #414141;
+            background: transparent;
+            border: 0;
+            font: 500 12px Arial, Helvetica, sans-serif;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+
+        #home-page .menu a:hover {
+            color: #287345;
+        }
+
+        #home-page .menu a.active {
+            color: #266a39;
+        }
+
+        #home-page .menu a.active::after {
+            position: absolute;
+            right: 0;
+            bottom: -26px;
+            left: 0;
+            height: 2px;
+            content: "";
+            background: #317343;
+        }
+
+        #home-page .menu .fa-chevron-down {
+            margin-left: 4px;
+            font-size: 8px;
+        }
+
+        #home-page .search {
+            padding: 7px 0 7px 2px;
+            cursor: pointer;
+            font-size: 15px;
+        }
+
+        #home-page .hero {
+            position: relative;
+            background: url("../Home_Page/dash_main.png") center right / cover no-repeat;
+            padding: 70px 0 0;
+        }
+
+        #home-page .hero_inner {
+            width: min(1225px, calc(100% - 40px));
+            margin: 0 auto;
+            padding-bottom: 90px;
+            max-width: 560px;
+        }
+
+        #home-page .hero h1 {
+            margin: 0 0 18px;
+            color: #1f4d2c;
+            font-size: 34px;
+            font-weight: 800;
+            line-height: 1.25;
+        }
+
+        #home-page .hero p {
+            margin: 0 0 26px;
+            color: #4a4a4a;
+            font-size: 14.5px;
+            line-height: 1.7;
+            max-width: 480px;
+        }
+
+        #home-page .hero_buttons {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+        }
+
+        #home-page .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 13px 24px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            text-decoration: none;
+            white-space: nowrap;
+            border: 1.5px solid transparent;
+            transition: opacity .15s ease;
+        }
+
+        #home-page .btn:hover {
+            opacity: .88;
+        }
+
+        #home-page .btn-primary {
+            background: #2e6b3e;
+            color: #fff;
+        }
+
+        #home-page .btn-primary i {
+            font-size: 12px;
+        }
+
+        #home-page .btn-secondary {
+            background: #fff;
+            color: #2e6b3e;
+            border-color: #2e6b3e;
+        }
+
+        #home-page .stats_bar {
+            width: min(1100px, calc(100% - 40px));
+            margin: 0 auto;
+            transform: translateY(50%);
+            background: #fff;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, .12);
+            display: flex;
+            align-items: center;
+            justify-content: space-around;
+            padding: 26px 10px;
+        }
+
+        #home-page .stat {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        #home-page .stat i {
+            font-size: 22px;
+            color: #2e6b3e;
+        }
+
+        #home-page .stat_text {
+            display: flex;
+            flex-direction: column;
+            line-height: 1.3;
+        }
+
+        #home-page .stat_text strong {
+            font-size: 19px;
+            color: #1f2a24;
+            font-weight: 800;
+        }
+
+        #home-page .stat_text span {
+            font-size: 12.5px;
+            color: #757575;
+        }
+
+        #home-page .section_underline {
+            display: block;
+            width: 34px;
+            height: 3px;
+            margin: 14px auto 0;
+            background: #2e6b3e;
+            border-radius: 2px;
+        }
+
+        #home-page .stakeholders h2,
+        #home-page .succeed h2 {
+            text-align: center;
+            margin: 0;
+            font-size: 26px;
+            font-weight: 700;
+            color: #1f2a24;
+        }
+
+        #home-page .stakeholders {
+            width: min(1225px, calc(100% - 40px));
+            margin: 0 auto;
+            padding: 110px 0 60px;
+        }
+
+        #home-page .stakeholder_cards {
+            margin-top: 46px;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 20px;
+        }
+
+        #home-page .stakeholder_card {
+            background: #fbfaf8;
+            border: 1px solid #eee7db;
+            border-radius: 10px;
+            padding: 26px 20px;
+            text-align: left;
+        }
+
+        #home-page .card_icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 18px;
+            margin-bottom: 16px;
+        }
+
+        #home-page .icon-startups {
+            background: #fdead9;
+            color: #d97b29;
+        }
+
+        #home-page .icon-investors {
+            background: #dbe9fb;
+            color: #2e6fc7;
+        }
+
+        #home-page .icon-incubators {
+            background: #e6e1fb;
+            color: #6c4fd0;
+        }
+
+        #home-page .icon-govt {
+            background: #fdead9;
+            color: #d97b29;
+        }
+
+        #home-page .icon-public {
+            background: #e0f2e5;
+            color: #2e6b3e;
+        }
+
+        #home-page .stakeholder_card h3 {
+            margin: 0 0 10px;
+            font-size: 15.5px;
+            font-weight: 700;
+            color: #1f2a24;
+        }
+
+        #home-page .stakeholder_card p {
+            margin: 0 0 18px;
+            font-size: 12.5px;
+            line-height: 1.6;
+            color: #767676;
+            min-height: 58px;
+        }
+
+        #home-page .card_link {
+            font-size: 12.5px;
+            font-weight: 700;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        #home-page .card_link i {
+            font-size: 10px;
+        }
+
+        #home-page .link-green {
+            color: #2e6b3e;
+        }
+
+        #home-page .link-blue {
+            color: #2e6fc7;
+        }
+
+        #home-page .link-purple {
+            color: #6c4fd0;
+        }
+
+        #home-page .link-orange {
+            color: #d97b29;
+        }
+
+        #home-page .succeed {
+            position: relative;
+            background: #f3efe6;
+            padding: 60px 0 70px;
+            text-align: center;
+            overflow: hidden;
+        }
+
+        #home-page .succeed_items {
+            position: relative;
+            z-index: 1;
+            width: min(1100px, calc(100% - 40px));
+            margin: 46px auto 0;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 24px;
+        }
+
+        #home-page .succeed_item i {
+            font-size: 22px;
+            color: #2e6b3e;
+            margin-bottom: 14px;
+        }
+
+        #home-page .succeed_item h4 {
+            margin: 0 0 8px;
+            font-size: 14.5px;
+            font-weight: 700;
+            color: #1f2a24;
+        }
+
+        #home-page .succeed_item p {
+            margin: 0;
+            font-size: 12px;
+            line-height: 1.6;
+            color: #7a7a7a;
+        }
+
+        #home-page .cta_banner {
+            background: #17331f;
+            padding: 34px 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+            text-align: center;
+        }
+
+        #home-page .cta_banner p {
+            margin: 0;
+            color: #f2efe6;
+            font-size: 15px;
+            font-style: italic;
+        }
+
+        #home-page .cta_banner .btn-primary {
+            background: #2e6b3e;
+        }
+
+        #home-page .lang-select {
+            position: relative;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            color: #4b4b4b;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        #home-page .lang-select i.fa-globe {
+            font-size: 12px;
+        }
+
+        #home-page .lang-select select {
+            appearance: none;
+            border: 0;
+            background: transparent;
+            font: inherit;
+            color: inherit;
+            padding-right: 12px;
+            cursor: pointer;
+        }
+
+        #home-page .lang-select .lang-caret {
+            font-size: 8px;
+            margin-left: -8px;
+            pointer-events: none;
+        }
+
+        #home-page .landmark_watermark {
+            position: absolute;
+            left: -20px;
+            bottom: -10px;
+            width: 340px;
+            color: #e2dccb;
+            opacity: .8;
+            pointer-events: none;
+            z-index: 0;
+        }
 
         @media (max-width: 1050px) {
-            #home-page .stakeholder_cards { grid-template-columns: repeat(3, 1fr); }
-            #home-page .succeed_items { grid-template-columns: repeat(3, 1fr); }
-            #home-page .menu { gap: 16px; }
-            #home-page .menu a { font-size: 11px; }
+            #home-page .stakeholder_cards {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            #home-page .succeed_items {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            #home-page .menu {
+                gap: 16px;
+            }
+
+            #home-page .menu a {
+                font-size: 11px;
+            }
         }
+
         @media (max-width: 760px) {
-            #home-page .upper_nav { width: calc(100% - 24px); }
-            #home-page .right { gap: 9px; }
-            #home-page .skip, #home-page .text-controls, #home-page .action-divider { display: none; }
-            #home-page .main_navbar { height: auto; }
-            #home-page .main_nav_inner { width: calc(100% - 24px); min-height: 76px; }
-            #home-page .menu a { display: none; }
-            #home-page .menu { margin-left: auto; }
-            #home-page .hero { padding-top: 40px; }
-            #home-page .hero h1 { font-size: 26px; }
-            #home-page .stats_bar { flex-wrap: wrap; gap: 20px; transform: translateY(30px); }
-            #home-page .stakeholders { padding-top: 70px; }
-            #home-page .stakeholder_cards { grid-template-columns: 1fr; }
-            #home-page .succeed_items { grid-template-columns: repeat(2, 1fr); }
-            #home-page .cta_banner { flex-direction: column; }
+            #home-page .upper_nav {
+                width: calc(100% - 24px);
+            }
+
+            #home-page .right {
+                gap: 9px;
+            }
+
+            #home-page .skip,
+            #home-page .text-controls,
+            #home-page .action-divider {
+                display: none;
+            }
+
+            #home-page .main_navbar {
+                height: auto;
+            }
+
+            #home-page .main_nav_inner {
+                width: calc(100% - 24px);
+                min-height: 76px;
+            }
+
+            #home-page .menu a {
+                display: none;
+            }
+
+            #home-page .menu {
+                margin-left: auto;
+            }
+
+            #home-page .hero {
+                padding-top: 40px;
+            }
+
+            #home-page .hero h1 {
+                font-size: 26px;
+            }
+
+            #home-page .stats_bar {
+                flex-wrap: wrap;
+                gap: 20px;
+                transform: translateY(30px);
+            }
+
+            #home-page .stakeholders {
+                padding-top: 70px;
+            }
+
+            #home-page .stakeholder_cards {
+                grid-template-columns: 1fr;
+            }
+
+            #home-page .succeed_items {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            #home-page .cta_banner {
+                flex-direction: column;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- INTRO LAYER — fixed on top, removed when animation finishes -->
     <div id="intro-layer">
-        <button id="skip-intro-btn" onclick="skipIntro()" style="position: fixed; top: 24px; right: 28px; z-index: 600; padding: 10px 20px; background: rgba(0,0,0,0.7); color: #fff; border: 1px solid rgba(255,255,255,0.4); border-radius: 20px; cursor: pointer; font-size: 13px; font-weight: 600; backdrop-filter: blur(6px); transition: all 0.2s ease;">
-            Skip Intro <i class="fa-solid fa-forward" style="margin-left: 6px;"></i>
-        </button>
-
         <div id="loader" class="loader-overlay">
             <div class="loader-content">
                 <div class="mandala-spinner"></div>
@@ -192,19 +772,26 @@
                 <div class="upper_nav">
                     <div class="left">
                         <div class="flag">
-                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/india-flag-icon.png" alt="Indian flag">
+                            <img src="https://uxwing.com/wp-content/themes/uxwing/download/flags-landmarks/india-flag-icon.png"
+                                alt="Indian flag">
                         </div>
-                        <div class="hindi_bharat"><p lang="hi">भारत सरकार</p></div>
+                        <div class="hindi_bharat">
+                            <p lang="hi">भारत सरकार</p>
+                        </div>
                         <span class="brand-divider" aria-hidden="true"></span>
-                        <div class="gov"><p>Government of India</p></div>
+                        <div class="gov">
+                            <p>Government of India</p>
+                        </div>
                     </div>
                     <div class="right">
                         <div class="skip"><a href="#main-content">Skip to Main Content</a></div>
                         <span class="action-divider" aria-hidden="true"></span>
                         <div class="text-controls" aria-label="Text size controls">
-                            <button class="text-size text-size--increase" type="button" aria-label="Increase text size">A+</button>
+                            <button class="text-size text-size--increase" type="button"
+                                aria-label="Increase text size">A+</button>
                             <button class="text-size" type="button" aria-label="Default text size">A</button>
-                            <button class="text-size text-size--decrease" type="button" aria-label="Decrease text size">A-</button>
+                            <button class="text-size text-size--decrease" type="button"
+                                aria-label="Decrease text size">A-</button>
                         </div>
                         <span class="action-divider" aria-hidden="true"></span>
                         <div class="lang-select">
@@ -218,7 +805,7 @@
                         <span class="action-divider" aria-hidden="true"></span>
                         <div class="login">
                             <div class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></div>
-                            <a href="/auth" id="nav-login-link">Login / Register</a>
+                            <a href="/profile/?mode=register" id="nav-login-link">Login / Register</a>
                         </div>
                     </div>
                 </div>
@@ -228,7 +815,9 @@
                 <div class="main_nav_inner">
                     <div class="logos">
                         <div class="ministry_logo logo-container">
-                            <img class="state_emblem" src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="State Emblem of India">
+                            <img class="state_emblem"
+                                src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg"
+                                alt="State Emblem of India">
                             <div class="ministry_text">
                                 <span>Ministry of</span>
                                 <strong>AYUSH</strong>
@@ -237,18 +826,19 @@
                         </div>
                         <span class="logo_line" aria-hidden="true"></span>
                         <div class="startup_logo">
-                            <img src="STARTUPAYSH.png" alt="Startup AYUSH Portal">
+                            <img src="../Home_Page/STARTUPAYSH.png" alt="Startup AYUSH Portal">
                         </div>
                     </div>
                     <nav class="menu" aria-label="Main navigation">
                         <a class="active" href="#home">Home</a>
-                        <a href="/startups">Startups <i class="fa-solid fa-chevron-down"></i></a>
-                        <a href="#investors">Investors</a>
+                        <a href="/startups/">Startups <i class="fa-solid fa-chevron-down"></i></a>
+                        <a href="/investor/">Investors</a>
                         <a href="#incubators">Incubators &amp; Accelerators</a>
-                        <a href="/schemes">Government Schemes</a>
+                        <a href="/schemes/">Government Schemes</a>
                         <a href="#resources">Resources <i class="fa-solid fa-chevron-down"></i></a>
                         <a href="#events">Events</a>
-                        <button class="search" type="button" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                        <button class="search" type="button" aria-label="Search"><i
+                                class="fa-solid fa-magnifying-glass"></i></button>
                     </nav>
                 </div>
             </div>
@@ -258,17 +848,27 @@
             <section class="hero">
                 <div class="hero_inner">
                     <h1>Empowering AYUSH Startups.<br>Building a Healthy Future.</h1>
-                    <p>Welcome to the Startup AYUSH Portal – a one-stop platform connecting Startups, Investors, Incubators, Government Agencies and Public Users to collaborate, innovate and grow together.</p>
+                    <p>Welcome to the Startup AYUSH Portal – a one-stop platform connecting Startups, Investors,
+                        Incubators, Government Agencies and Public Users to collaborate, innovate and grow together.</p>
                     <div class="hero_buttons">
-                        <a href="/startups" class="btn btn-primary">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="/startups/" class="btn btn-primary">Explore Startups <i
+                                class="fa-solid fa-arrow-right"></i></a>
                         <a href="#join" class="btn btn-secondary">Join the Ecosystem</a>
                     </div>
                 </div>
                 <div class="stats_bar">
-                    <div class="stat"><i class="fa-solid fa-rocket"></i><div class="stat_text"><strong>1200+</strong><span>Startups</span></div></div>
-                    <div class="stat"><i class="fa-solid fa-user-group"></i><div class="stat_text"><strong>300+</strong><span>Investors</span></div></div>
-                    <div class="stat"><i class="fa-solid fa-building"></i><div class="stat_text"><strong>150+</strong><span>Incubators</span></div></div>
-                    <div class="stat"><i class="fa-solid fa-globe"></i><div class="stat_text"><strong>25+</strong><span>Countries</span></div></div>
+                    <div class="stat"><i class="fa-solid fa-rocket"></i>
+                        <div class="stat_text"><strong>1200+</strong><span>Startups</span></div>
+                    </div>
+                    <div class="stat"><i class="fa-solid fa-user-group"></i>
+                        <div class="stat_text"><strong>300+</strong><span>Investors</span></div>
+                    </div>
+                    <div class="stat"><i class="fa-solid fa-building"></i>
+                        <div class="stat_text"><strong>150+</strong><span>Incubators</span></div>
+                    </div>
+                    <div class="stat"><i class="fa-solid fa-globe"></i>
+                        <div class="stat_text"><strong>25+</strong><span>Countries</span></div>
+                    </div>
                 </div>
             </section>
 
@@ -276,35 +876,40 @@
                 <h2>A Collaborative Platform for All Stakeholders</h2>
                 <span class="section_underline" aria-hidden="true"></span>
                 <div class="stakeholder_cards">
-                    <div class="stakeholder_card" onclick="window.location.href='/startups'" style="cursor: pointer;">
+                    <div class="stakeholder_card" onclick="window.location.href='/startups/'" style="cursor: pointer;">
                         <div class="card_icon icon-startups"><i class="fa-solid fa-rocket"></i></div>
                         <h3>Startups</h3>
                         <p>Showcase your innovations, connect with mentors &amp; investors, and grow globally.</p>
-                        <a href="/startups" class="card_link link-green" onclick="event.stopPropagation();">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="/startups/" class="card_link link-green" onclick="event.stopPropagation();">Explore
+                            Startups <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <div class="stakeholder_card">
+                    <div class="stakeholder_card" onclick="window.location.href='/investor/'" style="cursor: pointer;">
                         <div class="card_icon icon-investors"><i class="fa-solid fa-hand-holding-dollar"></i></div>
                         <h3>Investors</h3>
                         <p>Discover promising AYUSH startups and invest in the future of holistic health.</p>
-                        <a href="#investors" class="card_link link-blue">Explore Opportunities <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="/investor/" class="card_link link-blue" onclick="event.stopPropagation();">Explore
+                            Opportunities <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div class="stakeholder_card">
                         <div class="card_icon icon-incubators"><i class="fa-solid fa-people-group"></i></div>
                         <h3>Incubators &amp; Accelerators</h3>
                         <p>Support and nurture startups in the AYUSH sector with resources and guidance.</p>
-                        <a href="#incubators" class="card_link link-purple">Collaborate With Us <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#incubators" class="card_link link-purple">Collaborate With Us <i
+                                class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <div class="stakeholder_card" onclick="window.location.href='/schemes'" style="cursor: pointer;">
+                    <div class="stakeholder_card" onclick="window.location.href='/schemes/'" style="cursor: pointer;">
                         <div class="card_icon icon-govt"><i class="fa-solid fa-landmark"></i></div>
                         <h3>Government Schemes</h3>
                         <p>Discover government funding, subsidies, grants, and support schemes for AYUSH startups.</p>
-                        <a href="/schemes" class="card_link link-orange" onclick="event.stopPropagation();">Explore Schemes <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="/schemes/" class="card_link link-orange" onclick="event.stopPropagation();">Explore
+                            Schemes <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div class="stakeholder_card">
                         <div class="card_icon icon-public"><i class="fa-solid fa-users"></i></div>
                         <h3>Public Users</h3>
                         <p>Find AYUSH solutions, resources, events and expert guidance.</p>
-                        <a href="#resources" class="card_link link-green">Explore Resources <i class="fa-solid fa-arrow-right"></i></a>
+                        <a href="#resources" class="card_link link-green">Explore Resources <i
+                                class="fa-solid fa-arrow-right"></i></a>
                     </div>
                 </div>
             </section>
@@ -312,33 +917,49 @@
             <section class="succeed">
                 <div class="landmark_watermark" aria-hidden="true">
                     <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M200 10c14 10 22 26 22 42h-44c0-16 8-32 22-42z" fill="currentColor"/>
-                        <rect x="150" y="52" width="100" height="18" fill="currentColor"/>
-                        <path d="M150 70c0-40 22-64 50-64s50 24 50 64" fill="currentColor"/>
-                        <rect x="120" y="70" width="20" height="120" fill="currentColor"/>
-                        <rect x="260" y="70" width="20" height="120" fill="currentColor"/>
-                        <circle cx="130" cy="60" r="10" fill="currentColor"/>
-                        <circle cx="270" cy="60" r="10" fill="currentColor"/>
-                        <rect x="60" y="150" width="16" height="90" fill="currentColor"/>
-                        <rect x="324" y="150" width="16" height="90" fill="currentColor"/>
-                        <rect x="20" y="230" width="360" height="14" fill="currentColor"/>
-                        <rect x="140" y="130" width="120" height="110" fill="currentColor"/>
+                        <path d="M200 10c14 10 22 26 22 42h-44c0-16 8-32 22-42z" fill="currentColor" />
+                        <rect x="150" y="52" width="100" height="18" fill="currentColor" />
+                        <path d="M150 70c0-40 22-64 50-64s50 24 50 64" fill="currentColor" />
+                        <rect x="120" y="70" width="20" height="120" fill="currentColor" />
+                        <rect x="260" y="70" width="20" height="120" fill="currentColor" />
+                        <circle cx="130" cy="60" r="10" fill="currentColor" />
+                        <circle cx="270" cy="60" r="10" fill="currentColor" />
+                        <rect x="60" y="150" width="16" height="90" fill="currentColor" />
+                        <rect x="324" y="150" width="16" height="90" fill="currentColor" />
+                        <rect x="20" y="230" width="360" height="14" fill="currentColor" />
+                        <rect x="140" y="130" width="120" height="110" fill="currentColor" />
                     </svg>
                 </div>
                 <h2>Everything You Need to Succeed</h2>
                 <span class="section_underline" aria-hidden="true"></span>
                 <div class="succeed_items">
-                    <div class="succeed_item"><i class="fa-solid fa-user-tie"></i><h4>Mentorship</h4><p>Connect with industry experts and leaders.</p></div>
-                    <div class="succeed_item"><i class="fa-solid fa-share-nodes"></i><h4>Networking</h4><p>Build meaningful connections worldwide.</p></div>
-                    <div class="succeed_item"><i class="fa-solid fa-book-open"></i><h4>Resources</h4><p>Guides, tools and insights for your journey.</p></div>
-                    <div class="succeed_item"><i class="fa-regular fa-calendar"></i><h4>Events</h4><p>Workshops, webinars and global events.</p></div>
-                    <div class="succeed_item"><i class="fa-solid fa-bullhorn"></i><h4>Showcase</h4><p>Showcase your innovations to the world.</p></div>
+                    <div class="succeed_item"><i class="fa-solid fa-user-tie"></i>
+                        <h4>Mentorship</h4>
+                        <p>Connect with industry experts and leaders.</p>
+                    </div>
+                    <div class="succeed_item"><i class="fa-solid fa-share-nodes"></i>
+                        <h4>Networking</h4>
+                        <p>Build meaningful connections worldwide.</p>
+                    </div>
+                    <div class="succeed_item"><i class="fa-solid fa-book-open"></i>
+                        <h4>Resources</h4>
+                        <p>Guides, tools and insights for your journey.</p>
+                    </div>
+                    <div class="succeed_item"><i class="fa-regular fa-calendar"></i>
+                        <h4>Events</h4>
+                        <p>Workshops, webinars and global events.</p>
+                    </div>
+                    <div class="succeed_item"><i class="fa-solid fa-bullhorn"></i>
+                        <h4>Showcase</h4>
+                        <p>Showcase your innovations to the world.</p>
+                    </div>
                 </div>
             </section>
 
             <section class="cta_banner">
                 <p>&ldquo;Promoting Innovation. Building Partnerships. Strengthening the AYUSH Ecosystem.&rdquo;</p>
-                <a href="#join" class="btn btn-primary">Be a Part of the Movement <i class="fa-solid fa-arrow-right"></i></a>
+                <a href="#join" class="btn btn-primary">Be a Part of the Movement <i
+                        class="fa-solid fa-arrow-right"></i></a>
             </section>
         </main>
     </div>
@@ -353,10 +974,9 @@
         (function () {
             function init() {
                 const introLayer = document.getElementById('intro-layer');
-                const homePage   = document.getElementById('home-page');
+                const homePage = document.getElementById('home-page');
 
                 // Check saved login profile
-                // Saved user profile check
                 try {
                     const savedProfile = localStorage.getItem('ayush_user_profile');
                     if (savedProfile) {
@@ -364,16 +984,46 @@
                         const loginLink = document.getElementById('nav-login-link');
                         if (loginLink && parsed && parsed.isLoggedIn) {
                             loginLink.textContent = (parsed.user && parsed.user.fullName) ? parsed.user.fullName : 'My Profile';
-                            loginLink.href = '/profile';
+                            loginLink.href = '/profile/?mode=profile';
                         }
                     }
-                } catch(e) {}
+                } catch (e) { }
 
-                // Skip intro ONLY when navigating via explicit skipIntro URL parameter
+                // Auth Guard: Intercept clicks for unauthenticated users
+                document.addEventListener('click', function (e) {
+                    if (!homePage || !homePage.classList.contains('revealed')) return;
+
+                    const target = e.target.closest('a, button, .stakeholder_card');
+                    if (!target) return;
+
+                    const href = target.getAttribute('href') || '';
+                    if (href.includes('profile') || href === '#home' || target.id === 'nav-login-link' || target.classList.contains('search')) {
+                        return;
+                    }
+
+                    let isLoggedIn = false;
+                    try {
+                        const saved = localStorage.getItem('ayush_user_profile');
+                        if (saved) {
+                            const parsed = JSON.parse(saved);
+                            isLoggedIn = Boolean(parsed && parsed.isLoggedIn);
+                        }
+                    } catch (err) { }
+
+                    if (!isLoggedIn) {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        alert("Please sign in or register your account to access AYUSH ecosystem features!");
+                        window.location.href = '/profile/?mode=register';
+                    }
+                }, true);
+
+                // Skip intro ONLY when navigating via explicit skipIntro URL parameter or if already seen in this app session
                 const urlParams = new URLSearchParams(window.location.search);
                 const skipIntro = urlParams.get('skipIntro') === 'true';
+                const hasSeenIntro = sessionStorage.getItem('introCompletedForCurrentAppLoad') === 'true';
 
-                if (skipIntro && introLayer) {
+                if ((skipIntro || hasSeenIntro) && introLayer) {
                     introLayer.style.display = 'none';
                     document.documentElement.classList.add('home-revealed');
                     document.body.classList.add('home-revealed');
@@ -386,6 +1036,11 @@
                 function reveal(fadeDurationSec) {
                     if (alreadyRevealed) return;
                     alreadyRevealed = true;
+
+                    try {
+                        sessionStorage.setItem('introCompletedForCurrentAppLoad', 'true');
+                        localStorage.removeItem('introVideoSeen'); // Clean up old incorrect flag
+                    } catch(e) {}
 
                     const ms = Math.round((fadeDurationSec || 1.0) * 1000);
 
@@ -420,5 +1075,157 @@
         })();
     </script>
 
+    <!-- AUTHENTICATION MODAL OVERLAY -->
+    <div id="auth-modal-overlay" class="auth-modal-overlay">
+        <!-- Notification Toast Container -->
+        <div id="toast-container" class="toast-container"></div>
+
+        <div class="main-container" style="position: relative;">
+            <button type="button" class="modal-close-btn" onclick="closeAuthModal()" title="Close Modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+
+            <!-- Auth Container (Shown when logged out) -->
+            <div id="auth-card" class="auth-card glass-panel">
+                <div class="brand-header">
+                    <div class="logo-badge">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h2>SIH Hackathon Portal</h2>
+                    <p>Secure Authentication & Profile Portal</p>
+                </div>
+
+                <!-- Tab Switching Buttons -->
+                <div id="auth-tabs" class="tabs-header">
+                    <button type="button" class="tab-btn active" id="tab-login" onclick="switchTab('login')">
+                        <i class="fa-solid fa-right-to-bracket"></i> Sign In
+                    </button>
+                    <button type="button" class="tab-btn" id="tab-register" onclick="switchTab('register')">
+                        <i class="fa-solid fa-user-plus"></i> Register
+                    </button>
+                </div>
+
+                <!-- LOGIN FORM -->
+                <form id="login-form" class="auth-form active" onsubmit="handleLogin(event)">
+                    <div class="form-group">
+                        <label for="login-email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                        <input type="email" id="login-email" placeholder="name@example.com" required
+                            autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="login-password"><i class="fa-solid fa-lock"></i> Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="login-password" placeholder="••••••••" required
+                                autocomplete="current-password">
+                            <button type="button" class="toggle-password"
+                                onclick="togglePasswordVisibility('login-password', this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="login-btn" class="btn btn-primary">
+                        <span>Sign In</span> <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </form>
+
+                <!-- REGISTER FORM -->
+                <form id="register-form" class="auth-form" onsubmit="handleRegister(event)">
+                    <div class="form-group">
+                        <label for="reg-username"><i class="fa-solid fa-user"></i> Username</label>
+                        <input type="text" id="reg-username" placeholder="johndoe" required autocomplete="username">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-email"><i class="fa-solid fa-envelope"></i> Email Address</label>
+                        <input type="email" id="reg-email" placeholder="name@example.com" required autocomplete="email">
+                    </div>
+
+                    <div class="form-group">
+                        <label for="reg-password"><i class="fa-solid fa-lock"></i> Password</label>
+                        <div class="password-wrapper">
+                            <input type="password" id="reg-password" placeholder="Min 6 characters" required
+                                autocomplete="new-password">
+                            <button type="button" class="toggle-password"
+                                onclick="togglePasswordVisibility('reg-password', this)">
+                                <i class="fa-solid fa-eye"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="register-btn" class="btn btn-primary">
+                        <span>Create Account</span> <i class="fa-solid fa-user-check"></i>
+                    </button>
+                </form>
+
+                <!-- OTP VERIFICATION FORM (Initially Hidden) -->
+                <form id="otp-form" class="auth-form" onsubmit="handleVerifyOtp(event)">
+                    <div class="otp-info">
+                        <i class="fa-solid fa-envelope-circle-check otp-icon"></i>
+                        <h3>Verify Email Address</h3>
+                        <p>Enter the 6-digit OTP sent to <strong id="target-otp-email">user@example.com</strong></p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="otp-code"><i class="fa-solid fa-key"></i> 6-Digit OTP Code</label>
+                        <input type="text" id="otp-code" maxlength="6" pattern="[0-9]{6}" placeholder="123456" required
+                            class="otp-input" autocomplete="one-time-code">
+                    </div>
+
+                    <button type="submit" id="otp-btn" class="btn btn-primary">
+                        <span>Verify Email</span> <i class="fa-solid fa-check-double"></i>
+                    </button>
+
+                    <button type="button" class="btn btn-secondary mt-2" onclick="switchTab('login')">
+                        <i class="fa-solid fa-arrow-left"></i> Back to Sign In
+                    </button>
+                </form>
+            </div>
+
+            <!-- LOGGED-IN DASHBOARD VIEW (Initially Hidden) -->
+            <div id="dashboard-card" class="dashboard-card glass-panel hidden">
+                <div class="dashboard-header">
+                    <div class="user-avatar">
+                        <i class="fa-solid fa-circle-user"></i>
+                    </div>
+                    <div class="user-welcome">
+                        <h2 id="dash-username">Welcome User</h2>
+                        <span class="badge badge-success"><i class="fa-solid fa-shield-check"></i> Verified
+                            Account</span>
+                    </div>
+                </div>
+
+                <div class="profile-details-grid">
+                    <div class="detail-card">
+                        <span class="detail-label">Username</span>
+                        <strong id="dash-user-val" class="detail-value">-</strong>
+                    </div>
+                    <div class="detail-card">
+                        <span class="detail-label">Email Address</span>
+                        <strong id="dash-email-val" class="detail-value">-</strong>
+                    </div>
+                    <div class="detail-card full-width">
+                        <span class="detail-label">Active Access Token</span>
+                        <div class="token-box">
+                            <code id="dash-token-val">No token loaded</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="dashboard-actions">
+                    <button type="button" class="btn btn-danger" onclick="handleLogout()">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout Current Session
+                    </button>
+                    <button type="button" class="btn btn-outline-danger" onclick="handleLogoutAll()">
+                        <i class="fa-solid fa-power-off"></i> Logout All Devices
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/public/js/auth.js"></script>
 </body>
+
 </html>
