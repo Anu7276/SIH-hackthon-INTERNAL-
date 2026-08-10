@@ -35,7 +35,7 @@ export default function CTA() {
           </button>
 
           <a
-            href="http://localhost:5500/interview_dashboard.html"
+            href="/interview_dashboard.html"
             target="_blank"
             rel="noopener noreferrer"
             className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2 cursor-pointer"
