@@ -2,6 +2,7 @@
   "name": "sih-hackathon-internal",
   "version": "1.0.0",
   "private": true,
+  "type": "module",
   "scripts": {
     "build": "node scripts/build-vercel.mjs",
     "dev": "concurrently --names \"MAIN_STARTING_PAGE,AUTH,AGENT_API,AGENT_DASHBOARD\" -c \"cyan,magenta,yellow,blue\" \"npm run dev:frontend\" \"npm run dev:auth\" \"npm run dev:agent-api\" \"npm run dev:agent-dashboard\"",
