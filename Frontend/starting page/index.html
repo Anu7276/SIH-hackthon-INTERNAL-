@@ -15,6 +15,7 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.0.1/css/all.min.css"
         crossorigin="anonymous" referrerpolicy="no-referrer">
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="../Home_Page/home.css">
     <link rel="stylesheet" href="/public/css/style.css">
 
     <!-- Synchronous check to prevent visual flash on return visits -->
@@ -989,13 +990,12 @@
                                 aria-label="Decrease text size">A-</button>
                         </div>
                         <span class="action-divider" aria-hidden="true"></span>
-                        <div class="lang-select">
-                            <i class="fa-solid fa-globe" aria-hidden="true"></i>
-                            <select aria-label="Select language">
-                                <option>English</option>
-                                <option>हिंदी</option>
+                        <div class="lang-select" style="display:inline-flex;align-items:center;gap:4px;background:#f2ede2;padding:3px 8px;border-radius:4px;border:1px solid #dcd5c5;">
+                            <i class="fa-solid fa-globe" style="color:#287345;font-size:12px;" aria-hidden="true"></i>
+                            <select aria-label="Select language" style="border:none;background:transparent;font-size:12px;font-weight:600;color:#333;cursor:pointer;outline:none;padding:0 2px;">
+                                <option value="en">English</option>
+                                <option value="hi">हिंदी</option>
                             </select>
-                            <i class="fa-solid fa-chevron-down lang-caret" aria-hidden="true"></i>
                         </div>
                         <span class="action-divider" aria-hidden="true"></span>
                         <div class="login">
@@ -1082,11 +1082,11 @@
                         <a href="http://localhost:5174" class="card_link link-blue" onclick="event.stopPropagation();">Explore
                             Opportunities <i class="fa-solid fa-arrow-right"></i></a>
                     </div>
-                    <div class="stakeholder_card">
+                    <div class="stakeholder_card" onclick="document.getElementById('succeed').scrollIntoView({behavior: 'smooth'})" style="cursor: pointer;">
                         <div class="card_icon icon-incubators"><i class="fa-solid fa-people-group"></i></div>
                         <h3>Incubators &amp; Accelerators</h3>
                         <p>Support and nurture startups in the AYUSH sector with resources and guidance.</p>
-                        <a href="javascript:void(0)" class="card_link link-purple">Collaborate With Us <i
+                        <a href="#succeed" class="card_link link-purple" onclick="event.stopPropagation();">Collaborate With Us <i
                                 class="fa-solid fa-arrow-right"></i></a>
                     </div>
                     <div class="stakeholder_card" onclick="window.location.href='http://localhost:5175'" style="cursor: pointer;">
@@ -1105,7 +1105,7 @@
                 </div>
             </section>
 
-            <section class="succeed">
+            <section class="succeed" id="succeed">
                 <div class="landmark_watermark" aria-hidden="true">
                     <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
                         <path d="M200 10c14 10 22 26 22 42h-44c0-16 8-32 22-42z" fill="currentColor" />
@@ -1244,36 +1244,6 @@
             </form>
         </div>
     </div>
-                <span class="section_underline" aria-hidden="true"></span>
-                <div class="succeed_items">
-                    <div class="succeed_item"><i class="fa-solid fa-user-tie"></i>
-                        <h4>Mentorship</h4>
-                        <p>Connect with industry experts and leaders.</p>
-                    </div>
-                    <div class="succeed_item"><i class="fa-solid fa-share-nodes"></i>
-                        <h4>Networking</h4>
-                        <p>Build meaningful connections worldwide.</p>
-                    </div>
-                    <div class="succeed_item"><i class="fa-solid fa-book-open"></i>
-                        <h4>Resources</h4>
-                        <p>Guides, tools and insights for your journey.</p>
-                    </div>
-                    <div class="succeed_item"><i class="fa-regular fa-calendar"></i>
-                        <h4>Events</h4>
-                        <p>Workshops, webinars and global events.</p>
-                    </div>
-                    <div class="succeed_item"><i class="fa-solid fa-bullhorn"></i>
-                        <h4>Showcase</h4>
-                        <p>Showcase your innovations to the world.</p>
-                    </div>
-                </div>
-            </section>
-
-            <section class="cta_banner">
-                <p>&ldquo;Promoting Innovation. Building Partnerships. Strengthening the AYUSH Ecosystem.&rdquo;</p>
-                <a href="#join" class="btn btn-primary">Be a Part of the Movement <i
-                        class="fa-solid fa-arrow-right"></i></a>
-            </section>
         </main>
     </div>
 

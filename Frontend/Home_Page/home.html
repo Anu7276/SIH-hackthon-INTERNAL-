@@ -29,40 +29,24 @@
                         <button class="text-size text-size--decrease" type="button" aria-label="Decrease text size">A-</button>
                     </div>
                     <span class="action-divider" aria-hidden="true"></span>
-                    <div class="lang-select">
-                        <i class="fa-solid fa-globe" aria-hidden="true"></i>
-                        <select aria-label="Select language">
-                            <option>English</option>
-                            <option>हिंदी</option>
+                    <div class="lang-select" style="display:inline-flex;align-items:center;gap:4px;background:#f2ede2;padding:3px 8px;border-radius:4px;border:1px solid #dcd5c5;">
+                        <i class="fa-solid fa-globe" style="color:#287345;font-size:12px;" aria-hidden="true"></i>
+                        <select aria-label="Select language" style="border:none;background:transparent;font-size:12px;font-weight:600;color:#333;cursor:pointer;outline:none;padding:0 2px;">
+                            <option value="en">English</option>
+                            <option value="hi">हिंदी</option>
                         </select>
-                        <i class="fa-solid fa-chevron-down lang-caret" aria-hidden="true"></i>
                     </div>
                     <span class="action-divider" aria-hidden="true"></span>
                     <div class="login">
                         <div class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></div>
-                        <a href="http://localhost:3000" id="nav-login-link">Login / Register</a>
+                        <a href="http://localhost:3000" id="nav-login-link" onclick="openAuthModal(event)">Login / Register</a>
                     </div>
                 </div>
             </div>
 
-
-
-
-
-
-
-
-
-
-
-
-
         </div>
 
-
-
-
-        <!-- Main navigation bar; add Ministry of AYUSH and Startup AYUSH images inside these logo boxes later -->
+        <!-- Main navigation bar -->
         <div class="main_navbar">
             <div class="main_nav_inner">
                 <div class="logos">
@@ -82,7 +66,7 @@
                     </div>
                 </div>
                 <nav class="menu" aria-label="Main navigation">
-                    <a class="active" href="#home">Home</a>
+                    <a class="active" href="http://localhost:5000?skipIntro=true">Home</a>
                     <a href="http://localhost:5173">Startups <i class="fa-solid fa-chevron-down"></i></a>
                     <a href="http://localhost:5174">Investors</a>
                     <a href="javascript:void(0)">Incubators &amp; Accelerators</a>
@@ -141,12 +125,11 @@
                     <h3>Investors</h3>
                     <p>Discover promising AYUSH startups and invest in the future of holistic health.</p>
                     <a href="http://localhost:5174" class="card_link link-blue" onclick="event.stopPropagation();">Explore Opportunities <i class="fa-solid fa-arrow-right"></i></a>
-                </div>
-                <div class="stakeholder_card">
+                <div class="stakeholder_card" onclick="document.getElementById('succeed').scrollIntoView({behavior: 'smooth'})" style="cursor: pointer;">
                     <div class="card_icon icon-incubators"><i class="fa-solid fa-people-group"></i></div>
                     <h3>Incubators &amp; Accelerators</h3>
                     <p>Support and nurture startups in the AYUSH sector with resources and guidance.</p>
-                    <a href="javascript:void(0)" class="card_link link-purple">Collaborate With Us <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="#succeed" class="card_link link-purple" onclick="event.stopPropagation();">Collaborate With Us <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
                 <div class="stakeholder_card" onclick="window.location.href='http://localhost:5175'" style="cursor: pointer;">
                     <div class="card_icon icon-govt"><i class="fa-solid fa-landmark"></i></div>
@@ -154,17 +137,17 @@
                     <p>Discover government funding, subsidies, grants, and support schemes for AYUSH startups.</p>
                     <a href="http://localhost:5175" class="card_link link-orange" onclick="event.stopPropagation();">Explore Schemes <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
-                <div class="stakeholder_card">
-                    <div class="card_icon icon-public"><i class="fa-solid fa-users"></i></div>
-                    <h3>Public Users</h3>
-                    <p>Find AYUSH solutions, resources, events and expert guidance.</p>
-                    <a href="#resources" class="card_link link-green">Explore Resources <i class="fa-solid fa-arrow-right"></i></a>
+                <div class="stakeholder_card" onclick="window.location.href='http://localhost:5500/interview_dashboard.html'" style="cursor: pointer;">
+                    <div class="card_icon icon-public"><i class="fa-solid fa-microphone"></i></div>
+                    <h3>Virtual Startup Pitcher</h3>
+                    <p>Practice and showcase your pitch with our AI Virtual Pitch Interviewer.</p>
+                    <a href="http://localhost:5500/interview_dashboard.html" class="card_link link-green" onclick="event.stopPropagation();">Try Pitcher <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
             </div>
         </section>
 
         <!-- Everything You Need Section -->
-        <section class="succeed">
+        <section class="succeed" id="succeed">
             <div class="landmark_watermark" aria-hidden="true">
                 <svg viewBox="0 0 400 260" xmlns="http://www.w3.org/2000/svg">
                     <path d="M200 10c14 10 22 26 22 42h-44c0-16 8-32 22-42z" fill="currentColor"/>

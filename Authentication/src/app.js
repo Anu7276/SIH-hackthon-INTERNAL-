@@ -59,6 +59,8 @@ app.use('/startups', express.static(path.join(__dirname, '../../Frontend/Startup
 app.use('/Startups', express.static(path.join(__dirname, '../../Frontend/Startups/dist')));
 app.use('/schemes', express.static(path.join(__dirname, '../../Frontend/schemes/dist')));
 app.use('/schemes', express.static(path.join(__dirname, '../../Frontend/schemes')));
+app.use('/investor', express.static(path.join(__dirname, '../../Frontend/investor/dist')));
+app.use('/investor', express.static(path.join(__dirname, '../../Frontend/investor')));
 
 // Authentication Page Route
 app.get('/auth', (req, res) => {
@@ -73,6 +75,11 @@ app.get('/profile', (req, res) => {
 // Startups App Route
 app.get('/startups', (req, res) => {
     res.sendFile(path.join(__dirname, '../../Frontend/Startups/dist/index.html'));
+});
+
+// Investor App Route
+app.get('/investor', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../Frontend/investor/dist/index.html'));
 });
 
 // Schemes App Route
