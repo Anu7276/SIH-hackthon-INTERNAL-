@@ -1,4 +1,6 @@
-const API_BASE = '/api/auth';
+const API_BASE = (window.location.origin.includes('3000') || window.location.protocol === 'file:')
+    ? '/api/auth'
+    : 'http://localhost:3000/api/auth';
 let activeEmailForOtp = '';
 
 // Check logged in status on page load
@@ -170,9 +172,17 @@ async function handleLogin(e) {
         const data = await response.json();
 
         if (response.ok) {
-            showToast('Logged in successfully!', 'success');
+            showToast('Logged in successfully! Redirecting to profile...', 'success');
             localStorage.setItem('accessToken', data.accessToken);
+            localStorage.setItem('ayush_user_profile', JSON.stringify({
+                isLoggedIn: true,
+                user: data.user,
+                token: data.accessToken
+            }));
             renderDashboard(data.user, data.accessToken);
+            setTimeout(() => {
+                window.location.href = '/profile';
+            }, 700);
         } else {
             showToast(data.message || 'Invalid credentials', 'error');
             if (data.message && data.message.toLowerCase().includes('email not verified')) {

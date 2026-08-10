@@ -4,7 +4,7 @@ import mongoose from "mongoose";
 async function connectDB() {
     try {
         await mongoose.connect(config.MONGO_URI, {
-            serverSelectionTimeoutMS: 2000
+            serverSelectionTimeoutMS: 10000
         });
         console.log("✅ Connected to primary MongoDB successfully.");
     } catch (err) {

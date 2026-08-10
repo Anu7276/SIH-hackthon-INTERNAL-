@@ -1,5 +1,5 @@
 import React from "react";
-import { Rocket, Users, Handshake, ShieldCheck } from "lucide-react";
+import { Rocket, Users, Handshake, ShieldCheck, Presentation } from "lucide-react";
 
 export default function CTA() {
   return (
@@ -32,6 +32,11 @@ export default function CTA() {
           <button className="w-full sm:w-auto px-8 py-3.5 bg-[#C1652E] hover:bg-amber-700 text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
             <Handshake className="w-4 h-4" />
             <span>Join Ecosystem</span>
+          </button>
+
+          <button className="w-full sm:w-auto px-8 py-3.5 bg-gradient-to-r from-emerald-600 to-teal-600 hover:from-emerald-700 hover:to-teal-700 text-white font-bold text-sm rounded-xl shadow-md transition-all flex items-center justify-center gap-2">
+            <Presentation className="w-4 h-4" />
+            <span>Virtual Startup Pitcher</span>
           </button>
         </div>
       </div>

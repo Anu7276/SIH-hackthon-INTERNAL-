@@ -1,0 +1,15 @@
+{
+  "name": "sih-hackathon-internal",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently --names \"AUTH,FRONTEND\" -c \"cyan,magenta\" \"npm run dev:auth\" \"npm run dev:frontend\"",
+    "dev:auth": "cd Authentication && npm run dev",
+    "dev:frontend": "cd Frontend && npm run dev",
+    "start": "concurrently --names \"AUTH,FRONTEND\" -c \"cyan,magenta\" \"npm run start:auth\" \"npm run dev:frontend\"",
+    "start:auth": "cd Authentication && npm start"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  }
+}

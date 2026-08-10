@@ -3,32 +3,317 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>SIH Hackathon - Authentication</title>
+    <title>Ministry of AYUSH | Authentication Portal</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="css/style.css">
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Outfit', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #faf8f5 url("/dash_main.png") center right / cover no-repeat;
+            background-blend-mode: overlay;
+            color: #2b2b2b;
+            padding: 20px;
+            position: relative;
+        }
+
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(250, 248, 245, 0.95), rgba(240, 244, 241, 0.92));
+            z-index: 1;
+        }
+
+        .main-container {
+            width: 100%;
+            max-width: 460px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .auth-card {
+            background: #ffffff;
+            border: 1px solid #e5e0d8;
+            border-radius: 16px;
+            box-shadow: 0 16px 40px rgba(0, 0, 0, 0.08);
+            padding: 36px 32px 32px;
+            position: relative;
+        }
+
+        .back-home-btn {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            color: #287345;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            padding: 6px 12px;
+            border-radius: 20px;
+            background: #e8f3ec;
+            transition: all 0.2s ease;
+        }
+        .back-home-btn:hover {
+            background: #287345;
+            color: #ffffff;
+        }
+
+        .brand-header {
+            text-align: center;
+            margin-top: 14px;
+            margin-bottom: 24px;
+        }
+
+        .brand-logos {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 14px;
+        }
+
+        .emblem-img {
+            height: 44px;
+            width: auto;
+        }
+
+        .ayush-text-box {
+            display: flex;
+            flex-direction: column;
+            text-align: left;
+            line-height: 1.1;
+        }
+        .ayush-text-box span { font-size: 10px; color: #555; font-weight: 600; text-transform: uppercase; }
+        .ayush-text-box strong { font-size: 18px; font-weight: 800; color: #1f4d2c; }
+        .ayush-text-box small { font-size: 8.5px; color: #777; }
+
+        .logo-divider {
+            width: 1px;
+            height: 34px;
+            background: #e0dcd5;
+        }
+
+        .startup-logo-img {
+            height: 40px;
+            width: auto;
+            object-fit: contain;
+        }
+
+        .brand-header h2 {
+            font-size: 22px;
+            font-weight: 800;
+            color: #1f4d2c;
+            margin-bottom: 4px;
+        }
+
+        .brand-header p {
+            font-size: 13px;
+            color: #666;
+        }
+
+        .tabs-header {
+            display: flex;
+            background: #f0ede6;
+            border-radius: 10px;
+            padding: 4px;
+            margin-bottom: 22px;
+            gap: 4px;
+        }
+
+        .tab-btn {
+            flex: 1;
+            padding: 10px;
+            border: 0;
+            background: transparent;
+            font-size: 13.5px;
+            font-weight: 700;
+            color: #555;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .tab-btn.active {
+            background: #287345;
+            color: #ffffff;
+            box-shadow: 0 4px 12px rgba(40, 115, 69, 0.2);
+        }
+
+        .auth-form {
+            display: none;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .auth-form.active {
+            display: flex;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .form-group label {
+            font-size: 12.5px;
+            font-weight: 700;
+            color: #333;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .form-group label i { color: #287345; }
+
+        .form-group input {
+            padding: 12px 14px;
+            border: 1.5px solid #dcd7ce;
+            border-radius: 8px;
+            font-size: 14px;
+            background: #ffffff;
+            color: #222;
+            outline: none;
+            transition: border-color 0.2s ease;
+        }
+        .form-group input:focus {
+            border-color: #287345;
+            box-shadow: 0 0 0 3px rgba(40, 115, 69, 0.12);
+        }
+
+        .password-wrapper {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        .password-wrapper input { width: 100%; padding-right: 40px; }
+        .toggle-password {
+            position: absolute;
+            right: 12px;
+            background: transparent;
+            border: 0;
+            color: #888;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .btn {
+            padding: 13px 20px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            border: 0;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn-primary {
+            background: #287345;
+            color: #ffffff;
+        }
+        .btn-primary:hover {
+            background: #1f4d2c;
+            box-shadow: 0 6px 16px rgba(40, 115, 69, 0.25);
+        }
+
+        .btn-secondary {
+            background: #f0ede6;
+            color: #287345;
+            border: 1px solid #dcd7ce;
+        }
+
+        .otp-info {
+            text-align: center;
+            margin-bottom: 8px;
+        }
+        .otp-info .otp-icon {
+            font-size: 32px;
+            color: #287345;
+            margin-bottom: 8px;
+        }
+        .otp-info h3 { font-size: 18px; color: #1f4d2c; font-weight: 800; }
+        .otp-info p { font-size: 13px; color: #666; margin-top: 4px; }
+
+        .otp-input {
+            text-align: center;
+            letter-spacing: 8px;
+            font-size: 20px !important;
+            font-weight: 800;
+        }
+
+        .hidden { display: none !important; }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .toast {
+            padding: 12px 20px;
+            border-radius: 8px;
+            color: #ffffff;
+            font-size: 13.5px;
+            font-weight: 600;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .toast-success { background: #287345; }
+        .toast-error { background: #c73838; }
+        .toast-info { background: #2e6fc7; }
+    </style>
 </head>
 <body>
-    <div class="bg-decoration">
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
-    </div>
 
     <!-- Notification Toast Container -->
     <div id="toast-container" class="toast-container"></div>
 
     <div class="main-container">
-        <!-- Auth Container (Shown when logged out) -->
-        <div id="auth-card" class="auth-card glass-panel">
+        <div id="auth-card" class="auth-card">
+            <a href="/?skipIntro=true" class="back-home-btn">
+                <i class="fa-solid fa-arrow-left"></i> Home Portal
+            </a>
+
             <div class="brand-header">
-                <div class="logo-badge">
-                    <i class="fa-solid fa-shield-halved"></i>
+                <div class="brand-logos">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg" alt="Emblem of India" class="emblem-img">
+                    <div class="ayush-text-box">
+                        <span>Ministry of</span>
+                        <strong>AYUSH</strong>
+                        <small>Govt. of India</small>
+                    </div>
+                    <span class="logo-divider"></span>
+                    <img src="/STARTUPAYSH.png" alt="Startup AYUSH Portal" class="startup-logo-img">
                 </div>
-                <h2>SIH Hackathon Portal</h2>
-                <p>Secure Authentication & Profile Portal</p>
+
+                <h2>Startup AYUSH Portal</h2>
+                <p>Secure Authentication & Profile Access</p>
             </div>
 
             <!-- Tab Switching Buttons -->
@@ -86,7 +371,7 @@
                 </div>
 
                 <button type="submit" id="register-btn" class="btn btn-primary">
-                    <span>Create Account</span> <i class="fa-solid fa-user-check"></i>
+                    <span>Create Account &amp; Send OTP</span> <i class="fa-solid fa-user-check"></i>
                 </button>
             </form>
 
@@ -112,47 +397,9 @@
                 </button>
             </form>
         </div>
-
-        <!-- LOGGED-IN DASHBOARD VIEW (Initially Hidden) -->
-        <div id="dashboard-card" class="dashboard-card glass-panel hidden">
-            <div class="dashboard-header">
-                <div class="user-avatar">
-                    <i class="fa-solid fa-circle-user"></i>
-                </div>
-                <div class="user-welcome">
-                    <h2 id="dash-username">Welcome User</h2>
-                    <span class="badge badge-success"><i class="fa-solid fa-shield-check"></i> Verified Account</span>
-                </div>
-            </div>
-
-            <div class="profile-details-grid">
-                <div class="detail-card">
-                    <span class="detail-label">Username</span>
-                    <strong id="dash-user-val" class="detail-value">-</strong>
-                </div>
-                <div class="detail-card">
-                    <span class="detail-label">Email Address</span>
-                    <strong id="dash-email-val" class="detail-value">-</strong>
-                </div>
-                <div class="detail-card full-width">
-                    <span class="detail-label">Active Access Token</span>
-                    <div class="token-box">
-                        <code id="dash-token-val">No token loaded</code>
-                    </div>
-                </div>
-            </div>
-
-            <div class="dashboard-actions">
-                <button type="button" class="btn btn-danger" onclick="handleLogout()">
-                    <i class="fa-solid fa-right-from-bracket"></i> Logout Current Session
-                </button>
-                <button type="button" class="btn btn-outline-danger" onclick="handleLogoutAll()">
-                    <i class="fa-solid fa-power-off"></i> Logout All Devices
-                </button>
-            </div>
-        </div>
     </div>
 
-    <script src="js/auth.js"></script>
+    <script src="/public/js/auth.js"></script>
+    <script src="/js/auth.js"></script>
 </body>
 </html>
