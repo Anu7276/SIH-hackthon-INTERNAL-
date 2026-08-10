@@ -197,7 +197,7 @@ export default function MyProfile() {
   const [otpSent, setOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const API_BASE = window.location.port === "3000" ? "/api/auth" : "http://localhost:3000/api/auth";
+  const API_BASE = "/api/auth";
 
   const showToast = (msg) => {
     setToastMsg(msg);
@@ -450,7 +450,7 @@ export default function MyProfile() {
         
         {/* Header Navbar */}
         <header className="bg-white border-b border-gray-100 px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
-          <a href="http://localhost:5000?skipIntro=true" className="flex items-center gap-3 no-underline cursor-pointer">
+          <a href="/?skipIntro=true" className="flex items-center gap-3 no-underline cursor-pointer">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg"
               alt="Emblem of India"
@@ -478,7 +478,7 @@ export default function MyProfile() {
           {/* Header Action Nav */}
           <div className="flex items-center gap-2 sm:gap-3">
             <a
-              href="http://localhost:5000?skipIntro=true"
+              href="/?skipIntro=true"
               className="text-xs sm:text-sm font-semibold text-gray-700 hover:text-[#1F5C36] px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition flex items-center gap-1 cursor-pointer"
             >
               <Home className="w-3.5 h-3.5 text-[#1F5C36]" />
@@ -549,7 +549,7 @@ export default function MyProfile() {
 
           <div className="relative z-10 max-w-md">
             <div className="text-xs font-medium text-amber-900/70 mb-2 flex items-center gap-1">
-              <a href="http://localhost:5000?skipIntro=true" className="hover:underline hover:text-[#1F5C36]">Home</a>{" "}
+              <a href="/?skipIntro=true" className="hover:underline hover:text-[#1F5C36]">Home</a>{" "}
               <span className="text-amber-900/40 font-normal">&gt;</span>{" "}
               {authMode === "login"
                 ? "Sign In"
