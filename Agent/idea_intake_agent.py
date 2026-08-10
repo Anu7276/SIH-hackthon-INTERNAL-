@@ -79,8 +79,8 @@ log = logging.getLogger("IdeaIntakeAgent")
 # Constants
 # ─────────────────────────────────────────────
 GEMINI_MODEL = "gemini-2.0-flash"                   # Multimodal model for reading files
-GEMINI_EMBEDDING_MODEL = "text-embedding-004"        # Embedding model for FAISS queries
-EMBEDDING_DIMENSION = 768                            # Dimension for text-embedding-004
+GEMINI_EMBEDDING_MODEL = "models/gemini-embedding-001" # Embedding model for FAISS queries
+EMBEDDING_DIMENSION = 3072                           # Dimension for gemini-embedding-001
 RAG_SIMILARITY_THRESHOLD = 0.75                      # Cosine similarity threshold for FAISS hits
 RAG_TOP_K = 3                                        # Number of nearest neighbours to retrieve
 

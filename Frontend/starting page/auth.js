@@ -20,22 +20,35 @@ function switchTab(tab) {
     const tabRegister = document.getElementById('tab-register');
     const tabsHeader = document.getElementById('auth-tabs');
 
-    if (tabsHeader) tabsHeader.classList.remove('hidden');
-    if (loginForm) loginForm.classList.remove('active');
-    if (registerForm) registerForm.classList.remove('active');
-    if (otpForm) otpForm.classList.remove('active');
-    if (tabLogin) tabLogin.classList.remove('active');
-    if (tabRegister) tabRegister.classList.remove('active');
+    if (tabsHeader) tabsHeader.style.display = 'flex';
+    if (loginForm) loginForm.style.display = 'none';
+    if (registerForm) registerForm.style.display = 'none';
+    if (otpForm) otpForm.style.display = 'none';
+
+    if (tabLogin) {
+        tabLogin.style.background = 'transparent';
+        tabLogin.style.color = '#555';
+    }
+    if (tabRegister) {
+        tabRegister.style.background = 'transparent';
+        tabRegister.style.color = '#555';
+    }
 
     if (tab === 'login') {
-        if (loginForm) loginForm.classList.add('active');
-        if (tabLogin) tabLogin.classList.add('active');
+        if (loginForm) loginForm.style.display = 'flex';
+        if (tabLogin) {
+            tabLogin.style.background = '#287345';
+            tabLogin.style.color = '#ffffff';
+        }
     } else if (tab === 'register') {
-        if (registerForm) registerForm.classList.add('active');
-        if (tabRegister) tabRegister.classList.add('active');
+        if (registerForm) registerForm.style.display = 'flex';
+        if (tabRegister) {
+            tabRegister.style.background = '#287345';
+            tabRegister.style.color = '#ffffff';
+        }
     } else if (tab === 'otp') {
-        if (tabsHeader) tabsHeader.classList.add('hidden');
-        if (otpForm) otpForm.classList.add('active');
+        if (tabsHeader) tabsHeader.style.display = 'none';
+        if (otpForm) otpForm.style.display = 'flex';
     }
 }
 
@@ -190,7 +203,7 @@ async function handleLogin(e) {
             }));
             renderDashboard(data.user, data.accessToken);
             setTimeout(() => {
-                window.location.href = '/profile';
+                window.location.href = 'http://localhost:5176';
             }, 700);
         } else {
             showToast(data.message || 'Invalid credentials', 'error');
@@ -286,14 +299,16 @@ function openAuthModal(e) {
     if (e) e.preventDefault();
     const modal = document.getElementById('auth-modal-overlay');
     if (modal) {
-        modal.classList.add('active');
+        modal.style.display = 'flex';
+    } else {
+        window.location.href = 'http://localhost:3000';
     }
 }
 
 function closeAuthModal() {
     const modal = document.getElementById('auth-modal-overlay');
     if (modal) {
-        modal.classList.remove('active');
+        modal.style.display = 'none';
     }
 }
 
@@ -301,7 +316,7 @@ function closeAuthModal() {
 function renderDashboard(user, token) {
     const navLink = document.getElementById('nav-login-link');
     if (navLink) {
-        navLink.innerHTML = `<a href="../profile/dist/index.html" style="color:#2e6b3e;font-weight:700;text-decoration:none;"><i class="fa-solid fa-circle-user" style="margin-right:4px;"></i> ${user.username} (Profile)</a>`;
+        navLink.innerHTML = `<a href="http://localhost:5176" style="color:#2e6b3e;font-weight:700;text-decoration:none;"><i class="fa-solid fa-circle-user" style="margin-right:4px;"></i> ${user.username} (Profile)</a>`;
     }
 
     const authCard = document.getElementById('auth-card');

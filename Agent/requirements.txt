@@ -12,6 +12,9 @@ numpy>=1.24.0
 # Recommended future cleanup: migrate these 3 agents to google-genai.
 google-generativeai>=0.8.0
 
+# --- Interview Orchestrator Agent ---
+groq>=0.11.0
+
 # --- Shared ---
 requests>=2.31.0
 python-dotenv>=1.0.0
