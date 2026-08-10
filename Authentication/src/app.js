@@ -49,10 +49,36 @@ app.get('/', (req, res) => {
 // Serve static frontend files (Starting Page as primary)
 app.use(express.static(path.join(__dirname, '../../Frontend/starting page')));
 app.use('/Home_Page', express.static(path.join(__dirname, '../../Frontend/Home_Page')));
-app.use('/profile', express.static(path.join(__dirname, '../../Frontend/profile')));
-app.use('/schemes', express.static(path.join(__dirname, '../../Frontend/schemes')));
-app.use('/Startups', express.static(path.join(__dirname, '../../Frontend/Startups')));
 app.use('/public', express.static(path.join(__dirname, '../public')));
+
+// Sub-app static routes with fallback to dist index.html
+app.use('/profile', express.static(path.join(__dirname, '../../Frontend/profile/dist')));
+app.use('/profile', express.static(path.join(__dirname, '../../Frontend/profile')));
+app.use('/startups', express.static(path.join(__dirname, '../../Frontend/Startups/dist')));
+app.use('/startups', express.static(path.join(__dirname, '../../Frontend/Startups')));
+app.use('/Startups', express.static(path.join(__dirname, '../../Frontend/Startups/dist')));
+app.use('/schemes', express.static(path.join(__dirname, '../../Frontend/schemes/dist')));
+app.use('/schemes', express.static(path.join(__dirname, '../../Frontend/schemes')));
+
+// Authentication Page Route
+app.get('/auth', (req, res) => {
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+});
+
+// Profile App Route
+app.get('/profile', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../Frontend/profile/dist/index.html'));
+});
+
+// Startups App Route
+app.get('/startups', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../Frontend/Startups/dist/index.html'));
+});
+
+// Schemes App Route
+app.get('/schemes', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../Frontend/schemes/dist/index.html'));
+});
 
 // Authentication API routes
 app.use("/api/auth", authRouter);

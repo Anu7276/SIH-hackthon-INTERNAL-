@@ -1,0 +1,981 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Startup AYUSH Portal — Live Pitch Interview</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700&family=Inter:wght@400;500;600;700&family=Lora:ital,wght@0,500;0,600;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg-warm: #f5f2e9;
+    --card-bg: rgba(248, 245, 237, 0.88);
+    --card-border: #d8d0ba;
+    --text-dark: #1f271b;
+    --text-muted: #646b5e;
+    --primary-green: #2e5b38;
+    --accent-green: #1e824c;
+    --bright-green: #2ecc71;
+    --danger-red: #e74c3c;
+    --badge-bg: #e2ebd8;
+    --radius-lg: 18px;
+    --radius-md: 12px;
+  }
+
+  * { box-sizing: border-box; }
+  html, body { height: 100%; margin: 0; padding: 0; font-family: 'Inter', sans-serif; color: var(--text-dark); }
+
+  body {
+    background: #f4efe2 url('bg_img.png') no-repeat center center fixed;
+    background-size: cover;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+  }
+
+  /* ── Top Government Header Bar ────────────────────────────────────────── */
+  .gov-topbar {
+    background: #ffffff;
+    border-bottom: 1px solid #e2ded0;
+    padding: 4px 24px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 12px;
+    color: #4a5243;
+    z-index: 10;
+  }
+  .gov-left { display: flex; align-items: center; gap: 8px; font-weight: 600; }
+  .gov-left img { height: 18px; }
+  .gov-right { display: flex; align-items: center; gap: 14px; font-weight: 500; }
+  .gov-right a { color: inherit; text-decoration: none; }
+  .gov-right a:hover { text-decoration: underline; }
+
+  /* ── Main Branding Header ─────────────────────────────────────────────── */
+  .main-header {
+    background: rgba(255, 255, 255, 0.92);
+    backdrop-filter: blur(10px);
+    border-bottom: 1px solid #e0d9c8;
+    padding: 10px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    z-index: 10;
+  }
+  .brand-group { display: flex; align-items: center; gap: 24px; }
+  .brand-logo { display: flex; align-items: center; gap: 10px; }
+  .brand-text { font-family: 'Cinzel', serif; font-weight: 700; line-height: 1.1; color: #1c3622; }
+  .brand-text .sub { font-size: 9px; font-family: 'Inter', sans-serif; font-weight: 600; letter-spacing: 0.05em; color: #5a6652; text-transform: uppercase; }
+  .portal-tag { display: flex; align-items: center; gap: 8px; border-left: 1px solid #d4ccb8; padding-left: 20px; }
+  .portal-title { font-size: 19px; font-weight: 800; color: #1e3c25; font-family: 'Inter', sans-serif; }
+  .portal-title span { color: #388e3c; }
+  .portal-sub { font-size: 10px; color: #727a6c; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+
+  .header-actions { display: flex; align-items: center; gap: 16px; }
+  .search-btn { background: none; border: none; font-size: 18px; color: #4a5444; cursor: pointer; }
+
+  /* ── Setup Modal ─────────────────────────────────────────────────────── */
+  #setupScreen {
+    max-width: 580px;
+    margin: 40px auto;
+    background: rgba(253, 251, 245, 0.95);
+    backdrop-filter: blur(12px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 32px;
+    box-shadow: 0 12px 36px rgba(0,0,0,0.08);
+  }
+  #setupScreen h1 { margin: 0 0 8px; font-size: 22px; font-family: 'Cinzel', serif; color: var(--primary-green); }
+  #setupScreen p.sub { color: var(--text-muted); font-size: 13.5px; margin: 0 0 20px; line-height: 1.5; }
+  #setupScreen label { display: block; font-size: 12px; font-weight: 700; color: var(--text-muted); margin: 14px 0 6px; text-transform: uppercase; letter-spacing: .04em; }
+  #setupScreen input[type="text"], #setupScreen input[type="file"] {
+    width: 100%; padding: 11px 14px; border: 1px solid var(--card-border); border-radius: 99px; background: #fff; color: var(--text-dark); font-size: 14px; font-family: inherit;
+  }
+
+  .file-upload-box {
+    border: 2px dashed #b8c4ae;
+    background: #f8faf5;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+    cursor: pointer;
+    transition: background 0.2s, border-color 0.2s;
+  }
+  .file-upload-box:hover { background: #f0f5eb; border-color: var(--primary-green); }
+  .file-upload-icon { font-size: 32px; margin-bottom: 6px; }
+  .file-upload-text { font-size: 14px; font-weight: 600; color: #2e5b38; }
+  .file-upload-hint { font-size: 12px; color: var(--text-muted); margin-top: 4px; }
+
+  /* Loader Spinner */
+  .loader-box {
+    display: none;
+    background: #edf3e8;
+    border: 1px solid #c7d6ba;
+    border-radius: 12px;
+    padding: 16px 20px;
+    margin-top: 16px;
+    align-items: center;
+    gap: 14px;
+  }
+  .spinner {
+    width: 24px;
+    height: 24px;
+    border: 3px solid #c7d6ba;
+    border-top-color: var(--primary-green);
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loader-text { font-size: 13.5px; font-weight: 600; color: var(--primary-green); }
+
+  /* Summary Confirmation Card */
+  .summary-card {
+    display: none;
+    background: #f4f8f0;
+    border: 1px solid #b8cca6;
+    border-radius: 12px;
+    padding: 16px;
+    margin-top: 16px;
+  }
+  .summary-card-title { font-size: 13px; font-weight: 800; color: #1e3c25; text-transform: uppercase; letter-spacing: 0.04em; margin-bottom: 6px; }
+  .summary-text { font-size: 13.5px; line-height: 1.5; color: #2d3828; margin-bottom: 10px; }
+  .rag-note { background: #e6efe0; border-left: 4px solid #2e5b38; padding: 8px 12px; border-radius: 4px; font-size: 12.5px; color: #1e3c25; font-weight: 600; }
+
+  /* Error Alert */
+  .error-alert {
+    display: none;
+    background: #fdf2f2;
+    border: 1px solid #f8b4b4;
+    color: #9b1c1c;
+    padding: 12px 16px;
+    border-radius: 10px;
+    font-size: 13px;
+    margin-top: 16px;
+    line-height: 1.4;
+  }
+
+  .start-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--primary-green);
+    color: #fff;
+    border: none;
+    padding: 14px 26px;
+    border-radius: 10px;
+    font-size: 15px;
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    margin-top: 20px;
+    transition: background 0.2s, opacity 0.2s;
+  }
+  .start-btn:disabled { background: #889680; cursor: not-allowed; opacity: 0.7; }
+  .start-btn:hover:not(:disabled) { background: #224429; }
+
+  .skip-demo-link {
+    display: block;
+    text-align: center;
+    margin-top: 14px;
+    font-size: 13px;
+    color: var(--primary-green);
+    text-decoration: underline;
+    cursor: pointer;
+    font-weight: 600;
+  }
+
+  /* ── Main Workspace Layout ───────────────────────────────────────────── */
+  #room {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    padding: 16px 24px 20px;
+    gap: 14px;
+    max-width: 1440px;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .main-grid {
+    display: grid;
+    grid-template-columns: 280px 1fr 320px;
+    gap: 16px;
+    flex: 1;
+    min-height: 0;
+  }
+
+  @media(max-width: 1100px) {
+    .main-grid { grid-template-columns: 1fr 300px; }
+    .ai-interviewer-card { display: none; }
+  }
+  @media(max-width: 768px) {
+    .main-grid { grid-template-columns: 1fr; }
+    #sidebar { display: none; }
+  }
+
+  /* Common Card Styling */
+  .panel-card {
+    background: var(--card-bg);
+    backdrop-filter: blur(8px);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    overflow: hidden;
+    box-shadow: 0 4px 16px rgba(0,0,0,0.03);
+  }
+
+  /* Left Column: AI Interviewer Card */
+  .ai-interviewer-card {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    background: rgba(246, 243, 233, 0.82) url('bg_img.png') no-repeat center bottom;
+    background-size: cover;
+  }
+  .rocket-circle {
+    width: 96px;
+    height: 96px;
+    border-radius: 50%;
+    background: #e2eada;
+    border: 1px solid #c7d6ba;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 16px;
+    box-shadow: 0 6px 18px rgba(46,91,56,0.1);
+  }
+  .rocket-circle svg { width: 44px; height: 44px; stroke: #2e5b38; fill: none; stroke-width: 1.8; }
+  .ai-card-title { font-size: 16px; font-weight: 700; color: #283323; }
+
+  /* Middle Column: Live Question & Video */
+  .center-stage { display: flex; flex-direction: column; gap: 12px; }
+
+  .question-top-box {
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 18px 22px;
+  }
+  .eyebrow-tag { font-size: 11px; font-weight: 800; color: var(--primary-green); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px; }
+  .question-prompt { font-family: 'Lora', Georgia, serif; font-size: 20px; line-height: 1.4; color: #1a2416; font-weight: 600; }
+
+  /* Premium Live Video Box */
+  .video-container {
+    flex: 1;
+    background: #0f1510;
+    border-radius: var(--radius-lg);
+    position: relative;
+    overflow: hidden;
+    min-height: 320px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.16);
+  }
+  .video-container video { width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+  
+  .video-overlay-live {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    background: rgba(18, 30, 21, 0.75);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: #ffffff;
+    font-size: 12px;
+    font-weight: 600;
+    padding: 6px 14px;
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 5;
+  }
+  .video-overlay-live .live-dot { width: 8px; height: 8px; border-radius: 50%; background: #2ecc71; animation: pulseDot 1.4s infinite; }
+  @keyframes pulseDot { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
+
+  .video-controls-overlay {
+    position: absolute;
+    bottom: 14px;
+    right: 14px;
+    z-index: 5;
+  }
+  .cam-btn {
+    background: rgba(18, 30, 21, 0.78);
+    backdrop-filter: blur(12px);
+    border: 1px solid rgba(255,255,255,0.18);
+    color: #ffffff;
+    padding: 8px 18px;
+    border-radius: 12px;
+    font-size: 12.5px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s ease;
+  }
+  .cam-btn:hover { background: rgba(30, 52, 36, 0.92); transform: translateY(-1px); }
+
+  /* Premium Answer Input Box (Sleek Glassmorphic Pill) */
+  .answer-box {
+    background: rgba(255, 255, 255, 0.94);
+    backdrop-filter: blur(16px);
+    border: 1px solid rgba(46, 91, 56, 0.22);
+    border-radius: 16px;
+    padding: 8px 10px 8px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    box-shadow: 0 8px 24px rgba(30, 60, 35, 0.08);
+    transition: all 0.25s ease;
+  }
+  .answer-box:focus-within {
+    border-color: var(--primary-green);
+    box-shadow: 0 10px 28px rgba(46, 91, 56, 0.16);
+    background: #ffffff;
+  }
+  .answer-input-container { flex: 1; display: flex; align-items: center; }
+  .answer-input-container textarea {
+    width: 100%;
+    border: none;
+    background: transparent;
+    font-family: 'Inter', sans-serif;
+    font-size: 14.5px;
+    color: var(--text-dark);
+    resize: none;
+    outline: none;
+    height: 38px;
+    line-height: 1.4;
+    padding: 8px 0;
+  }
+
+  /* Sleek Voice Input Button */
+  .mic-btn-sleek {
+    background: #f0f5eb;
+    color: var(--primary-green);
+    border: 1px solid #c8d9ba;
+    border-radius: 10px;
+    padding: 9px 16px;
+    font-size: 13px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s ease;
+    white-space: nowrap;
+  }
+  .mic-btn-sleek:hover {
+    background: #e1edd8;
+    color: #1e3c25;
+  }
+  .mic-btn-sleek.listening {
+    background: #fde8e8;
+    color: #c81e1e;
+    border-color: #f8b4b4;
+    animation: pulseSleek 1.4s infinite;
+  }
+  @keyframes pulseSleek {
+    0%, 100% { box-shadow: 0 0 0 0 rgba(200, 30, 30, 0.3); }
+    50% { box-shadow: 0 0 0 6px rgba(200, 30, 30, 0); }
+  }
+
+  /* Modern Send Button */
+  .send-btn-sleek {
+    background: linear-gradient(135deg, #2e5b38 0%, #1e824c 100%);
+    color: #ffffff;
+    border: none;
+    padding: 10px 22px;
+    border-radius: 10px;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 4px 12px rgba(30, 130, 76, 0.25);
+    transition: all 0.2s ease;
+  }
+  .send-btn-sleek:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 16px rgba(30, 130, 76, 0.35);
+  }
+
+  /* Right Column: Sidebar */
+  .sidebar-container { display: flex; flex-direction: column; gap: 12px; }
+
+  .transcript-card {
+    flex: 1;
+    background: var(--card-bg);
+    border: 1px solid var(--card-border);
+    border-radius: var(--radius-lg);
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+  }
+  .transcript-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .transcript-title { font-size: 12px; font-weight: 800; letter-spacing: 0.06em; color: #283323; text-transform: uppercase; }
+  .transcript-scroll { flex: 1; overflow-y: auto; display: flex; flex-direction: column; gap: 12px; padding-right: 4px; }
+  .turn-msg { font-size: 13px; line-height: 1.5; }
+  .turn-speaker { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 2px; }
+  .turn-speaker.interviewer { color: var(--primary-green); }
+  .turn-speaker.founder { color: #1e824c; }
+
+  /* Bottom Quote Banner */
+  .bottom-quote-banner {
+    background: #1e3c25;
+    color: #e3ebd8;
+    border-radius: 12px;
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 13.5px;
+    font-weight: 500;
+  }
+  .banner-quote { font-style: italic; opacity: 0.92; }
+  .finalize-btn {
+    background: #2ecc71;
+    color: #0f2415;
+    border: none;
+    padding: 8px 18px;
+    border-radius: 8px;
+    font-weight: 700;
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: background 0.2s;
+  }
+  .finalize-btn:hover { background: #27ae60; color: #fff; }
+
+  /* Results Screen */
+  #resultScreen { display: none; max-width: 680px; margin: 40px auto; padding: 24px; background: rgba(255,255,255,0.95); border-radius: 16px; border: 1px solid #d4ceba; }
+  .score-badge { font-size: 38px; font-weight: 800; color: var(--primary-green); }
+</style>
+</head>
+<body>
+
+<!-- Government Top Header -->
+<div class="gov-topbar">
+  <div class="gov-left">
+    <span>भारत सरकार</span>
+    <span>Government of India</span>
+  </div>
+  <div class="gov-right">
+    <a href="http://localhost:5000?skipIntro=true" style="color:#1f4d2c;font-weight:700;">🏠 Home Portal</a>
+    <span>|</span>
+    <a href="http://localhost:5173">🚀 Startups</a>
+    <span>|</span>
+    <a href="http://localhost:5175">📜 Government Schemes</a>
+  </div>
+</div>
+
+<!-- Main Branding Header -->
+<div class="main-header">
+  <a href="http://localhost:5000?skipIntro=true" class="brand-group" style="text-decoration:none;cursor:pointer;">
+    <div class="brand-logo">
+      <div class="brand-text">
+        <div>MINISTRY OF AYUSH</div>
+        <div class="sub">Government of India</div>
+      </div>
+    </div>
+    <div class="portal-tag">
+      <div>
+        <div class="portal-title">Startup<span>AYUSH</span></div>
+        <div class="portal-sub">Virtual Pitcher</div>
+      </div>
+    </div>
+  </a>
+  <div class="header-actions">
+    <button class="search-btn" title="Search">🔍</button>
+  </div>
+</div>
+
+<!-- Setup Screen: Stage 1 Ingestion & Upload -->
+<div id="setupScreen">
+  <h1>Welcome to AYUSH Live Pitch</h1>
+  <p class="sub">Stage 1: Upload your pitch deck (PDF or PPTX). The Idea Intake Agent will analyze your pitch deck and perform a competitor RAG check before starting your live interview.</p>
+
+  <label for="pitchFileInput">Upload your pitch deck (PDF or PPTX)</label>
+  <div class="file-upload-box" id="dropZone" onclick="document.getElementById('pitchFileInput').click();">
+    <div class="file-upload-icon">📄</div>
+    <div class="file-upload-text" id="uploadLabel">Click or drag &amp; drop your pitch deck file here</div>
+    <div class="file-upload-hint">Supports .pdf, .ppt, .pptx files</div>
+    <input type="file" id="pitchFileInput" accept=".pdf,.ppt,.pptx" style="display:none;" />
+  </div>
+
+  <!-- Loading State -->
+  <div class="loader-box" id="analysisLoader">
+    <div class="spinner"></div>
+    <div>
+      <div class="loader-text">Analyzing your pitch deck with Idea Intake Agent…</div>
+      <div style="font-size: 12px; color: var(--text-muted); margin-top: 2px;">Extracting structured fields &amp; checking competitor RAG index</div>
+    </div>
+  </div>
+
+  <!-- Error Alert -->
+  <div class="error-alert" id="errorAlert"></div>
+
+  <!-- Confirmation Summary Card -->
+  <div class="summary-card" id="summaryCard">
+    <div class="summary-card-title">Pitch Analysis Complete ✅</div>
+    <div class="summary-text" id="summaryContent"></div>
+    <div class="rag-note" id="ragNote"></div>
+  </div>
+
+  <button class="start-btn" id="startBtn" disabled>Begin Live Interview</button>
+
+  <a class="skip-demo-link" id="skipDemoBtn">Or skip and use demo data</a>
+</div>
+
+<!-- Main Room Grid -->
+<div id="room" style="display: none;">
+  <div class="main-grid">
+
+    <!-- Left Column: Rocket Card -->
+    <div class="panel-card ai-interviewer-card">
+      <div class="rocket-circle">
+        <svg viewBox="0 0 24 24"><path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.71.19-1.81-.47-2.47l-.06-.06c-.66-.66-1.76-1.18-2.47-.47z"/><path d="M12 15l-3-3m0 0l-3 3m3-3l6-6m3 3l-3-3m3 3l-6 6m6-6l-3-3"/><path d="M15 9l-3-3m4.5 1.5A7.5 7.5 0 0 1 20 12c0 .98-.19 1.91-.53 2.76L15 9z"/></svg>
+      </div>
+      <div class="ai-card-title">AYUSH AI Interviewer</div>
+    </div>
+
+    <!-- Middle Column: Live Question & Video -->
+    <div class="center-stage">
+      <div class="question-top-box">
+        <div class="eyebrow-tag">INTERVIEWER ASKS</div>
+        <div class="question-prompt" id="questionText">Connecting to interview orchestrator…</div>
+      </div>
+
+      <!-- Live Video Box -->
+      <div class="video-container">
+        <video id="camVideo" autoplay playsinline muted></video>
+        <div class="video-overlay-live">
+          <span class="live-dot"></span>
+          <span>Live Camera Feed</span>
+        </div>
+        <div class="video-controls-overlay">
+          <button class="cam-btn" id="muteCamBtn">📹 Mute Video</button>
+        </div>
+      </div>
+
+      <!-- Answer Input Box (Sleek Glassmorphic Pill) -->
+      <div class="answer-box">
+        <div class="answer-input-container">
+          <textarea id="answerText" placeholder="Speak your answer or type here..."></textarea>
+        </div>
+        <button class="mic-btn-sleek" id="micBtn" title="Click to speak (Speech-to-Text)">
+          <span>🎙️</span>
+          <span id="micStatusText">Voice Input</span>
+        </button>
+        <button class="send-btn-sleek" id="submitBtn" title="Send answer">
+          <span>Send</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
+        </button>
+      </div>
+    </div>
+
+    <!-- Right Column: Sidebar -->
+    <div class="sidebar-container">
+      <div class="transcript-card">
+        <div class="transcript-header">
+          <div class="transcript-title">LIVE TRANSCRIPT</div>
+          <div style="font-size: 13px; color: var(--primary-green); font-weight: 600;" id="ttsStatus">🎙️ Indian Male Voice</div>
+        </div>
+        <div class="transcript-scroll" id="transcriptScroll">
+          <!-- Turns inserted here dynamically -->
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Quote Banner -->
+  <div class="bottom-quote-banner">
+    <div class="banner-quote">“Promoting AYUSH Innovation. Empowering traditional wisdom.”</div>
+    <button class="finalize-btn" id="finalizeBtn">Finalize and Submit →</button>
+  </div>
+</div>
+
+<!-- Results Screen -->
+<div id="resultScreen">
+  <h2>Evaluation Result</h2>
+  <div id="resultBody"></div>
+</div>
+
+<script>
+const API_BASE = 'http://localhost:8000';
+let sessionId = null;
+let camStream = null;
+let camMuted = false;
+let extractedIntakeJson = null;
+let recognition = null;
+let isListening = false;
+
+const setupScreen = document.getElementById('setupScreen');
+const room = document.getElementById('room');
+const questionText = document.getElementById('questionText');
+const answerText = document.getElementById('answerText');
+const transcriptScroll = document.getElementById('transcriptScroll');
+const camVideo = document.getElementById('camVideo');
+const micBtn = document.getElementById('micBtn');
+const micStatusText = document.getElementById('micStatusText');
+const muteCamBtn = document.getElementById('muteCamBtn');
+
+const pitchFileInput = document.getElementById('pitchFileInput');
+const uploadLabel = document.getElementById('uploadLabel');
+const analysisLoader = document.getElementById('analysisLoader');
+const summaryCard = document.getElementById('summaryCard');
+const summaryContent = document.getElementById('summaryContent');
+const ragNote = document.getElementById('ragNote');
+const errorAlert = document.getElementById('errorAlert');
+const startBtn = document.getElementById('startBtn');
+const skipDemoBtn = document.getElementById('skipDemoBtn');
+
+// ── Strict Indian English Male Voice Selector ─────────────────────────────
+function getIndianMaleVoice() {
+  if (!('speechSynthesis' in window)) return null;
+  const voices = window.speechSynthesis.getVoices();
+  if (!voices || voices.length === 0) return null;
+
+  const isFemaleVoice = (v) => {
+    const name = v.name.toLowerCase();
+    return name.includes('female') || name.includes('heera') || name.includes('neerja') || 
+           name.includes('samira') || name.includes('zira') || name.includes('veena') || 
+           name.includes('samantha') || name.includes('victoria') || name.includes('karen') || 
+           name.includes('jenny');
+  };
+
+  const maleVoices = voices.filter(v => !isFemaleVoice(v));
+
+  // Search strictly for Indian English Male voices
+  const indianMaleIdentifiers = [
+    'google indian english',
+    'microsoft prabhat',
+    'microsoft ravi',
+    'microsoft hemant',
+    'rishi',
+    'en-in',
+    'en_in',
+    'india'
+  ];
+
+  for (const identifier of indianMaleIdentifiers) {
+    const found = maleVoices.find(v => 
+      v.name.toLowerCase().includes(identifier) || 
+      v.lang.toLowerCase().replace('_', '-').includes(identifier)
+    );
+    if (found) return found;
+  }
+
+  // Fallback to any en-IN voice
+  const anyIndianEn = voices.find(v => v.lang.toLowerCase().replace('_', '-').startsWith('en-in') && !isFemaleVoice(v));
+  if (anyIndianEn) return anyIndianEn;
+
+  return maleVoices[0] || voices[0];
+}
+
+// Ensure voices are loaded
+if ('speechSynthesis' in window) {
+  window.speechSynthesis.onvoiceschanged = () => { getIndianMaleVoice(); };
+}
+
+// ── Text-To-Speech (TTS): Slow, Calm Indian English Male Voice ───────────
+function speak(text) {
+  if (!('speechSynthesis' in window)) return;
+  window.speechSynthesis.cancel(); // Stop any ongoing speech
+  
+  const utter = new SpeechSynthesisUtterance(text);
+  const voice = getIndianMaleVoice();
+  if (voice) {
+    utter.voice = voice;
+  }
+  utter.lang = 'en-IN'; // Enforce Indian English locale
+  utter.rate = 0.78;    // Slow, calm, easy to follow speaking pace
+  utter.pitch = 0.98;   // Natural male pitch
+  utter.volume = 1.0;
+
+  utter.onend = () => {
+    // Automatically trigger Speech-to-Text listening when AI finishes speaking
+    startListening();
+  };
+  window.speechSynthesis.speak(utter);
+}
+
+// ── Speech-To-Text (STT): Real-time voice to text ────────────────────────
+function setupSpeechRecognition() {
+  const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+  if (!SpeechRecognition) {
+    console.warn("Speech Recognition API not supported in this browser.");
+    return;
+  }
+  recognition = new SpeechRecognition();
+  recognition.continuous = false;
+  recognition.interimResults = true;
+  recognition.lang = 'en-IN';
+
+  recognition.onstart = () => {
+    isListening = true;
+    micBtn.classList.add('listening');
+    micStatusText.textContent = 'Listening…';
+  };
+
+  recognition.onresult = (e) => {
+    let transcript = '';
+    for (let i = e.resultIndex; i < e.results.length; i++) {
+      transcript += e.results[i][0].transcript;
+    }
+    answerText.value = transcript;
+  };
+
+  recognition.onerror = (e) => {
+    console.warn('Speech recognition error:', e.error);
+    stopListening();
+  };
+
+  recognition.onend = () => {
+    stopListening();
+  };
+}
+
+function startListening() {
+  if (recognition && !isListening) {
+    try {
+      answerText.value = '';
+      recognition.start();
+    } catch (err) {
+      console.warn(err);
+    }
+  }
+}
+
+function stopListening() {
+  isListening = false;
+  micBtn.classList.remove('listening');
+  micStatusText.textContent = 'Voice Input';
+}
+
+micBtn.addEventListener('click', () => {
+  if (!recognition) setupSpeechRecognition();
+  if (isListening) {
+    if (recognition) recognition.stop();
+  } else {
+    startListening();
+  }
+});
+
+async function initCamera() {
+  try {
+    camStream = await navigator.mediaDevices.getUserMedia({ video: true, audio: true });
+    camVideo.srcObject = camStream;
+  } catch (err) {
+    console.warn('Camera/mic access warning:', err);
+  }
+}
+
+muteCamBtn.addEventListener('click', () => {
+  if (camStream) {
+    camMuted = !camMuted;
+    camStream.getVideoTracks().forEach(t => t.enabled = !camMuted);
+    muteCamBtn.textContent = camMuted ? '📹 Resume Video' : '📹 Mute Video';
+  }
+});
+
+function updateProgress(p) {
+  // Silent progress tracking
+}
+
+function appendTranscriptTurn(who, msg) {
+  const div = document.createElement('div');
+  div.className = 'turn-msg';
+  const isInterviewer = who === 'INTERVIEWER' || who === 'Interviewer';
+  div.innerHTML = `<div class="turn-speaker ${isInterviewer ? 'interviewer' : 'founder'}">${who}</div><div>${msg}</div>`;
+  transcriptScroll.appendChild(div);
+  transcriptScroll.scrollTop = transcriptScroll.scrollHeight;
+}
+
+// File Upload Handler
+pitchFileInput.addEventListener('change', async (e) => {
+  const file = e.target.files[0];
+  if (!file) return;
+
+  uploadLabel.textContent = `Selected: ${file.name}`;
+  
+  // Show loader, hide summary/error
+  analysisLoader.style.display = 'flex';
+  summaryCard.style.display = 'none';
+  errorAlert.style.display = 'none';
+  startBtn.disabled = true;
+
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const res = await fetch(`${API_BASE}/api/idea/upload`, {
+      method: 'POST',
+      body: formData
+    });
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({ detail: res.statusText }));
+      throw new Error(errData.detail || 'Upload failed');
+    }
+
+    const data = await res.json();
+    extractedIntakeJson = data.intake_json;
+
+    // Display summary
+    const rawSummary = extractedIntakeJson.raw_summary || extractedIntakeJson.solution || 'Pitch deck extracted successfully.';
+    summaryContent.textContent = rawSummary;
+
+    const similar = extractedIntakeJson.similar_existing_products || [];
+    if (similar.length > 0) {
+      const names = similar.map(s => s.name).join(', ');
+      ragNote.textContent = `⚡ RAG Check: We found ${similar.length} similar product(s) [${names}] — be ready to discuss how you differ.`;
+    } else {
+      ragNote.textContent = `⚡ RAG Check: No direct competitor matches found in knowledge base.`;
+    }
+
+    analysisLoader.style.display = 'none';
+    summaryCard.style.display = 'block';
+    startBtn.disabled = false;
+    startBtn.textContent = 'Begin Live Interview';
+  } catch (err) {
+    analysisLoader.style.display = 'none';
+    errorAlert.textContent = `Couldn't analyze this file — ${err.message}. Try a different PDF/PPT, or skip and use demo data.`;
+    errorAlert.style.display = 'block';
+  }
+});
+
+// Start Live Interview Handler
+startBtn.addEventListener('click', async () => {
+  await initCamera();
+  setupSpeechRecognition();
+
+  setupScreen.style.display = 'none';
+  room.style.display = 'flex';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/interview/start`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idea_context: extractedIntakeJson })
+    });
+    const data = await res.json();
+    sessionId = data.session_id;
+    questionText.textContent = data.question;
+    updateProgress(data.progress);
+    appendTranscriptTurn('INTERVIEWER', data.question);
+
+    // Warm Opening Greeting spoken in Slow Indian English Male Voice
+    const openingGreeting = "Hi, I am your AI interviewer today. I am here to hear your idea and evaluate how ready you are. " + data.question;
+    speak(openingGreeting);
+
+  } catch (err) {
+    questionText.textContent = 'Could not start interview at ' + API_BASE;
+    console.error(err);
+  }
+});
+
+// Skip & Use Demo Data Handler
+skipDemoBtn.addEventListener('click', async () => {
+  extractedIntakeJson = null;
+
+  await initCamera();
+  setupSpeechRecognition();
+
+  setupScreen.style.display = 'none';
+  room.style.display = 'flex';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/interview/start`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ idea_context: null })
+    });
+    const data = await res.json();
+    sessionId = data.session_id;
+    questionText.textContent = data.question;
+    updateProgress(data.progress);
+    appendTranscriptTurn('INTERVIEWER', data.question);
+
+    // Warm Opening Greeting spoken in Slow Indian English Male Voice
+    const openingGreeting = "Hi, I am your AI interviewer today. I am here to hear your idea and evaluate how ready you are. " + data.question;
+    speak(openingGreeting);
+
+  } catch (err) {
+    questionText.textContent = 'Could not start interview at ' + API_BASE;
+    console.error(err);
+  }
+});
+
+// Answer Submit Handler
+document.getElementById('submitBtn').addEventListener('click', async () => {
+  const answer = answerText.value.trim();
+  if (!answer || !sessionId) return;
+
+  if (isListening && recognition) recognition.stop();
+  appendTranscriptTurn('FOUNDER', answer);
+  answerText.value = '';
+  questionText.textContent = 'Thinking…';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/interview/answer`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ session_id: sessionId, answer })
+    });
+    const data = await res.json();
+
+    if (data.founder_question_handled) {
+      appendTranscriptTurn('INTERVIEWER', data.founder_question_handled);
+      speak(data.founder_question_handled);
+    }
+    updateProgress(data.progress);
+
+    if (data.finished) {
+      questionText.textContent = "Interview finished. Click 'Finalize and Submit' below.";
+      speak("Interview finished. Thank you!");
+    } else {
+      questionText.textContent = data.question;
+      appendTranscriptTurn('INTERVIEWER', data.question);
+      speak(data.question);
+    }
+  } catch (err) {
+    questionText.textContent = 'Error submitting response.';
+  }
+});
+
+// Finalize Handler
+document.getElementById('finalizeBtn').addEventListener('click', async () => {
+  if (!sessionId) return;
+  document.getElementById('finalizeBtn').disabled = true;
+  document.getElementById('finalizeBtn').textContent = 'Evaluating…';
+
+  try {
+    const res = await fetch(`${API_BASE}/api/interview/evaluate/${sessionId}`, { method: 'POST' });
+    const data = await res.json();
+    room.style.display = 'none';
+    document.getElementById('resultScreen').style.display = 'block';
+    const final = data.final_output;
+    document.getElementById('resultBody').innerHTML = `
+      <div class="score-badge">Score: ${final.total_score} / ${final.max_score}</div>
+      <p><strong>Routing:</strong> ${final.routing}</p>
+      <p>${final.feedback.summary_paragraph}</p>
+    `;
+  } catch (err) {
+    alert('Evaluation error');
+  }
+});
+</script>
+</body>
+</html>

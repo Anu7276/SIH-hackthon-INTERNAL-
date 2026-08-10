@@ -23,6 +23,7 @@ import {
   Building,
   KeyRound,
   ShieldCheck,
+  Home,
   ArrowLeft,
   Sparkles,
   Save,
@@ -196,7 +197,7 @@ export default function MyProfile() {
   const [otpSent, setOtpSent] = useState(false);
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const API_BASE = window.location.origin.startsWith("http") ? `${window.location.origin}/api/auth` : "http://localhost:3000/api/auth";
+  const API_BASE = window.location.port === "3000" ? "/api/auth" : "http://localhost:3000/api/auth";
 
   const showToast = (msg) => {
     setToastMsg(msg);
@@ -449,13 +450,13 @@ export default function MyProfile() {
         
         {/* Header Navbar */}
         <header className="bg-white border-b border-gray-100 px-4 sm:px-6 py-3 flex items-center justify-between gap-3">
-          <div className="flex items-center gap-3">
+          <a href="http://localhost:5000?skipIntro=true" className="flex items-center gap-3 no-underline cursor-pointer">
             <img
               src="https://upload.wikimedia.org/wikipedia/commons/5/55/Emblem_of_India.svg"
               alt="Emblem of India"
               className="h-9 sm:h-10 w-auto object-contain"
             />
-            <div className="flex flex-col leading-tight">
+            <div className="flex flex-col leading-tight text-left">
               <span className="text-[10px] tracking-wider text-gray-500 font-medium">
                 MINISTRY OF
               </span>
@@ -472,15 +473,15 @@ export default function MyProfile() {
               alt="Startup AYUSH Portal"
               className="h-8 sm:h-10 w-auto object-contain hidden sm:block"
             />
-          </div>
+          </a>
 
           {/* Header Action Nav */}
           <div className="flex items-center gap-2 sm:gap-3">
             <a
-              href="../../starting page/index.html?skipIntro=true"
-              className="text-xs sm:text-sm font-semibold text-gray-700 hover:text-[#1F5C36] px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition flex items-center gap-1"
+              href="http://localhost:5000?skipIntro=true"
+              className="text-xs sm:text-sm font-semibold text-gray-700 hover:text-[#1F5C36] px-2.5 py-1.5 rounded-lg border border-gray-200 hover:bg-gray-50 transition flex items-center gap-1 cursor-pointer"
             >
-              <ArrowLeft className="w-3.5 h-3.5 text-[#1F5C36]" />
+              <Home className="w-3.5 h-3.5 text-[#1F5C36]" />
               Home
             </a>
 
@@ -548,7 +549,8 @@ export default function MyProfile() {
 
           <div className="relative z-10 max-w-md">
             <div className="text-xs font-medium text-amber-900/70 mb-2 flex items-center gap-1">
-              Home <span className="text-amber-900/40 font-normal">&gt;</span>{" "}
+              <a href="http://localhost:5000?skipIntro=true" className="hover:underline hover:text-[#1F5C36]">Home</a>{" "}
+              <span className="text-amber-900/40 font-normal">&gt;</span>{" "}
               {authMode === "login"
                 ? "Sign In"
                 : authMode === "register"

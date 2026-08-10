@@ -531,7 +531,7 @@ function FeedView({ onBack }) {
         >
           <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
             <button
-              onClick={onBack}
+              onClick={onBack || (() => { window.location.href = 'http://localhost:5000?skipIntro=true'; })}
               aria-label="Back"
               style={{
                 display: "flex",
@@ -871,7 +871,7 @@ export default function SchemeFeedDemo() {
     if (window.history.length > 1) {
       window.history.back();
     } else {
-      window.location.href = "../../starting page/index.html?skipIntro=true";
+      window.location.href = "/?skipIntro=true";
     }
   };
 

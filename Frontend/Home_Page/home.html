@@ -40,7 +40,7 @@
                     <span class="action-divider" aria-hidden="true"></span>
                     <div class="login">
                         <div class="icon"><i class="fa-regular fa-user" aria-hidden="true"></i></div>
-                        <a href="../profile/dist/index.html?mode=login" id="nav-login-link">Login / Register</a>
+                        <a href="http://localhost:3000" id="nav-login-link">Login / Register</a>
                     </div>
                 </div>
             </div>
@@ -83,13 +83,11 @@
                 </div>
                 <nav class="menu" aria-label="Main navigation">
                     <a class="active" href="#home">Home</a>
-                    <a href="../Startups/dist/index.html">Startups <i class="fa-solid fa-chevron-down"></i></a>
-                    <a href="#investors">Investors</a>
-                    <a href="#incubators">Incubators &amp; Accelerators</a>
-                    <a href="../schemes/dist/index.html">Government Schemes</a>
-                    <a href="#resources">Resources <i class="fa-solid fa-chevron-down"></i></a>
-                    <a href="#events">Events</a>
-                    <button class="search" type="button" aria-label="Search"><i class="fa-solid fa-magnifying-glass"></i></button>
+                    <a href="http://localhost:5173">Startups <i class="fa-solid fa-chevron-down"></i></a>
+                    <a href="http://localhost:5174">Investors</a>
+                    <a href="javascript:void(0)">Incubators &amp; Accelerators</a>
+                    <a href="http://localhost:5175">Government Schemes</a>
+                    <a href="http://localhost:5500/interview_dashboard.html">Virtual Pitcher</a>
                 </nav>
             </div>
         </div>
@@ -101,8 +99,8 @@
                 <h1>Empowering AYUSH Startups.<br>Building a Healthy Future.</h1>
                 <p>Welcome to the Startup AYUSH Portal – a one-stop platform connecting Startups, Investors, Incubators, Government Agencies and Public Users to collaborate, innovate and grow together.</p>
                 <div class="hero_buttons">
-                    <a href="../Startups/dist/index.html" class="btn btn-primary">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
-                    <a href="#join" class="btn btn-secondary">Join the Ecosystem</a>
+                    <a href="http://localhost:5173" class="btn btn-primary">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="http://localhost:5500/interview_dashboard.html" class="btn btn-secondary">Virtual Pitcher</a>
                 </div>
             </div>
 
@@ -132,29 +130,29 @@
             <span class="section_underline" aria-hidden="true"></span>
 
             <div class="stakeholder_cards">
-                <div class="stakeholder_card" onclick="window.location.href='../Startups/dist/index.html'" style="cursor: pointer;">
+                <div class="stakeholder_card" onclick="window.location.href='http://localhost:5173'" style="cursor: pointer;">
                     <div class="card_icon icon-startups"><i class="fa-solid fa-rocket"></i></div>
                     <h3>Startups</h3>
                     <p>Showcase your innovations, connect with mentors &amp; investors, and grow globally.</p>
-                    <a href="../Startups/dist/index.html" class="card_link link-green" onclick="event.stopPropagation();">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="http://localhost:5173" class="card_link link-green" onclick="event.stopPropagation();">Explore Startups <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
-                <div class="stakeholder_card">
+                <div class="stakeholder_card" onclick="window.location.href='http://localhost:5174'" style="cursor: pointer;">
                     <div class="card_icon icon-investors"><i class="fa-solid fa-hand-holding-dollar"></i></div>
                     <h3>Investors</h3>
                     <p>Discover promising AYUSH startups and invest in the future of holistic health.</p>
-                    <a href="#investors" class="card_link link-blue">Explore Opportunities <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="http://localhost:5174" class="card_link link-blue" onclick="event.stopPropagation();">Explore Opportunities <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
                 <div class="stakeholder_card">
                     <div class="card_icon icon-incubators"><i class="fa-solid fa-people-group"></i></div>
                     <h3>Incubators &amp; Accelerators</h3>
                     <p>Support and nurture startups in the AYUSH sector with resources and guidance.</p>
-                    <a href="#incubators" class="card_link link-purple">Collaborate With Us <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="javascript:void(0)" class="card_link link-purple">Collaborate With Us <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
-                <div class="stakeholder_card" onclick="window.location.href='../schemes/dist/index.html'" style="cursor: pointer;">
+                <div class="stakeholder_card" onclick="window.location.href='http://localhost:5175'" style="cursor: pointer;">
                     <div class="card_icon icon-govt"><i class="fa-solid fa-landmark"></i></div>
                     <h3>Government Schemes</h3>
                     <p>Discover government funding, subsidies, grants, and support schemes for AYUSH startups.</p>
-                    <a href="../schemes/dist/index.html" class="card_link link-orange" onclick="event.stopPropagation();">Explore Schemes <i class="fa-solid fa-arrow-right"></i></a>
+                    <a href="http://localhost:5175" class="card_link link-orange" onclick="event.stopPropagation();">Explore Schemes <i class="fa-solid fa-arrow-right"></i></a>
                 </div>
                 <div class="stakeholder_card">
                     <div class="card_icon icon-public"><i class="fa-solid fa-users"></i></div>
@@ -256,7 +254,7 @@
                     e.preventDefault();
                     e.stopPropagation();
                     alert("Please sign in or register your account to access AYUSH ecosystem features!");
-                    window.location.href = '../profile/dist/index.html?mode=register';
+                    window.location.href = 'http://localhost:5176?mode=register';
                 }
             }, true);
         });
