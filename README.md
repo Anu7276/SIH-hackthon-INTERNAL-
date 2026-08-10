@@ -158,9 +158,10 @@ SIH-hackthon-INTERNAL-/
 │   └── src/
 │       ├── app.js                 # Express app configuration & static gateway routes
 │       ├── config/                # Database & environment configurations
-│       ├── controllers/           # Register, login, OTP, token refresh, logout logic
-│       ├── models/                # User, OTP, and Session Mongoose schemas
-│       ├── routes/                # Auth API routes (/api/auth)
+│       ├── controllers/           # Auth, pitch, and evaluation controllers
+│       ├── middlewares/           # JWT authentication middleware (auth.middleware.js)
+│       ├── models/                # User, OTP, Session, Pitch, and Evaluation Mongoose schemas
+│       ├── routes/                # Auth (/api/auth), Pitch (/api/pitches), and Evaluation (/api/ai/evaluations) routes
 │       └── service/               # Nodemailer SMTP email service
 │
 └── Frontend/                      # Multi-Module Frontend Applications
@@ -244,6 +245,7 @@ npm run dev
 | **Express Gateway & Auth** | Node.js + Express | `http://localhost:3000` |
 | **Landing & Intro Page** | HTML5 Canvas / Serve | `http://localhost:5000` |
 | **Startups Directory** | Vite + React | `http://localhost:5173` |
+| **Investor Dashboard** | Vite + React | `http://localhost:5174` |
 | **AYUSH Schemes Feed** | Vite + React | `http://localhost:5175` |
 | **Founder Profile App** | Vite + React | `http://localhost:5176` |
 | **FastAPI Agent API** | Python Uvicorn | `http://localhost:8000` |
@@ -258,12 +260,20 @@ npm run dev
 | Method | Endpoint | Description | Auth Required |
 | :--- | :--- | :--- | :--- |
 | `POST` | `/register` | Register user & send 6-digit OTP email | No |
-| `POST` | `/verify-email` | Verify email with 6-digit OTP code | No |
+| `POST` | `/verify-email` | Verify email with 6-digit OTP code & issue session token | No |
 | `POST` | `/login` | Authenticate user & issue Access/Refresh tokens | No |
 | `GET` | `/get-me` | Get active user profile from Bearer token | Yes (Bearer) |
 | `GET` | `/refresh-token` | Rotate refresh cookie & issue new access token | Cookie |
 | `GET` | `/logout` | Invalidate current device session | Cookie |
 | `GET` | `/logout-all` | Revoke sessions on all devices | Cookie |
+
+### Pitch & Evaluation Endpoints (`http://localhost:3000/api`)
+
+| Method | Endpoint | Description | Auth Required |
+| :--- | :--- | :--- | :--- |
+| `POST` | `/api/pitches` | Create new pitch deck record (`status: pending`) | Yes (Bearer) |
+| `GET` | `/api/pitches/:pitchId` | Retrieve pitch status and metadata | Yes (Bearer) |
+| `POST` | `/api/ai/evaluations` | Persist 4-agent evaluation result & enforce backend routing | Yes (Bearer) |
 
 ### AI Agent Endpoints (`http://localhost:8000/api`)
 
